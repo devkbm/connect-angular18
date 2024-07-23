@@ -1,0 +1,102 @@
+
+{{this.fg.getRawValue() | json }}
+<!--
+{{this.fg.errors| json }}
+-->
+
+<form [formGroup]="fg">
+
+  <ng-template #errorTpl let-control>
+    <ng-container *ngIf="control.hasError('required')">
+      필수 입력 값입니다.
+    </ng-container>
+    <ng-container *ngIf="control.hasError('exists')">
+      기존 코드가 존재합니다.
+    </ng-container>
+  </ng-template>
+
+  <app-nz-input-text
+    formControlName="input_text" itemId="data1"
+    placeholder="필수 입력 항목입니다."
+    [required]="true" [nzErrorTip]="errorTpl">label1
+  </app-nz-input-text>
+
+  <app-nz-input-textarea
+    formControlName="input_textarea" itemId="data2"
+    placeholder="필수 입력 항목입니다."
+    [required]="true" [nzErrorTip]="errorTpl">label2
+  </app-nz-input-textarea>
+
+  <app-nz-input-date
+    formControlName="input_date" itemId="data3"
+    [required]="true" [nzErrorTip]="errorTpl">label3
+  </app-nz-input-date>
+
+  <app-nz-input-datetime
+    formControlName="input_date" itemId="data3"
+    [required]="true" [nzErrorTip]="errorTpl">label3
+  </app-nz-input-datetime>
+
+  <app-nz-input-number-custom
+    formControlName="input_number" itemId="data4"
+    [required]="true" [nzErrorTip]="errorTpl">label4
+  </app-nz-input-number-custom>
+
+  <!-- [opt_label]="'label'" -->
+  <!-- [custom_label]="custom_label" -->
+  <app-nz-input-select
+    formControlName="input_select" itemId="data5"
+    [options]="selectList" [opt_value]="'value'" [opt_label]="'label'"
+    placeholder="Please select"
+    [required]="true" [nzErrorTip]="errorTpl">label5
+  </app-nz-input-select>
+
+  <app-nz-input-tree-select
+    formControlName="input_treeselect" itemId="data6"
+    [nodes]="treeList"
+    placeholder="please selec'"
+    [required]="true" [nzErrorTip]="errorTpl">label6
+  </app-nz-input-tree-select>
+
+  <app-nz-input-checkbox
+    formControlName="input_text"
+    checkboxText="asdfdsf"
+    [required]="true">asfsaf
+  </app-nz-input-checkbox>
+
+  <app-nz-input-dept-select
+    formControlName="input_deptselect" itemId="input_deptselect"
+    placeholder="Please select" opt_value="deptCode"
+    [required]="true" [nzErrorTip]="errorTpl">label5
+  </app-nz-input-dept-select>
+
+  <app-nz-input-ckeditor
+    formControlName="input_text" itemId="data1"
+    rows="10">
+    Editor
+  </app-nz-input-ckeditor>
+
+  <app-nz-input-mobile formControlName="input_text" itemId="data1">
+  </app-nz-input-mobile>
+
+  <app-nz-input-radio-group formControlName="input_text" itemId="data1" [options]="[{label:'a',value:'a'},{label:'b',value:'b'}]">
+    라디오버튼
+  </app-nz-input-radio-group>
+
+  <app-nz-input-simple-color-picker formControlName="input_color" [required]="true">
+    color-picker
+  </app-nz-input-simple-color-picker>
+
+  <app-nz-buttons [buttons]="btns"></app-nz-buttons>
+
+</form>
+
+<app-duty-date-list>
+
+</app-duty-date-list>
+
+<!--
+<app-daypilot-calendar>
+
+</app-daypilot-calendar>
+-->

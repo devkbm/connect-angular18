@@ -1,0 +1,22 @@
+.footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    border-top: 1px solid rgb(232, 232, 232);
+    padding: 10px 16px;
+    text-align: right;
+    left: 0px;
+    background: #fff;
+    z-index: 900;
+}
+
+:host ::ng-deep .ck-editor__editable {
+    height: 45vh;
+    /*min-height: calc(100% - 300px) !important;*/
+}
+
+:host ::ng-deep .upload-list-inline .ant-upload-list-item {
+    float: left;
+    width: 200px;
+    margin-right: 8px;
+}

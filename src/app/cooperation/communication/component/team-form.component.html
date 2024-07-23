@@ -1,0 +1,57 @@
+{{form.getRawValue() | json}}
+<div class="footer">
+    <!--
+    <button nz-button (click)="getTeam(form.get('teamId').value)">
+        <span nz-icon type="close" nzTheme="outline"></span>
+        조회
+    </button>
+    -->
+    <button nz-button (click)="closeForm()">
+        <span nz-icon type="close" nzTheme="outline"></span>
+        닫기
+    </button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <button nz-button nzType="primary" nz-popconfirm nzTitle="저장하시겠습니까?"
+        (nzOnConfirm)="saveTeam()" (nzOnCancel)="false">
+        <span nz-icon type="save" nzTheme="outline"></span>
+        저장
+    </button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <button nz-button nzDanger nz-popconfirm nzTitle="삭제하시겠습니까?"
+        (nzOnConfirm)="deleteTeam(form.get('teamId')?.value)" (nzOnCancel)="false">
+        <span nz-icon type="delete" nzTheme="outline"></span>
+        삭제
+    </button>
+</div>
+
+
+<form nz-form [formGroup]="form" [nzLayout]="'vertical'">
+  <nz-form-item>
+    <nz-form-label nzFor="teamId" [nzXs]="formLabelXs" [nzSm]="formLabelSm">팀 Id</nz-form-label>
+    <nz-form-control [nzXs]="formControlXs" [nzSm]="fromControlSm">
+      <input nz-input id="teamId" formControlName="teamId" placeholder="팀 Id를 입력해주세요.">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="teamName" nzRequired [nzXs]="formLabelXs" [nzSm]="formLabelSm">팀명</nz-form-label>
+    <nz-form-control [nzXs]="formControlXs" [nzSm]="fromControlSm">
+      <input nz-input id="teamName" formControlName="teamName" placeholder="팀명을 입력해주세요.">
+      <!--
+      <nz-form-explain *ngIf="isFieldErrors(form,'teamName','required')">The input is Required!</nz-form-explain>
+      -->
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="memberList" [nzXs]="formLabelXs" [nzSm]="formLabelSm">팀원</nz-form-label>
+    <nz-form-control [nzXs]="formControlXs" [nzSm]="fromControlSm">
+      <nz-select formControlName="memberList"  nzMode="multiple" nzPlaceHolder="Please select">
+        @for (option of memberList; track option.userId) {
+          <nz-option [nzLabel]="option.name" [nzValue]="option.userId"></nz-option>
+        }
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+</form>

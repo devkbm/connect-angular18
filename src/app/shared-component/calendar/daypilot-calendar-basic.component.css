@@ -1,0 +1,83 @@
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.navigator {
+  margin-right: 10px;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-content: stretch;
+  justify-content: space-between;
+}
+
+.nav-buttons {
+  margin-top: 10px;
+  text-align: left;
+  flex-basis: 300px;
+}
+
+.title {
+  font-size: 12px;
+  text-align: center;
+  vertical-align: middle;
+  flex-basis: auto;
+}
+
+.view-buttons {
+  margin-top: 10px;
+  text-align: right;
+  flex-basis: 300px;
+}
+
+.direction-button {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  padding: 2px 16px;
+  height: 38px;
+  min-width: 48px;
+  min-height: 38px;
+  border: none;
+  color: #fff;
+  background-color: darkblue;
+  transition: background-color .17s ease,color .17s ease;
+}
+
+button {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  padding: 2px 16px;
+  height: 38px;
+  min-width: 96px;
+  min-height: 38px;
+  border: none;
+  color: #fff;
+  background-color: darkblue;
+  transition: background-color .17s ease,color .17s ease;
+}
+
+button:hover {
+  background-color: rgb(71, 82, 196);
+}
+
+button.selected {
+  background-color: #1c4587;
+}
+
+
+

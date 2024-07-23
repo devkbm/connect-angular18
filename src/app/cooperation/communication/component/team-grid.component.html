@@ -1,0 +1,12 @@
+<ag-grid-angular
+    [ngStyle]="style"
+    class="ag-theme-balham"
+    [rowSelection]="'single'"
+    [rowData]="teamList"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [getRowId]="getRowId"
+    (gridReady)="onGridReady($event)"
+    (selectionChanged)="selectionChanged($event)"
+    (rowDoubleClicked)="rowDbClicked($event)">
+</ag-grid-angular>
