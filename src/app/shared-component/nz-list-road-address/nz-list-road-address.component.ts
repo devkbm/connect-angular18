@@ -15,7 +15,7 @@ import { RoadAddressService } from './road-address.service';
   providers: [NzMessageService],
   template: `
     111- {{searchText()}}
-    <div class="container" [style.height]="height">
+    <div class="container" [style.height]="height()">
       <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
         <input nz-input type="text" [(ngModel)]="searchText" (keyup.enter)="fetch()" placeholder="input search text"/>
         <ng-template #suffixIconButton>

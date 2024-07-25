@@ -179,6 +179,9 @@ export class StaffLicenseFormComponent extends FormBase implements OnInit, After
    */
   licenseTypeList: HrmCode[] = [];
 
+  service = inject(StaffLicenseService);
+  hrmCodeService = inject(HrmCodeService);
+  appAlarmService = inject(AppAlarmService);
   fb = inject(FormBuilder);
 
   override fg = this.fb.group({
@@ -192,9 +195,7 @@ export class StaffLicenseFormComponent extends FormBase implements OnInit, After
     comment                 : new FormControl<string | null>(null)
   });
 
-  constructor(private service: StaffLicenseService,
-              private hrmCodeService: HrmCodeService,
-              private appAlarmService: AppAlarmService) {
+  constructor() {
     super();
   }
 

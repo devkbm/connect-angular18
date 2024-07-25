@@ -180,6 +180,9 @@ export class StaffFamilyFormComponent extends FormBase implements OnInit, AfterV
    */
   familyRelationList: HrmCode[] = [];
 
+  service = inject(StaffFamilyService);
+  hrmCodeService = inject(HrmCodeService);
+  appAlarmService = inject(AppAlarmService);
   fb = inject(FormBuilder);
 
   override fg = this.fb.group({
@@ -194,9 +197,7 @@ export class StaffFamilyFormComponent extends FormBase implements OnInit, AfterV
     comment             : new FormControl<string | null>(null)
   });
 
-  constructor(private service: StaffFamilyService,
-              private hrmCodeService: HrmCodeService,
-              private appAlarmService: AppAlarmService) {
+  constructor() {
     super();
   }
 

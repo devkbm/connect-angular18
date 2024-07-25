@@ -154,7 +154,11 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
    */
   dutyResponsibilityCodeList: HrmCode[] = [];
 
+  service = inject(StaffDutyResponsibilityService);
+  hrmCodeService = inject(HrmCodeService);
+  appAlarmService = inject(AppAlarmService);
   fb = inject(FormBuilder);
+
   override fg = this.fb.group({
       staffNo                 : new FormControl<string | null>(null, { validators: Validators.required }),
       staffName               : new FormControl<string | null>(null),
@@ -166,9 +170,7 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
       isPayApply              : new FormControl<boolean | null>(null)
     });
 
-  constructor(private service: StaffDutyResponsibilityService,
-              private hrmCodeService: HrmCodeService,
-              private appAlarmService: AppAlarmService) {
+  constructor() {
     super();
   }
 
