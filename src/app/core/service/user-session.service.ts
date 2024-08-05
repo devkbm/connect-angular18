@@ -26,18 +26,23 @@ export interface SystemUserProfile {
   providedIn: 'root'
 })
 export class UserSessionService extends DataService {
-  private IMAGE_URI = '/api/system/fileimage/';
+  private IMAGE_URI = '/api/system/user/image';
 
   constructor() {
     super('/api/system/user');
-    this.IMAGE_URI = GlobalProperty.serverUrl + '/api/system/fileimage/';
+    this.IMAGE_URI = GlobalProperty.serverUrl + '/api/system/user/image';
   }
 
   getAvartarImageString(): string | null {
     const imageUrl = sessionStorage.getItem('imageUrl');
     if (imageUrl === 'null') return null;
 
-    return this.IMAGE_URI + sessionStorage.getItem('imageUrl');
+    //return this.IMAGE_URI + sessionStorage.getItem('imageUrl');
+
+    let urlParams = new URLSearchParams();
+    urlParams.set("companyCode", sessionStorage.getItem("companyCode")!);
+    urlParams.set("userId", sessionStorage.getItem("userId")!);
+    return this.IMAGE_URI + '?' + urlParams;
   }
 
   getMyProfile(): Observable<ResponseObject<SystemUserProfile>> {

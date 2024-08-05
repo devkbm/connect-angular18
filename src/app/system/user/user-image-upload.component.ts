@@ -91,7 +91,7 @@ export class UserImageUploadComponent implements OnInit, OnChanges {
 
   previewImage: string | undefined = '';
 
-  imageSrc: string = GlobalProperty.serverUrl + '/api/system/fileimage/'; //'/static/';
+  imageSrc: string = GlobalProperty.serverUrl + '/api/system/user/image'; //'/static/';
 
   @Input() imageWidth: string = '150px';
   @Input() imageHeight: string = '200px';
@@ -150,7 +150,12 @@ export class UserImageUploadComponent implements OnInit, OnChanges {
   getImageSrc() {
     if (!this.pictureFileId) return '';
 
-    return this.imageSrc + this.pictureFileId;
+    let urlParams = new URLSearchParams();
+    urlParams.set("companyCode", sessionStorage.getItem("companyCode")!);
+    urlParams.set("userId", this.userId);
+
+    //return this.imageSrc + this.pictureFileId;
+    return this.imageSrc + '?' + urlParams;
   }
 
   private findFileName(path: string): string {
