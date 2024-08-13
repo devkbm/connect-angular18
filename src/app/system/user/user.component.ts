@@ -23,6 +23,7 @@ import { UserFormComponent } from './user-form.component';
 import { UserImageUploadComponent } from './user-image-upload.component';
 import { UserPopupComponent } from './user-popup.component';
 import { UserProfileComponent } from '../../app-layout/user-profile/user-profile.component';
+import { NzButtonExcelUploadComponent } from "../../shared-component/nz-button-excel-upload/nz-button-excel-upload.component";
 
 @Component({
   selector: 'app-user',
@@ -40,13 +41,13 @@ import { UserProfileComponent } from '../../app-layout/user-profile/user-profile
     NzButtonModule,
     NzPageHeaderCustomComponent,
     NzSearchAreaComponent,
-
     UserPopupComponent,
     UserGridComponent,
     UserImageUploadComponent,
     UserFormComponent,
-    UserProfileComponent
-  ],
+    UserProfileComponent,
+    NzButtonExcelUploadComponent
+],
   template: `
 <div class="page-header">
   <app-nz-page-header-custom title="사용자 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
@@ -73,6 +74,7 @@ import { UserProfileComponent } from '../../app-layout/user-profile/user-profile
     <div nz-col [nzSpan]="12" style="text-align: right;">
       <!--<app-nz-buttons [buttons]="buttons"></app-nz-buttons>-->
 
+      <app-nz-button-excel-upload [urn]="'/api/system/user-excel'"></app-nz-button-excel-upload>
       <button nz-button (click)="test()">
         <span nz-icon nzType="search"></span>구글 로그인
       </button>
