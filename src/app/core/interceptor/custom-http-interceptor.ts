@@ -10,10 +10,7 @@ export class CustomHttpInterceptor implements HttpInterceptor {
   headerInfo?: HttpHeaders;
   exceptUrls: string[] = [
     'http://175.114.176.195:8090/api/system/user/login',
-    'http://localhost:8090/api/system/user/login',      // 로그인페이지 url
-    'http://localhost:8090/api/system/file',           // 파일업로드 url
-    'http://localhost:8090/api/system/user/image',      // 프로필 이미지 url
-    'http://localhost:8090/api/hrm/staff/changeimage'   // 직원 사진 url
+    'http://localhost:8090/api/system/user/login'      // 로그인페이지 url
   ];
 
   private tokenExtractor = inject(HttpXsrfTokenExtractor);
@@ -78,10 +75,16 @@ export class CustomHttpInterceptor implements HttpInterceptor {
   }
 
   private setFormDataBodyPOST(req: HttpRequest<any>): HttpRequest<any> {
-    return req.clone({
-      body: req.body.append('companyCode', String(sessionStorage.getItem('companyCode')))
-                    .append('clientAppUrl', window.location.href)
-    });
+    req.body.set('companyCode', String(sessionStorage.getItem('companyCode')));
+    req.body.set('clientAppUrl', window.location.href);
+    /*
+    const formValues = req.body.values();
+    for (const val of formValues) {
+      console.log(val);
+    }
+    */
+
+    return req;
   }
 
 }

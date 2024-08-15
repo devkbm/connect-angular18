@@ -37,8 +37,8 @@ export class NzButtonExcelUploadComponent  implements OnInit {
   @Input() urn: string = '';
 
   uploadParam = { pgmId: 'board', appUrl:'asd' };
-  uploadUrl: string = GlobalProperty.serverUrl + '/api/system/file';
-  //uploadUrl: string = GlobalProperty.serverUrl + '/api/system/user-excel';
+  //uploadUrl: string = GlobalProperty.serverUrl + '/api/system/file';
+  uploadUrl: string = GlobalProperty.serverUrl + '/api/system/user-excel';
 
   fileUploadHeader: any;
 
