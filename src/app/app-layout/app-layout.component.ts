@@ -74,8 +74,9 @@ export class AppLayoutComponent implements OnInit  {
       this.menuGroupInfo.selectedId = sessionMenuGroup;
       this.sideMenu.menuGroupCode = sessionMenuGroup;
 
-      const LAST_VISIT_URL = sessionStorage.getItem('selectedMenu') as string;
-      this.moveToUrl(LAST_VISIT_URL);
+      this.moveToMenuGroupUrl(this.sideMenu.menuGroupCode);
+      //const LAST_VISIT_URL = sessionStorage.getItem('selectedMenu') as string;
+      //this.moveToUrl(LAST_VISIT_URL);
 
     } else {
       this.menuGroupInfo.selectedId = this.menuGroupInfo.list[0].menuGroupCode;
@@ -85,19 +86,14 @@ export class AppLayoutComponent implements OnInit  {
 
   moveToMenuGroupUrl(menuGroupCode: string) {
     sessionStorage.setItem('selectedMenuGroup', menuGroupCode);
-
     this.sideMenu.menuGroupCode = menuGroupCode;
 
-    for (const menuGroup of this.menuGroupInfo.list) {
-      if (menuGroup.menuGroupCode === menuGroupCode) {
-        // MenuGroup Default Url
-        this.moveToUrl(menuGroup.menuGroupUrl);
-      }
-    }
+    this.router.navigate([this.getMenuGroupUrl(menuGroupCode)]);
   }
 
   moveToUrl(url: string) {
     this.sideMenu.url = url;
+    this.router.navigate([url]);
   }
 
   setAvatar(): void {
@@ -105,6 +101,15 @@ export class AppLayoutComponent implements OnInit  {
     if (profilePictureUrl) {
       this.profileAvatarSrc = profilePictureUrl as string;
     }
+  }
+
+  getMenuGroupUrl(menuGroupCode: string) {
+    for (const menuGroup of this.menuGroupInfo.list) {
+      if (menuGroup.menuGroupCode === menuGroupCode) {
+        return menuGroup.menuGroupUrl;
+      }
+    }
+    return '';
   }
 
 }

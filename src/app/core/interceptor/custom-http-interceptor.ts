@@ -9,8 +9,9 @@ export class CustomHttpInterceptor implements HttpInterceptor {
 
   headerInfo?: HttpHeaders;
   exceptUrls: string[] = [
-    'http://175.114.176.195:8090/api/system/user/login',
-    'http://localhost:8090/api/system/user/login'      // 로그인페이지 url
+    //'http://175.114.176.195:8090/api/system/user/login',
+    //'http://localhost:8090/api/system/user/login'      // 로그인페이지 url
+    '/api/system/user/login'      // 로그인페이지 url
   ];
 
   private tokenExtractor = inject(HttpXsrfTokenExtractor);
@@ -33,8 +34,10 @@ export class CustomHttpInterceptor implements HttpInterceptor {
   }
 
   isExceptUrl(url: string): boolean {
+
     for (const urlString of this.exceptUrls) {
-      if (urlString === url) return true;
+      //if (urlString === url) return true;
+      if (url.includes(urlString)) return true;
     }
     return false;
   }

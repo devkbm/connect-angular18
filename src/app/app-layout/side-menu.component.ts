@@ -1,6 +1,6 @@
 import { Component, inject, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { NzMenuModeType, NzMenuModule, NzMenuThemeType } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -13,7 +13,7 @@ import { ResponseList } from '../core/model/response-list';
 @Component({
   selector: 'app-side-menu',
   standalone: true,
-  imports: [ CommonModule, NzMenuModule, NzIconModule ],
+  imports: [ CommonModule, RouterModule, NzMenuModule, NzIconModule ],
   template: `
       <div class="logo">LOGO</div>
 
@@ -26,9 +26,10 @@ import { ResponseList } from '../core/model/response-list';
                 nz-menu-item
                 [nzPaddingLeft]="menu.level * 24"
                 [nzDisabled]="menu.disabled"
-                [nzSelected]="menu.selected"
                 (click)="moveToUrl(menu.url)"
               >
+            <!-- [nzSelected]="menu.selected" -->
+                <a routerLinkActive="active" [routerLink]="menu.url"></a>
                 @if (menu.icon) {
                   <span nz-icon [nzType]="menu.icon"></span>
                 }
