@@ -34,18 +34,20 @@ export class CustomHttpInterceptor implements HttpInterceptor {
   }
 
   isExceptUrl(url: string): boolean {
+    const strURL = new URL(url);
+    //console.log(strURL.pathname);
 
     for (const urlString of this.exceptUrls) {
-      //if (urlString === url) return true;
-      if (url.includes(urlString)) return true;
+      //if (urlString === strURL.pathname) return true;
+      if (strURL.pathname.includes(urlString)) return true;
     }
     return false;
   }
 
   setParameters(req: HttpRequest<any>): HttpRequest<any> {
-    if (req.method.toLowerCase() === 'get' || req.method.toLowerCase() === 'delete') {
+    if (req.method.toUpperCase() === 'GET' || req.method.toUpperCase() === 'DELETE') {
       req = this.setParamsGET(req);
-    } else if (req.method.toLowerCase() === 'post') {
+    } else if (req.method.toUpperCase() === 'POST') {
       if (req.body instanceof FormData) {
         req =  this.setFormDataBodyPOST(req);
       } else {
