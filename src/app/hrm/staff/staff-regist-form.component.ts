@@ -51,7 +51,7 @@ import { saveAs } from 'file-saver';
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="6">
           <div class="img">
-            <nz-avatar class="avatar" [nzShape]="'square'" [nzSize]='96' [nzSrc]="imageUrl"></nz-avatar>
+            <nz-avatar class="avatar" [nzShape]="'square'" [nzSize]='96' [nzSrc]="getImageSrc()"></nz-avatar>
           </div>
         </div>
         <div nz-col>
@@ -203,6 +203,16 @@ export class StaffRegistFormComponent extends FormBase implements OnInit {
     this.formClosed.emit(this.fg.getRawValue());
   }
 
+  getImageSrc() {
+    if (!this.imageUrl) return '';
+
+    let urlParams = new URLSearchParams();
+    urlParams.set("companyCode", sessionStorage.getItem("companyCode")!);
+    urlParams.set("staffNo", this.staffNo!);
+
+    return GlobalProperty.serverUrl + '/api/hrm/staff/downloadimage' + '?' + urlParams;
+  }
+
   get(staffId: string): void {
     this.service
         .get(staffId)
@@ -210,11 +220,10 @@ export class StaffRegistFormComponent extends FormBase implements OnInit {
           (model: ResponseObject<Staff>) => {
             if ( model.total > 0 ) {
               this.modifyForm(model.data);
-
               this.upload.data = { companyCode: model.data.companyCode, staffNo: model.data.staffNo };
 
               if (model.data.imagePath) {
-                this.imageUrl = GlobalProperty.serverUrl + '/api/system/fileimage/' + model.data.imagePath;
+                this.imageUrl = GlobalProperty.serverUrl + '/api/hrm/staff/downloadimage';
               } else {
                 this.imageUrl = '';
               }
@@ -256,7 +265,8 @@ export class StaffRegistFormComponent extends FormBase implements OnInit {
     console.log(param);
     if (param.type === 'success') {
       const serverFilePath = param.file.response.data;
-      this.imageUrl = GlobalProperty.serverUrl + '/api/system/fileimage/' + this.findFileName(serverFilePath);
+      //this.imageUrl = GlobalProperty.serverUrl + '/api/system/fileimage/' + this.findFileName(serverFilePath);
+      this.imageUrl = GlobalProperty.serverUrl + '/api/hrm/staff/downloadimage';
     }
   }
 
