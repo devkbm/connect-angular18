@@ -22,6 +22,7 @@ import { CommonModule } from '@angular/common';
       <input type="text" formControlName="staffNo" placeholder="Username" required="required" />
       <input type="password" formControlName="password" placeholder="Password" required="required" />
       <button type="submit" class="btn btn-primary btn-block btn-large" (click)="submitForm()">로그인</button>
+      <button type="submit" class="btn btn-primary btn-block btn-large" (click)="socialLogin()">구글 로그인</button>
     </form>
 
   </div>
