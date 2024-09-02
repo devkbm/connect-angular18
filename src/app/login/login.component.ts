@@ -170,8 +170,7 @@ export class LoginComponent implements OnInit {
     console.log(this.form.get('userName')?.value);
 
 
-    //window.location.href = 'http://localhost:8090/oauth2/authorization/google';
-    window.location.href = 'http://localhost:8090/login/oauth2/code';
+    window.location.href = 'http://localhost:8090/oauth2/authorization/google?companyCode=001';
 
     /*
     window.location.href =
