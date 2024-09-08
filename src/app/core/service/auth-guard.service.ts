@@ -13,7 +13,7 @@ export class AuthGuardService implements CanActivate,CanActivateChild {
 
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> {
     return new Observable<boolean>(e => {
-      this.loginService.getAuthToken()
+      this.loginService.getAuthToken('001')
                        .subscribe((model: UserToken) => {
                         if (this.isAuthenticated(model.sessionId)) {
                           e.next(true);
@@ -27,7 +27,7 @@ export class AuthGuardService implements CanActivate,CanActivateChild {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> {
       return new Observable<boolean>(e => {
-        this.loginService.getAuthToken()
+        this.loginService.getAuthToken('001')
                          .subscribe((model: UserToken) => {
                           if (this.isAuthenticated(model.sessionId)) {
                             e.next(true);
@@ -54,7 +54,7 @@ export const AuthGuardFunction: CanActivateFn = (
     const loginService: LoginService = inject(LoginService);
     const router: Router = inject(Router);
 
-    return loginService.getAuthToken()
+    return loginService.getAuthToken('001')
                 .subscribe((model: UserToken) => {
                   const session_token = sessionStorage.getItem('token') as string;
 
@@ -74,7 +74,7 @@ export const AuthGuardChildFunction: CanActivateChildFn = (
     const loginService: LoginService = inject(LoginService);
     const router: Router = inject(Router);
 
-    return loginService.getAuthToken()
+    return loginService.getAuthToken('001')
                 .subscribe((model: UserToken) => {
                   const session_token = sessionStorage.getItem('token') as string;
                   console.log('session_token:'+ session_token);

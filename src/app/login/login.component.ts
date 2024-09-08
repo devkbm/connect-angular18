@@ -124,7 +124,7 @@ export class LoginComponent implements OnInit {
     if (token != null) {
       sessionStorage.setItem('token', token);
 
-      this.loginService.getAuthToken()
+      this.loginService.getAuthToken('001')
           .subscribe(
             (model: UserToken) => {
               this.setItemSessionStorage(model);
@@ -160,57 +160,7 @@ export class LoginComponent implements OnInit {
   }
 
   socialLogin(): void {
-    // tslint:disable-next-line:forin
-    /*
-    for (const i in this.loginForm.controls) {
-      this.loginForm.controls[ i ].markAsDirty();
-      this.loginForm.controls[ i ].updateValueAndValidity();
-    }
-    */
-    console.log(this.form.get('userName')?.value);
-
-
     window.location.href = 'http://localhost:8090/oauth2/authorization/google?companyCode=001';
-
-    /*
-    window.location.href =
-      'http://localhost:8090/oauth2/authorization/google?response_type=code&' +
-      'scope=profile%20email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&'+
-      'client_id=' + '497322312042-mstkseqfmr5t8r7nch5bp17r9lh5eoen.apps.googleusercontent.com'+
-      '&redirect_uri='+ 'http%3A%2F%2Flocalhost%3A8090%2Flogin%2Foauth2%2Fcode%2Fgoogle';
-    */
-    /*
-    this.loginService
-      .getSocialLogin()
-      .subscribe(
-        (model: any) => {
-          this.router.navigate(['/home']);
-        },
-        (err) => {
-          console.log(err);
-        },
-        () => {
-          console.log('완료');
-          this.router.navigate(['/home']);
-        }
-      );
-    */
-  }
-
-  socialLogin2(): void {
-    this.loginService.getAuthToken()
-          .subscribe(
-            (model: UserToken) => {
-              console.log(model);
-
-              sessionStorage.setItem('token', model.sessionId);
-              sessionStorage.setItem('imageUrl', model.imageUrl);
-              sessionStorage.setItem('menuGroupList', JSON.stringify(model.menuGroupList));
-              sessionStorage.setItem('roleList', JSON.stringify(model.roleList));
-
-              this.router.navigate(['/home']);
-            }
-          );
   }
 
   test() {

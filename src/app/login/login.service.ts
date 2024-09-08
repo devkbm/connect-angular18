@@ -68,8 +68,21 @@ export class LoginService extends DataService {
       );
   }
 
-  getAuthToken(): Observable<UserToken> {
-    const url = 'http://localhost:8090/api/system/user/auth';
+  getAuthToken(companyCode: string): Observable<UserToken> {
+    const url = 'http://localhost:8090/api/system/user/auth?companyCode='+companyCode;
+
+    const options = {
+      headers: this.getAuthorizedHttpHeaders(),
+      withCredentials: true
+    };
+
+    return this.http.get<UserToken>(url, options).pipe(
+      catchError(this.handleError<UserToken>('getAuthToken', undefined))
+    );
+  }
+
+  getOAuth2Token(companyCode: string): Observable<UserToken> {
+    const url = 'http://localhost:8090/api/system/user/oauth2?companyCode='+companyCode;
 
     const options = {
       headers: this.getAuthorizedHttpHeaders(),

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, COMPOSITION_BUFFER_MODE } from '@angular/forms';
-import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomHttpInterceptor } from '../core/interceptor/custom-http-interceptor';
 
 
@@ -16,8 +16,6 @@ import { Login3Component } from './login3.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
-    HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'}),
     LoginComponent
   ],
   declarations: [

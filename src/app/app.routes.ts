@@ -6,10 +6,12 @@ import { Login2Component } from 'src/app/login/login2.component';
 import { Login3Component } from 'src/app/login/login3.component';
 import { ArticleFormComponent } from './cooperation/board/article/article-form.component';
 import { ArticleViewComponent } from './cooperation/board/article/article-view.component';
+import { Oauth2LoginSuccessComponent } from './login/oauth2-login-success.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login/:id', component: LoginComponent },
+  {path: 'oauth2/:id', component: Oauth2LoginSuccessComponent },
   {path: 'login', component: LoginComponent },
   {path: 'login2', component: Login2Component },
   {path: 'login3', component: Login3Component },
