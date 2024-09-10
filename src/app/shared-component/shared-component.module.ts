@@ -22,7 +22,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 /* Angular Material */
-import { MatListModule } from '@angular/material/list';
+//import { MatListModule } from '@angular/material/list';
 
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
@@ -66,11 +66,11 @@ const nzModules = [
   NzPaginationModule,
   NzRadioModule
 ]
-
+/*
 const matModules = [
   MatListModule
 ]
-
+*/
 @NgModule({
   imports: [
     CommonModule,
@@ -78,10 +78,12 @@ const matModules = [
     FormsModule,
     ReactiveFormsModule,
     nzModules,
-    matModules,
+    //matModules,
     ColorPickerModule,
     CKEditorModule,
-    NgxMaskDirective, NgxMaskPipe
+
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
   declarations: [
    ],

@@ -18,12 +18,13 @@ import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-text
 import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
 import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzTreeSelectCustomComponent } from 'src/app/shared-component/nz-tree-select-custom/nz-tree-select-custom.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 @Component({
   selector: 'app-menu-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
+    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
     NzCrudButtonGroupComponent, NzInputTextComponent,
     NzInputTextareaComponent, NzInputNumberCustomComponent, NzInputSelectComponent, NzTreeSelectCustomComponent
   ],

@@ -13,17 +13,21 @@ import { MenuGroup } from './menu-group.model';
 import { existingMenuGroupValidator } from './menu-group-duplication-validator.directive';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
+import { NzGridRowComponent } from 'src/app/shared-component/nz-grid/nz-grid-row.component';
+import { NzGridColComponent } from 'src/app/shared-component/nz-grid/nz-grid-col.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 @Component({
   selector: 'app-menu-group-form',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
+    NzGridRowComponent, NzGridColComponent, NzFormModule,
     NzCrudButtonGroupComponent, NzInputTextComponent, NzInputTextareaComponent
   ],
   template: `
     {{fg.value | json}}
-    <form nz-form [formGroup]="fg" nzLayout="vertical">
+    <form nz-form [formGroup]="fg" nzLayout="horizontal">
 
       <!-- 폼 오류 메시지 템플릿 -->
       <ng-template #errorTpl let-control>
@@ -36,31 +40,39 @@ import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-text
       </ng-template>
 
       <!-- 1 row -->
-      <div nz-row nzGutter="8">
-        <div nz-col nzSpan="8">
+      <!--<div nz-row nzGutter="8">-->
+      <app-nz-grid-row>
+
+        <app-nz-grid-col>
           <app-nz-input-text #menuGroupCode
             formControlName="menuGroupCode" itemId="menuGroupCode"
             placeholder="메뉴그룹코드를 입력해주세요."
             [required]="true" [nzErrorTip]="errorTpl">메뉴그룹코드
           </app-nz-input-text>
-        </div>
+        </app-nz-grid-col>
 
-        <div nz-col nzSpan="8">
+        <app-nz-grid-col>
           <app-nz-input-text
             formControlName="menuGroupName" itemId="menuGroupName"
             placeholder="메뉴그룹명을 입력해주세요."
             [required]="true" [nzErrorTip]="errorTpl">메뉴그룹명
           </app-nz-input-text>
-        </div>
+        </app-nz-grid-col>
 
-        <div nz-col nzSpan="8">
+        <app-nz-grid-col>
           <app-nz-input-text
             formControlName="menuGroupUrl" itemId="menuGroupUrl"
             placeholder="메뉴그룹URL을 입력해주세요."
             [required]="true" [nzErrorTip]="errorTpl">메뉴그룹URL
           </app-nz-input-text>
-        </div>
-      </div>
+        </app-nz-grid-col>
+
+        <app-nz-grid-col>
+          sfsdsdf
+        </app-nz-grid-col>
+
+      <!--</div>-->
+      </app-nz-grid-row>
 
       <!-- 2 row -->
       <div nz-row nzGutter="8">

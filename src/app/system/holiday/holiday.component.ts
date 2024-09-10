@@ -46,7 +46,7 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
 <app-nz-search-area [height]="'var(--page-search-height)'">
   <div nz-row>
     <div nz-col [nzSpan]="1" style="text-align: left;">
-      <nz-date-picker nzMode="year" [(ngModel)]="query.holiday.year" nzAllowClear="false" style="width: 80px;"></nz-date-picker>
+      <nz-date-picker nzMode="year" [(ngModel)]="query.holiday.year" nzAllowClear="false" (ngModelChange)="getHolidayList()" style="width: 80px;"></nz-date-picker>
     </div>
 
     <div nz-col [nzSpan]="23" style="text-align: right;">

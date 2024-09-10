@@ -64,7 +64,7 @@ import { style } from '@angular/animations';
           <app-nz-input-textarea
             formControlName="comment" itemId="comment"
             placeholder="설명을 입력해주세요."
-            [rows]="25"
+            [rows]="15"
             [required]="false" [nzErrorTip]="errorTpl">설명
           </app-nz-input-textarea>
         </div>
