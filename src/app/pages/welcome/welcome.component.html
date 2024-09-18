@@ -4,7 +4,7 @@
 {{this.fg.errors| json }}
 -->
 
-<form [formGroup]="fg">
+<form nz-form [formGroup]="fg" nzLayout="vertical">
 
   <ng-template #errorTpl let-control>
     <ng-container *ngIf="control.hasError('required')">

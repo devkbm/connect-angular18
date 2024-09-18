@@ -1,13 +1,51 @@
-import { formatDate } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzTreeNodeOptions } from 'ng-zorro-antd/tree';
-import { ButtonTemplate } from 'src/app/shared-component/nz-buttons/nz-buttons.component';
+import { ButtonTemplate, NzButtonsComponent } from 'src/app/shared-component/nz-buttons/nz-buttons.component';
+import { NzInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-input-checkbox.component';
+import { NzInputCkeditorComponent } from 'src/app/shared-component/nz-input-ckeditor/nz-input-ckeditor.component';
+import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-input-color-picker/nz-input-simple-color-picker.component';
+import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
+import { NzInputDateTimeComponent } from 'src/app/shared-component/nz-input-datetime/nz-input-datetime.component';
+import { NzInputDeptSelectComponent } from 'src/app/shared-component/nz-input-dept-select/nz-input-dept-select.component';
+import { NzInputMobileComponent } from 'src/app/shared-component/nz-input-mobile/nz-input-mobile.component';
+import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
+import { NzInputRadioGroupComponent } from 'src/app/shared-component/nz-input-radio-group/nz-input-radio-group.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
+import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
+import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
+import { DutyDateListComponent } from './duty-date-list.component';
 
 @Component({
   selector: 'app-welcome',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzCheckboxModule,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzButtonsComponent,
+    NzInputCheckboxComponent,
+    NzInputCkeditorComponent,
+    NzInputDateComponent,
+    NzInputDateTimeComponent,
+    NzInputDeptSelectComponent,
+    NzInputMobileComponent,
+    NzInputNumberCustomComponent,
+    NzInputRadioGroupComponent,
+    NzInputSelectComponent,
+    NzInputTreeSelectComponent,
+    NzInputSimpleColorPickerComponent,
+    DutyDateListComponent
+  ],
   templateUrl: './welcome.component.html',
-  styleUrls: ['./welcome.component.css']
+  styles: `
+  `
 })
 export class WelcomeComponent implements OnInit {
 

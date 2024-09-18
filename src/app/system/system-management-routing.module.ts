@@ -1,7 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 
-import { AppLayoutModule } from '../app-layout/app-layout.module';
 import { AppLayoutComponent } from '../app-layout/app-layout.component';
 
 import { AuthGuardService } from '../core/service/auth-guard.service';
@@ -18,7 +16,7 @@ import { BizCodeComponent } from '../system/biz-code/biz-code.component';
 import { MenuRoleComponent } from './menu-role/menu-role.component';
 
 
-const layoutroutes: Routes = [
+export const routes: Routes = [
   {
     path: '', component: AppLayoutComponent, //canActivateChild: [AuthGuardService],
     children: [
@@ -36,9 +34,3 @@ const layoutroutes: Routes = [
     ]
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(layoutroutes), AppLayoutModule],
-  exports: [RouterModule]
-})
-export class SystemManagementRoutingModule { }

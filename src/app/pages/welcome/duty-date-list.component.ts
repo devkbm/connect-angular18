@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 export interface DutyDate {
   date: Date;
@@ -11,6 +13,8 @@ export interface DutyDate {
 
 @Component({
   selector: 'app-duty-date-list',
+  standalone: true,
+  imports: [ CommonModule, FormsModule ],
   template: `
     {{this._data | json}}
     <div class="container">

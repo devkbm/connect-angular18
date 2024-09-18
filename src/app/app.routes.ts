@@ -17,12 +17,11 @@ export const routes: Routes = [
   {path: 'login3', component: Login3Component },
   //{path: 'home', component: AppLayoutComponent, canActivateChild: [AuthGuardService]},
   {path: 'home', component: AppLayoutComponent, canActivateChild: [AuthGuardChildFunction]},
-  {path: 'test', loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomeModule)},
-  {path: 'system', loadChildren: () => import('src/app/system/system-management.module').then(m => m.SystemManagementModule)},
-  {path: 'hrm', loadChildren: () => import('src/app/hrm/hrm.module').then(m => m.HrmModule)},
-  {path: 'grw', loadChildren: () => import('src/app/cooperation/cooperation.module').then(m => m.CooperationModule)},
+  {path: 'system', loadChildren: () => import('src/app/system/system-management-routing.module').then(m => m.routes)},
+  {path: 'hrm', loadChildren: () => import('src/app/hrm/hrm-routing.module').then(m => m.routes)},
+  {path: 'grw', loadChildren: () => import('src/app/cooperation/cooperation-routing.module').then(m => m.routes)},
   {path: 'article-write/:boardId', component: ArticleFormComponent},
   {path: 'article-edit/:boardId/:initLoadId', component: ArticleFormComponent},
-  {path: 'article-view', component: ArticleViewComponent}
-
+  {path: 'article-view', component: ArticleViewComponent},
+  {path: 'test', loadChildren: () => import('./pages/welcome/welcome-routing.module').then(m => m.routes)},
 ];
