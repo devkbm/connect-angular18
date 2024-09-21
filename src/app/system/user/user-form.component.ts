@@ -25,7 +25,7 @@ import { existingUserValidator } from './user-duplication-validator.directive';
 import { DeptHierarchy } from '../dept/dept-hierarchy.model';
 import { DeptService } from '../dept/dept.service';
 import { GlobalProperty } from 'src/app/core/global-property';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-user-form',

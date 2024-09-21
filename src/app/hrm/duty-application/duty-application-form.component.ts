@@ -22,7 +22,7 @@ import { HrmCodeService } from '../hrm-code/hrm-code.service';
 import { DutyDate, DutyApplication } from './duty-application.model';
 import { DutyApplicationService } from './duty-application.service';
 import { DutyCodeService } from './duty-code.service';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
 
 
 @Component({

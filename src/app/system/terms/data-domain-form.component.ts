@@ -15,8 +15,8 @@ import { ResponseObject } from 'src/app/core/model/response-object';
 import { DataDomainService } from './data-domain.service';
 import { DataDomain } from './data-domain.model';
 
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
-import { HtmlSelectOption } from 'src/app/shared-component/nz-form-input-select/html-select-option';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+import { HtmlSelectOption } from 'src/app/shared-component/nz-input-select/html-select-option';
 
 
 @Component({

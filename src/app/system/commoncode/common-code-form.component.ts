@@ -20,8 +20,8 @@ import { CommonCodeHierarchy } from './common-code-hierarchy.model';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { SystemTypeEnum } from './system-type-enum.model';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
-import { NzFormItemComponent } from "../../pages/welcome/nz-form-item.component";
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+import { NzFormItemComponent } from "../../shared-component/nz-form-item/nz-form-item.component";
 import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
 
 

@@ -18,7 +18,7 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { HrmCodeTypeService } from './hrm-code-type.service';
 import { HrmType } from './hrm-type.model';
 import { existingHrmTypeValidator } from './hrm-code-type-duplication-validator';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-hrm-code-type-form',

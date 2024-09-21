@@ -1,6 +1,6 @@
-import { Component, input, TemplateRef } from '@angular/core';
+import { Component, input } from '@angular/core';
 
-import { AbstractControl, FormControl, FormControlName, FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 
 @Component({
@@ -12,7 +12,10 @@ import { NzFormModule } from 'ng-zorro-antd/form';
       <nz-form-label [nzFor]="for()" [nzRequired]="required()">
         {{label()}}
       </nz-form-label>
+
+      <!-- nz-form-control -->
       <ng-content></ng-content>
+
     </nz-form-item>
   `,
   styles: `

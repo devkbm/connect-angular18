@@ -18,7 +18,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { MenuGridComponent } from '../menu/menu-grid.component';
 import { MenuFormComponent } from '../menu/menu-form.component';
 import { MenuGroupFormComponent } from '../menu/menu-group-form.component';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-menu-role',

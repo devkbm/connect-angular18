@@ -17,7 +17,7 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
 import { ResponseList } from 'src/app/core/model/response-list';
 import { MenuService } from '../menu/menu.service';
 import { MenuGroup } from '../menu/menu-group.model';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-role-form',

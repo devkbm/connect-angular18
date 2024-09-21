@@ -16,7 +16,7 @@ import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-text
 import { NzGridRowComponent } from 'src/app/shared-component/nz-grid/nz-grid-row.component';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzFormItemComponent } from "../../pages/welcome/nz-form-item.component";
+import { NzFormItemComponent } from "../../shared-component/nz-form-item/nz-form-item.component";
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({

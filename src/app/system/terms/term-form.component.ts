@@ -18,7 +18,7 @@ import { WordService } from './word.service';
 import { Word } from './word.model';
 import { DataDomain } from './data-domain.model';
 import { DataDomainService } from './data-domain.service';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-term-form',

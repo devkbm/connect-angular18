@@ -19,11 +19,11 @@ import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-
 
 import { NzTreeSelectCustomComponent } from 'src/app/shared-component/nz-tree-select-custom/nz-tree-select-custom.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzFormItemComponent } from "../../pages/welcome/nz-form-item.component";
-import { NzInputSelectComponent } from "../../shared-component/nz-form-input-select/nz-input-select.component";
+import { NzFormItemComponent } from "../../shared-component/nz-form-item/nz-form-item.component";
+import { NzInputSelectComponent } from "../../shared-component/nz-input-select/nz-input-select.component";
 import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree-select/nz-input-tree-select.component";
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-menu-form',

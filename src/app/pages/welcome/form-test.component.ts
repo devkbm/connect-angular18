@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzFormItemComponent } from "./nz-form-item.component";
+import { NzFormItemComponent } from "../../shared-component/nz-form-item/nz-form-item.component";
 import { NzGridColComponent } from "../../shared-component/nz-grid/nz-grid-col.component";
 
 @Component({
