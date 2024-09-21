@@ -20,8 +20,8 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-input-color-picker/nz-input-simple-color-picker.component';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-input-checkbox.component';
 import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-form-input-checkbox.component';
 
 export interface NewFormValue {
   workCalendarId: number;
@@ -35,7 +35,7 @@ export interface NewFormValue {
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
     NzInputTextComponent, NzCrudButtonGroupComponent, NzInputSimpleColorPickerComponent,
-    NzFormInputSelectComponent, NzInputTextareaComponent, NzInputDateTimeComponent, NzInputCheckboxComponent
+    NzFormInputSelectComponent, NzInputTextareaComponent, NzInputDateTimeComponent, NzFormInputCheckboxComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -97,10 +97,10 @@ export interface NewFormValue {
           </app-nz-input-datetime>
         </div>
         <div nz-col nzSpan="4">
-          <app-nz-input-checkbox
+          <app-nz-form-input-checkbox
             formControlName="allDay"
             [required]="false">종일
-          </app-nz-input-checkbox>
+          </app-nz-form-input-checkbox>
         </div>
 
       </div>

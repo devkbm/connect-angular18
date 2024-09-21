@@ -6,7 +6,6 @@ import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
-import { NzInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-input-checkbox.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
 import { Component, OnInit, Output, EventEmitter, AfterViewInit, inject } from '@angular/core';
@@ -20,6 +19,7 @@ import { HrmCodeService } from './hrm-code.service';
 import { HrmCode } from './hrm-code.model';
 import { existingHrmTypeDetailCodeValidator } from './hrm-code-duplication-validator';
 import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-form-input-checkbox.component';
 
 
 
@@ -31,7 +31,7 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     CommonModule, FormsModule, ReactiveFormsModule,
     NzFormModule, NzDividerModule, NzInputTextComponent, NzInputTextareaComponent,
     NzFormInputSelectComponent, NzInputDateComponent, NzInputNumberCustomComponent, NzCrudButtonGroupComponent,
-    NzInputCheckboxComponent
+    NzFormInputCheckboxComponent
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -81,11 +81,11 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
         </div>
 
         <div nz-col nzSpan="2">
-          <app-nz-input-checkbox
+          <app-nz-form-input-checkbox
             formControlName="useYn"
             checkboxText=""
             [required]="true">사용
-          </app-nz-input-checkbox>
+          </app-nz-form-input-checkbox>
         </div>
       </div>
 

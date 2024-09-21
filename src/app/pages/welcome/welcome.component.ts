@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 import { ButtonTemplate, NzButtonsComponent } from 'src/app/shared-component/nz-buttons/nz-buttons.component';
-import { NzInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-input-checkbox.component';
 import { NzInputCkeditorComponent } from 'src/app/shared-component/nz-input-ckeditor/nz-input-ckeditor.component';
 import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-input-color-picker/nz-input-simple-color-picker.component';
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
@@ -19,6 +18,7 @@ import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-text
 import { DutyDateListComponent } from './duty-date-list.component';
 import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
 import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
+import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-form-input-checkbox.component';
 
 @Component({
   selector: 'app-welcome',
@@ -31,7 +31,7 @@ import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tr
     NzInputTextComponent,
     NzInputTextareaComponent,
     NzButtonsComponent,
-    NzInputCheckboxComponent,
+    NzFormInputCheckboxComponent,
     NzInputCkeditorComponent,
     NzInputDateComponent,
     NzInputDateTimeComponent,

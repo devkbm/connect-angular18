@@ -4,7 +4,6 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
-import { NzInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-input-checkbox.component';
 
 import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -16,6 +15,7 @@ import { ResponseObject } from 'src/app/core/model/response-object';
 import { BizCodeService } from './biz-code.service';
 import { BizCode } from './biz-code.model';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-form-input-checkbox.component';
 
 
 
@@ -26,7 +26,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
   imports:  [
     CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
     NzInputTextComponent, NzInputTextareaComponent, NzInputNumberCustomComponent,
-    NzInputCheckboxComponent, NzCrudButtonGroupComponent
+    NzFormInputCheckboxComponent, NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -70,11 +70,11 @@ import { NzFormModule } from 'ng-zorro-antd/form';
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
           <!--사용여부 필드-->
-          <app-nz-input-checkbox
+          <app-nz-form-input-checkbox
             formControlName="useYn"
             checkboxText="사용여부"
             [required]="true">사용여부
-          </app-nz-input-checkbox>
+          </app-nz-form-input-checkbox>
         </div>
 
         <div nz-col nzSpan="12">

@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-input-checkbox.component';
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 
@@ -19,13 +18,14 @@ import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 import { StaffDutyResponsibility } from './staff-duty-responsibility.model';
 import { StaffDutyResponsibilityService } from './staff-duty-responsibility.service';
 import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-form-input-checkbox.component';
 
 @Component({
   selector: 'app-staff-duty-responsibility-form',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzFormInputSelectComponent, NzInputDateComponent, NzInputCheckboxComponent, NzCrudButtonGroupComponent
+    NzInputTextComponent, NzFormInputSelectComponent, NzInputDateComponent, NzFormInputCheckboxComponent, NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -93,11 +93,11 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
         </div>
 
         <div nz-col nzSpan="2">
-          <app-nz-input-checkbox
+          <app-nz-form-input-checkbox
             formControlName="isPayApply"
             checkboxText="Y"
             [required]="false">급여적용
-          </app-nz-input-checkbox>
+          </app-nz-form-input-checkbox>
         </div>
 
       </div>
