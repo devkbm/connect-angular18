@@ -5,7 +5,6 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzFormItemComponent } from "../../shared-component/nz-form-item/nz-form-item.component";
-import { NzGridColComponent } from "../../shared-component/nz-grid/nz-grid-col.component";
 
 @Component({
   selector: 'app-form-test',
@@ -13,8 +12,7 @@ import { NzGridColComponent } from "../../shared-component/nz-grid/nz-grid-col.c
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
     NzGridModule, NzFormModule, NzInputModule,
-    NzFormItemComponent,
-    NzGridColComponent
+    NzFormItemComponent
 ],
   template: `
     {{fg.getRawValue() | json}}

@@ -1,45 +1,44 @@
 import { Self, Optional, Component, ElementRef, TemplateRef, viewChild, input, model, effect } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
+import { AbstractControl, ControlValueAccessor,  NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
-import { ColorPickerModule } from 'ngx-color-picker';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
-// https://zefoy.github.io/ngx-color-picker/
+import { NgxMaskDirective, provideNgxMask, IConfig } from 'ngx-mask'
+export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
 @Component({
-  selector: 'app-nz-input-color-picker',
+  selector: 'app-nz-form-input-rregno',
   standalone: true,
-  imports: [FormsModule, NzFormModule,ColorPickerModule],
+  imports: [FormsModule, NzFormModule, NzInputModule, NgxMaskDirective],
+  providers: [
+    provideNgxMask()
+  ],
   template: `
-    <!--{{formField.errors | json}}-->
     <nz-form-item>
       <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
         <ng-content></ng-content>
       </nz-form-label>
       <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip()">
-      <input #input nz-input
-            [cpPresetColors]="preset_colors"
-            [ngModel]="_value()"
-            [colorPicker]="_value()"
-            [style.background]="_value()"
-            [cpAlphaChannel]="'always'"
-            [cpOutputFormat]="'hex'"
-            [cpOKButton]="true"
-            [required]="required()"
-            [disabled]="_disabled"
-            [placeholder]="placeholder()"
-            (colorPickerChange)="onChange($event)"
-            (ngModelChange)="valueChange($event)"
-            (blur)="onTouched()"
-            />
+        <input #inputControl nz-input
+              [required]="required()"
+              [disabled]="_disabled"
+              [id]="itemId()"
+              [placeholder]="placeholder()"
+              [ngModel]="_value()"
+              [readonly]="readonly()"
+              mask="000000-0000000"
+              (ngModelChange)="onChange($event)"
+              (ngModelChange)="valueChange($event)"
+              (blur)="onTouched()"/>
       </nz-form-control>
     </nz-form-item>
   `,
   styles: []
 })
-export class NzInputColorPickerComponent implements ControlValueAccessor {
+export class NzFormInputRregnoComponent implements ControlValueAccessor {
 
   control = viewChild.required(NzFormControlComponent);
-  element = viewChild.required<ElementRef<HTMLInputElement>>('input');
+  element = viewChild.required<ElementRef<HTMLInputElement>>('inputControl');
 
   itemId = input<string>('');
   required = input<boolean>(false);
@@ -49,15 +48,10 @@ export class NzInputColorPickerComponent implements ControlValueAccessor {
 
   nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
 
-  color: any;
-  preset_colors = ['#fff', '#000', '#2889e9', '#e920e9', '#fff500', 'rgb(236,64,64)'];
-
-
-  // https://ngx-colors.web.app/examples 로변경?
   _disabled = false;
-  _value = model.required<string>();
+  _value = model();
 
-  onChange!: (value: any) => void;
+  onChange!: (value: string) => void;
   onTouched!: () => void;
 
   constructor(@Self()  @Optional() private ngControl: NgControl) {
@@ -89,13 +83,12 @@ export class NzInputColorPickerComponent implements ControlValueAccessor {
   }
 
   focus(): void {
-    this.element().nativeElement.focus();
+    this.element()?.nativeElement.focus();
   }
 
   valueChange(val: any) {
-    this._value.set(val);
-    //const nativeValue = this.element?.pickerInput?.nativeElement.value;
-    //console.log('nativeValue: ' + nativeValue);
+    //console.log(val);
   }
 
 }
+

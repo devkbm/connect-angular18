@@ -17,7 +17,6 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
 
-import { NzTreeSelectCustomComponent } from 'src/app/shared-component/nz-tree-select-custom/nz-tree-select-custom.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzFormItemComponent } from "../../shared-component/nz-form-item/nz-form-item.component";
 import { NzInputSelectComponent } from "../../shared-component/nz-input-select/nz-input-select.component";
@@ -31,7 +30,7 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
     NzCrudButtonGroupComponent, NzInputTextComponent,
-    NzInputTextareaComponent, NzInputNumberCustomComponent, NzTreeSelectCustomComponent,
+    NzInputTextareaComponent, NzInputNumberCustomComponent,
     NzFormItemComponent, NzInputModule,
     NzInputSelectComponent, NzFormInputSelectComponent,
     NzInputTreeSelectComponent
@@ -76,7 +75,7 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-form-item for="parentMenuCode" label="메뉴그룹코드" required="true">
+          <app-nz-form-item for="parentMenuCode" label="상위 메뉴" required="true">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <app-nz-input-tree-select
                 formControlName="parentMenuCode" itemId="parentMenuCode"
@@ -86,15 +85,6 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
               </app-nz-input-tree-select>
             </nz-form-control>
           </app-nz-form-item>
-
-          <!--상위메뉴코드 필드-->
-          <!--
-          <app-nz-tree-select-custom
-            formControlName="parentMenuCode" itemId="parentMenuCode"
-            [nodes]="menuHiererachy"
-            [placeholder]="'상위 메뉴 없음'">상위 메뉴
-          </app-nz-tree-select-custom>
-          -->
         </div>
       </div>
 

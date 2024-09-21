@@ -13,7 +13,6 @@ import { MenuGroup } from './menu-group.model';
 import { existingMenuGroupValidator } from './menu-group-duplication-validator.directive';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzGridRowComponent } from 'src/app/shared-component/nz-grid/nz-grid-row.component';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzFormItemComponent } from "../../shared-component/nz-form-item/nz-form-item.component";
@@ -24,7 +23,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    NzGridRowComponent, NzFormModule,
+    NzFormModule,
     NzCrudButtonGroupComponent, NzInputTextComponent, NzInputTextareaComponent,
     NzFormItemComponent, NzInputModule
 ],
