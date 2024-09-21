@@ -13,11 +13,12 @@ import { NzInputDeptSelectComponent } from 'src/app/shared-component/nz-input-de
 import { NzInputMobileComponent } from 'src/app/shared-component/nz-input-mobile/nz-input-mobile.component';
 import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
 import { NzInputRadioGroupComponent } from 'src/app/shared-component/nz-input-radio-group/nz-input-radio-group.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
+
 import { DutyDateListComponent } from './duty-date-list.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
+import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
 
 @Component({
   selector: 'app-welcome',
@@ -38,7 +39,7 @@ import { DutyDateListComponent } from './duty-date-list.component';
     NzInputMobileComponent,
     NzInputNumberCustomComponent,
     NzInputRadioGroupComponent,
-    NzInputSelectComponent,
+    NzFormInputSelectComponent,
     NzInputTreeSelectComponent,
     NzInputSimpleColorPickerComponent,
     DutyDateListComponent

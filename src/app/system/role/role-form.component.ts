@@ -13,18 +13,18 @@ import { RoleService } from './role.service';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 import { ResponseList } from 'src/app/core/model/response-list';
 import { MenuService } from '../menu/menu.service';
 import { MenuGroup } from '../menu/menu-group.model';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-role-form',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzCrudButtonGroupComponent, NzInputSelectComponent
+    NzInputTextComponent, NzInputTextareaComponent, NzCrudButtonGroupComponent, NzFormInputSelectComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -53,11 +53,11 @@ import { MenuGroup } from '../menu/menu-group.model';
           [required]="false" [nzErrorTip]="errorTpl">롤 명
         </app-nz-input-text>
 
-        <app-nz-input-select
+        <app-nz-form-input-select
             formControlName="menuGroupCode" itemId="menuGroupCode"
             [options]="menuGroupList" [opt_value]="'menuGroupCode'" [opt_label]="'menuGroupName'"
             [placeholder]="'Please select'" [nzErrorTip]="errorTpl" [required]="true">메뉴그룹
-          </app-nz-input-select>
+          </app-nz-form-input-select>
 
         <app-nz-input-textarea
           formControlName="description" itemId="description"

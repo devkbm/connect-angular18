@@ -2,8 +2,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
-import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -20,6 +18,10 @@ import { BoardManagement } from './board-management.model';
 import { BoardHierarchy } from '../board-hierarcy/board-hierarchy.model';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
+
+import { NzFormItemComponent } from "../../../pages/welcome/nz-form-item.component";
+import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
 
 
 @Component({
@@ -27,10 +29,11 @@ import { FormBase, FormType } from 'src/app/core/form/form-base';
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    NzFormModule, NzInputTextComponent, NzInputTextareaComponent, NzInputSelectComponent,
-    NzInputTreeSelectComponent, NzCrudButtonGroupComponent,
-    NzButtonModule, NzDividerModule, NzIconModule
-  ],
+    NzFormModule, NzInputTextComponent, NzInputTextareaComponent, NzFormInputSelectComponent,
+    NzCrudButtonGroupComponent,
+    NzButtonModule, NzDividerModule, NzIconModule,
+    NzFormModule, NzFormItemComponent, NzInputTreeSelectComponent
+],
   template: `
     <div>{{fg.getRawValue() | json}}</div>
 
@@ -79,21 +82,25 @@ import { FormBase, FormType } from 'src/app/core/form/form-base';
       <!-- 1 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <!--상위 게시판 필드-->
-          <app-nz-input-tree-select
-            formControlName="boardParentId"
-            [nodes]="parentBoardItems"
-            [placeholder]="'상위 게시판 없음'" [nzErrorTip]="errorTpl" [required]="false">상위 게시판
-          </app-nz-input-tree-select>
+          <app-nz-form-item for="boardParentId" label="상위 게시판">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <app-nz-input-tree-select
+                formControlName="boardParentId" itemId="boardParentId"
+                [nodes]="parentBoardItems"
+                placeholder="상위 게시판 없음"
+              >
+              </app-nz-input-tree-select>
+            </nz-form-control>
+          </app-nz-form-item>
         </div>
 
         <div nz-col nzSpan="12">
           <!--게시판타입 필드-->
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="boardType"
             [options]="boardTypeList" [opt_value]="'value'" [opt_label]="'label'"
             [placeholder]="'게시판타입을 선택해주세요.'" [nzErrorTip]="errorTpl" [required]="true">게시판타입
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
       </div>

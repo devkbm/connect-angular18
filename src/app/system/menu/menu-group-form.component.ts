@@ -14,20 +14,23 @@ import { existingMenuGroupValidator } from './menu-group-duplication-validator.d
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzGridRowComponent } from 'src/app/shared-component/nz-grid/nz-grid-row.component';
-import { NzGridColComponent } from 'src/app/shared-component/nz-grid/nz-grid-col.component';
+
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzFormItemComponent } from "../../pages/welcome/nz-form-item.component";
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'app-menu-group-form',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    NzGridRowComponent, NzGridColComponent, NzFormModule,
-    NzCrudButtonGroupComponent, NzInputTextComponent, NzInputTextareaComponent
-  ],
+    NzGridRowComponent, NzFormModule,
+    NzCrudButtonGroupComponent, NzInputTextComponent, NzInputTextareaComponent,
+    NzFormItemComponent, NzInputModule
+],
   template: `
     {{fg.value | json}}
-    <form nz-form [formGroup]="fg" nzLayout="horizontal">
+    <form nz-form [formGroup]="fg" nzLayout="vertical">
 
       <!-- 폼 오류 메시지 템플릿 -->
       <ng-template #errorTpl let-control>
@@ -40,48 +43,43 @@ import { NzFormModule } from 'ng-zorro-antd/form';
       </ng-template>
 
       <!-- 1 row -->
-      <!--<div nz-row nzGutter="8">-->
-      <app-nz-grid-row>
+      <div nz-row nzGutter="8">
 
-        <app-nz-grid-col>
-          <app-nz-input-text #menuGroupCode
-            formControlName="menuGroupCode" itemId="menuGroupCode"
-            placeholder="메뉴그룹코드를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">메뉴그룹코드
-          </app-nz-input-text>
-        </app-nz-grid-col>
+        <div nz-col nzSpan="8">
+          <app-nz-form-item for="menuGroupCode" label="메뉴그룹코드" required="true">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="menuGroupCode" formControlName="menuGroupCode" placeholder="메뉴그룹코드를 입력해주세요." />
+            </nz-form-control>
+          </app-nz-form-item>
+        </div>
 
-        <app-nz-grid-col>
-          <app-nz-input-text
-            formControlName="menuGroupName" itemId="menuGroupName"
-            placeholder="메뉴그룹명을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">메뉴그룹명
-          </app-nz-input-text>
-        </app-nz-grid-col>
+        <div nz-col nzSpan="8">
+          <app-nz-form-item for="menuGroupName" label="메뉴그룹명" required="true">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="menuGroupName" formControlName="menuGroupName" placeholder="메뉴그룹명을 입력해주세요." />
+            </nz-form-control>
+          </app-nz-form-item>
+        </div>
 
-        <app-nz-grid-col>
-          <app-nz-input-text
-            formControlName="menuGroupUrl" itemId="menuGroupUrl"
-            placeholder="메뉴그룹URL을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">메뉴그룹URL
-          </app-nz-input-text>
-        </app-nz-grid-col>
-
-        <app-nz-grid-col>
-          sfsdsdf
-        </app-nz-grid-col>
-
-      <!--</div>-->
-      </app-nz-grid-row>
+        <div nz-col nzSpan="8">
+          <app-nz-form-item for="menuGroupUrl" label="메뉴그룹URL" required="true">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="menuGroupUrl" formControlName="menuGroupUrl" placeholder="메뉴그룹URL을 입력해주세요." />
+            </nz-form-control>
+          </app-nz-form-item>
+        </div>
+      </div>
 
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-input-textarea
-            formControlName="description" itemId="description"
-            placeholder="비고를 입력해주세요."
-            [rows]="25">비고
-          </app-nz-input-textarea>
+          <app-nz-form-item for="description" label="비고">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <textarea nz-input id="description" formControlName="description"
+              placeholder="비고" [rows]="25">
+              </textarea>
+            </nz-form-control>
+          </app-nz-form-item>
         </div>
       </div>
 

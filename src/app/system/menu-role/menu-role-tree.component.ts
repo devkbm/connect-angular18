@@ -8,11 +8,11 @@ import { ResponseList } from 'src/app/core/model/response-list';
 
 import { MenuRoleHierarchy } from '../menu/menu-role-hierarchy.model';
 import { MenuRoleMapping } from '../menu/menu-role-mapping.model';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 import { MenuRoleService } from './menu-role.service';
 import { NzTreeNodeKey } from 'ng-zorro-antd/core/tree';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 function convert(tree: MenuRoleHierarchy[]) {
   return tree.reduce(function(acc: string[], o) {
@@ -27,7 +27,7 @@ function convert(tree: MenuRoleHierarchy[]) {
 @Component({
   selector: 'app-menu-role-tree',
   standalone: true,
-  imports: [CommonModule, FormsModule, NzTreeModule, NzButtonComponent, NzInputSelectComponent],
+  imports: [CommonModule, FormsModule, NzTreeModule, NzButtonComponent, NzFormInputSelectComponent],
   template: `
     <!--{{defaultCheckedKeys | json}}-->
     <!--{{saveNodes | json}}-->

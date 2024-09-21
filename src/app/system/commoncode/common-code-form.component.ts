@@ -5,11 +5,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
 import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
-
 
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -23,6 +20,9 @@ import { CommonCodeHierarchy } from './common-code-hierarchy.model';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { SystemTypeEnum } from './system-type-enum.model';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
+import { NzFormItemComponent } from "../../pages/welcome/nz-form-item.component";
+import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
 
 
 @Component({
@@ -31,9 +31,10 @@ import { SystemTypeEnum } from './system-type-enum.model';
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
     NzFormModule, NzInputModule, NzInputNumberModule, NzInputDateComponent,
-    NzInputTextComponent, NzInputTextareaComponent, NzInputTreeSelectComponent,
-    NzInputSelectComponent, NzInputNumberCustomComponent
-  ],
+    NzInputTextComponent, NzInputTextareaComponent,
+    NzFormInputSelectComponent, NzInputNumberCustomComponent,
+    NzFormItemComponent, NzInputTreeSelectComponent
+],
   template: `
     {{fg.getRawValue() | json}}
     {{fg.get('fixedLengthYn')?.value}}
@@ -53,21 +54,26 @@ import { SystemTypeEnum } from './system-type-enum.model';
 
         <!--시스템구분코드 필드-->
         <div nz-col nzSpan="4">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="systemTypeCode" itemId="systemTypeCode"
             [options]="systemTypeCodeList" [opt_value]="'value'" [opt_label]="'label'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">시스템구분코드
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <!--상위 공통코드 필드-->
         <div nz-col nzSpan="8">
-          <app-nz-input-tree-select
-            formControlName="parentId"
-            [nodes]="nodeItems"
-            [placeholder]="'Please select'" [nzErrorTip]="errorTpl" [required]="false">상위 공통코드
-          </app-nz-input-tree-select>
+          <app-nz-form-item for="parentId" label="상위 공통코드">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <app-nz-input-tree-select
+                formControlName="parentId" itemId="parentId"
+                [nodes]="nodeItems"
+                placeholder="Please select"
+              >
+              </app-nz-input-tree-select>
+            </nz-form-control>
+          </app-nz-form-item>
         </div>
 
       </div>

@@ -4,7 +4,6 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-input-checkbox.component';
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 
 import { Component, OnInit, Output, EventEmitter, Input, AfterViewInit, inject } from '@angular/core';
@@ -19,13 +18,14 @@ import { HrmCode } from '../../hrm-code/hrm-code.model';
 import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 import { StaffDutyResponsibility } from './staff-duty-responsibility.model';
 import { StaffDutyResponsibilityService } from './staff-duty-responsibility.service';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-staff-duty-responsibility-form',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzInputSelectComponent, NzInputDateComponent, NzInputCheckboxComponent, NzCrudButtonGroupComponent
+    NzInputTextComponent, NzFormInputSelectComponent, NzInputDateComponent, NzInputCheckboxComponent, NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -70,12 +70,12 @@ import { StaffDutyResponsibilityService } from './staff-duty-responsibility.serv
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="dutyResponsibilityCode" itemId="dutyResponsibilityCode"
             [options]="dutyResponsibilityCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">직책
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="6">

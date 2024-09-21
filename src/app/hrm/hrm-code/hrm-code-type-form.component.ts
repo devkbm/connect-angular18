@@ -3,7 +3,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
@@ -19,6 +18,7 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { HrmCodeTypeService } from './hrm-code-type.service';
 import { HrmType } from './hrm-type.model';
 import { existingHrmTypeValidator } from './hrm-code-type-duplication-validator';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-hrm-code-type-form',
@@ -26,7 +26,7 @@ import { existingHrmTypeValidator } from './hrm-code-type-duplication-validator'
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
     NzFormModule, NzDividerModule, NzInputTextComponent, NzInputTextareaComponent,
-    NzInputSelectComponent, NzInputDateComponent, NzInputNumberCustomComponent, NzCrudButtonGroupComponent
+    NzFormInputSelectComponent, NzInputDateComponent, NzInputNumberCustomComponent, NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}

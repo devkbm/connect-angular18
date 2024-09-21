@@ -1,37 +1,44 @@
-import { Component, input, model, Optional, Self } from '@angular/core';
+import { Component, Input, input, model, Optional, Self } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
 
-import { NzFormModule } from 'ng-zorro-antd/form';
-
-import { NzTreeNodeOptions, NzTreeNode } from 'ng-zorro-antd/tree';
-import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
-
+import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
-  selector: 'app-nz-input-tree-select',
+  selector: 'app-nz-input-select',
   standalone: true,
-  imports: [FormsModule, NzFormModule, NzTreeSelectModule],
+  imports: [FormsModule, NzSelectModule],
   template: `
-    <nz-tree-select
+    <nz-select
       [nzId]="itemId()"
       [ngModel]="_value()"
-      [nzNodes]="nodes()"
-      [nzDisabled]="disabled()"
+      [nzDisabled]="_disabled"
       [nzPlaceHolder]="placeholder()"
+      [nzMode]="mode()"
+      nzShowSearch
       (blur)="onTouched()"
       (ngModelChange)="onChange($event)">
-    </nz-tree-select>
+    @for (option of options(); track option[opt_value()]) {
+      <nz-option
+        [nzLabel]="custom_label ? custom_label(option, $index) : option[opt_label()]"
+        [nzValue]="option[opt_value()]">asf
+      </nz-option>
+    }
+    </nz-select>
   `,
   styles: `
   `
 })
-export class NzInputTreeSelectComponent implements ControlValueAccessor {
+export class NzInputSelectComponent implements ControlValueAccessor {
 
   itemId = input<string>('');
   required = input<boolean | string>(false);
   disabled = input<boolean>(false);
   placeholder = input<string>('');
-  nodes = input<NzTreeNodeOptions[] | NzTreeNode[] | any[]>([]);
+  mode = input<NzSelectModeType>('default');
+  options = input<any[]>();
+  opt_label = input<string>('label');
+  opt_value = input<string>('value');
+  @Input() custom_label?: (option: any, index: number) => {};
 
   _disabled = false;
   _value = model();
@@ -48,12 +55,15 @@ export class NzInputTreeSelectComponent implements ControlValueAccessor {
   writeValue(obj: any): void {
     this._value.set(obj);
   }
+
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
+
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
+
   setDisabledState?(isDisabled: boolean): void {
     this._disabled = isDisabled;
   }

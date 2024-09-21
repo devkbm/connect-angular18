@@ -3,7 +3,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { DutyDateListComponent } from './duty-date-list.component';
@@ -23,6 +22,7 @@ import { HrmCodeService } from '../hrm-code/hrm-code.service';
 import { DutyDate, DutyApplication } from './duty-application.model';
 import { DutyApplicationService } from './duty-application.service';
 import { DutyCodeService } from './duty-code.service';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 
 @Component({
@@ -30,7 +30,7 @@ import { DutyCodeService } from './duty-code.service';
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    NzFormModule, NzDividerModule, NzInputTextComponent, NzInputSelectComponent, NzInputDateComponent, NzCrudButtonGroupComponent,
+    NzFormModule, NzDividerModule, NzInputTextComponent, NzFormInputSelectComponent, NzInputDateComponent, NzCrudButtonGroupComponent,
     DutyDateListComponent, NzInputSelectStaffComponent
   ],
   template: `
@@ -77,12 +77,12 @@ import { DutyCodeService } from './duty-code.service';
           </app-nz-input-text>
           -->
 
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="dutyCode" itemId="dutyCode"
             [options]="dutyCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">근태코드
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="12">

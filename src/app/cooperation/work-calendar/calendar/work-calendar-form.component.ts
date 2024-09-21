@@ -15,8 +15,8 @@ import { WorkCalendarService } from './work-calendar.service';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-input-color-picker/nz-input-simple-color-picker.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 
 @Component({
@@ -24,7 +24,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzCrudButtonGroupComponent, NzInputSimpleColorPickerComponent, NzInputSelectComponent
+    NzInputTextComponent, NzCrudButtonGroupComponent, NzInputSimpleColorPickerComponent, NzFormInputSelectComponent
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -79,14 +79,14 @@ import { NzFormModule } from 'ng-zorro-antd/form';
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-input-select
+          <app-nz-form-input-select
             [mode]="'multiple'"
             formControlName="memberList"
             [itemId]="'memberList'"
             [options]="memberList" [opt_value]="'userId'" [opt_label]="'name'" [mode]="'tags'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">팀원
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
       </div>

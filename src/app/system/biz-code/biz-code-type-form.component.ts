@@ -4,7 +4,6 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
 import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -18,13 +17,14 @@ import { BizCodeType } from './biz-code-type.model';
 import { BizCodeTypeService } from './biz-code-type.service';
 import { SelectControlModel } from 'src/app/core/model/select-control.model.ts';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-biz-code-type-form',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzInputNumberCustomComponent, NzCrudButtonGroupComponent, NzInputSelectComponent
+    NzInputTextComponent, NzInputTextareaComponent, NzInputNumberCustomComponent, NzCrudButtonGroupComponent, NzFormInputSelectComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -67,12 +67,12 @@ import { NzFormModule } from 'ng-zorro-antd/form';
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="bizType"
             [itemId]="'bizType'"
             [options]="bizTypeList" [opt_value]="'value'" [opt_label]="'label'"
             [placeholder]="'Please select'" [nzErrorTip]="errorTpl" [required]="true">시스템
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
       </div>
 

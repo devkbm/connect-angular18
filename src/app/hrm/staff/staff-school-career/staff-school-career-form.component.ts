@@ -3,7 +3,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
@@ -19,13 +18,14 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { HrmCode } from '../../hrm-code/hrm-code.model';
 import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 import { StaffSchoolCareerService } from './staff-school-career.service';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-staff-school-career-form',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzInputSelectComponent,
+    NzInputTextComponent, NzInputTextareaComponent, NzFormInputSelectComponent,
     NzInputNumberCustomComponent, NzInputDateComponent, NzCrudButtonGroupComponent
   ],
   template: `
@@ -73,21 +73,21 @@ import { StaffSchoolCareerService } from './staff-school-career.service';
       <!-- 2 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="6">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="schoolCareerType" itemId="schoolCareerType"
             [options]="schoolCareerTypeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">학력
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="schoolCode" itemId="schoolCode"
             [options]="schoolCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">학교
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="6">

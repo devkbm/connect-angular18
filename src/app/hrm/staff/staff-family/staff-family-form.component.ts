@@ -3,7 +3,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
@@ -18,13 +17,14 @@ import { StaffFamily } from './staff-family.model';
 import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 import { HrmCode } from '../../hrm-code/hrm-code.model';
 import { ResponseList } from 'src/app/core/model/response-list';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-staff-family-form',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzInputSelectComponent, NzInputTextareaComponent, NzCrudButtonGroupComponent
+    NzInputTextComponent, NzFormInputSelectComponent, NzInputTextareaComponent, NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -71,12 +71,12 @@ import { ResponseList } from 'src/app/core/model/response-list';
       <!-- 2 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="familyRelation" itemId="familyRelation"
             [options]="familyRelationList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">가족관계
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="8">

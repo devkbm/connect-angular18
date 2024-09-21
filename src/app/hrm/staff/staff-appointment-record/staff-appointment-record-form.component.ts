@@ -3,7 +3,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzDeptTreeSelectComponent } from 'src/app/shared-component/nz-dept-tree-select/nz-dept-tree-select.component';
@@ -22,6 +21,7 @@ import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 import { StaffAppointmentRecord } from './staff-appointment-record.model';
 import { StaffAppointmentRecordService } from './staff-appointment-record.service';
 import { ResponseMap } from 'src/app/core/model/response-map';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 
 @Component({
@@ -29,7 +29,7 @@ import { ResponseMap } from 'src/app/core/model/response-map';
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    NzFormModule, NzDividerModule, NzInputTextComponent, NzInputSelectComponent, NzInputDateComponent, NzCrudButtonGroupComponent,
+    NzFormModule, NzDividerModule, NzInputTextComponent, NzFormInputSelectComponent, NzInputDateComponent, NzCrudButtonGroupComponent,
     NzDeptTreeSelectComponent
   ],
   template: `
@@ -76,12 +76,12 @@ import { ResponseMap } from 'src/app/core/model/response-map';
 
         <div nz-col nzSpan="6">
 
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="appointmentTypeCode" itemId="appointmentTypeCode"
             [options]="appointmentTypeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">발령분류
-          </app-nz-input-select>
+          </app-nz-form-input-select>
           <!--
           <app-nz-input-text
             formControlName="appointmentTypeCode" itemId="appointmentTypeCode"
@@ -146,12 +146,12 @@ import { ResponseMap } from 'src/app/core/model/response-map';
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="dutyResponsibilityCode" itemId="dutyResponsibilityCode"
             [options]="dutyResponsibilityCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="false">직책
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
       </div>
 
@@ -159,30 +159,30 @@ import { ResponseMap } from 'src/app/core/model/response-map';
       <!-- 5 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="jobGroupCode" itemId="jobGroupCode"
             [options]="groupJobCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">직군
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="jobPositionCode" itemId="jobPositionCode"
             [options]="jobPositionCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">직위
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="jobCode" itemId="jobCode"
             [options]="jobCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">직무
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
       </div>
 
@@ -190,30 +190,30 @@ import { ResponseMap } from 'src/app/core/model/response-map';
       <div nz-row nzGutter="8">
 
         <div nz-col nzSpan="8">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="occupationCode" itemId="occupationCode"
             [options]="occupationCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">직종
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="jobGradeCode" itemId="jobGradeCode"
             [options]="jobGradeCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">직급
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="payStepCode" itemId="payStepCode"
             [options]="payStepCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">호봉
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
       </div>
 

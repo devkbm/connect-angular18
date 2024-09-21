@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, input, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -10,18 +10,18 @@ import { NzFormModule } from 'ng-zorro-antd/form';
     CommonModule, NzGridModule, NzFormModule
   ],
   template: `
-    <div nz-col nzSpan="24">
+    <div nz-col [nzSpan]="nzSpan()">
       <ng-content></ng-content>
     </div>
   `,
   styles: `
     :host {
-      display: block;
-      background-color: green;
+      //display: block;
+      //background-color: green;
     }
   `,
   encapsulation: ViewEncapsulation.Emulated
 })
 export class NzGridColComponent {
-    // 제대로 동작하지 않음
+  nzSpan = input.required<string | number | null>();
 }

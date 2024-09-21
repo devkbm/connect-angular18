@@ -2,7 +2,6 @@ import { Component, inject, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 import { MenuRoleTreeComponent } from './menu-role-tree.component';
 import { ResponseList } from 'src/app/core/model/response-list';
@@ -19,12 +18,13 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { MenuGridComponent } from '../menu/menu-grid.component';
 import { MenuFormComponent } from '../menu/menu-form.component';
 import { MenuGroupFormComponent } from '../menu/menu-group-form.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-menu-role',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, NzButtonModule, NzDrawerModule, NzInputSelectComponent,
+    CommonModule, FormsModule, NzButtonModule, NzDrawerModule, NzFormInputSelectComponent,
     MenuGroupGridComponent, MenuGroupFormComponent,
     MenuGridComponent, MenuFormComponent,
     RoleGridComponent, RoleFormComponent, MenuRoleTreeComponent
@@ -34,20 +34,20 @@ import { MenuGroupFormComponent } from '../menu/menu-group-form.component';
     <button nz-button (click)="newMenuGroup()">신규 메뉴그룹</button>
     <button nz-button (click)="newMenu()">신규 메뉴</button>
     <div nz-col nzSpan="12">
-      <app-nz-input-select
+      <app-nz-form-input-select
         [(ngModel)]="menuGroup.selectedItem"
         [options]="menuGroup.list" [opt_value]="'menuGroupCode'" [opt_label]="'menuGroupName'"
         [placeholder]="'Please select'"
         [required]="true">메뉴그룹
-      </app-nz-input-select>
+      </app-nz-form-input-select>
     </div>
     <div nz-col nzSpan="12">
-      <app-nz-input-select
+      <app-nz-form-input-select
         [(ngModel)]="role.selectedItem"
         [options]="role.list" [opt_value]="'roleCode'" [opt_label]="'description'"
         [placeholder]="'Please select'"
         [required]="true">롤
-      </app-nz-input-select>
+      </app-nz-form-input-select>
     </div>
 
     <div class="page-content">

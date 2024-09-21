@@ -15,15 +15,16 @@ import { ResouceTypeEnum } from './resource-type-enum';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-web-resource-form',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzCrudButtonGroupComponent, NzInputSelectComponent
+    NzInputTextComponent, NzInputTextareaComponent, NzCrudButtonGroupComponent, NzFormInputSelectComponent
   ],
   template: `
     {{fg.getRawValue()| json}} - {{fg.valid}}
@@ -60,11 +61,11 @@ import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-text
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="resourceType" itemId="resourceType"
             [options]="resourceTypeList"
             [placeholder]="'리소스타입을 선택해주세요'" [nzErrorTip]="errorTpl" [required]="true">리소스타입
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="12">

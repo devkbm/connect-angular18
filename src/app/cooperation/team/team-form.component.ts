@@ -10,15 +10,15 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { CommonModule } from '@angular/common';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-team-form',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzCrudButtonGroupComponent, NzInputSelectComponent
+    NzInputTextComponent, NzCrudButtonGroupComponent, NzFormInputSelectComponent
   ],
   template: `
     <form nz-form [formGroup]="fg" nzLayout="vertical">
@@ -50,12 +50,12 @@ import { NzFormModule } from 'ng-zorro-antd/form';
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="memberList" itemId="memberList"
             [options]="members" [opt_value]="'userId'" [opt_label]="'name'" [mode]="'multiple'"
             placeholder="팀원을 선택해주세요."
             [nzErrorTip]="errorTpl">팀원
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
       </div>
     </form>

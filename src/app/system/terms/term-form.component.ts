@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
 import { Component, OnInit, Output, EventEmitter, AfterViewInit, inject } from '@angular/core';
@@ -19,13 +18,14 @@ import { WordService } from './word.service';
 import { Word } from './word.model';
 import { DataDomain } from './data-domain.model';
 import { DataDomainService } from './data-domain.service';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-term-form',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzInputSelectComponent, NzCrudButtonGroupComponent
+    NzInputTextComponent, NzInputTextareaComponent, NzFormInputSelectComponent, NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.value | json}}
@@ -57,12 +57,12 @@ import { DataDomainService } from './data-domain.service';
           </app-nz-input-text>
           -->
 
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="system" itemId="system"
             [options]="systemTypeList" [opt_value]="'value'" [opt_label]="'label'"
             placeholder="Please select"
             [required]="true" [nzErrorTip]="errorTpl">시스템
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
       </div>
 
@@ -77,12 +77,12 @@ import { DataDomainService } from './data-domain.service';
           </app-nz-input-text>
           -->
 
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="term" itemId="term"
             [options]="wordList" [opt_value]="'logicalName'" [opt_label]="'logicalName'" [mode]="'multiple'"
             placeholder="Please select"
             [required]="true" [nzErrorTip]="errorTpl">용어
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="6">
@@ -94,12 +94,12 @@ import { DataDomainService } from './data-domain.service';
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="dataDomainId" itemId="dataDomainId"
             [options]="dataDomainList" [opt_value]="'domainId'" [opt_label]="'domainName'"
             placeholder="Please select"
             [required]="true" [nzErrorTip]="errorTpl">도메인
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="6">

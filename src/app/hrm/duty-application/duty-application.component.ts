@@ -6,12 +6,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
 import { NzInputSelectStaffComponent } from 'src/app/shared-component/nz-input-select-staff/nz-input-select-staff.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { DutyApplicationFormComponent } from './duty-application-form.component';
 import { DutyApplicationGridComponent } from './duty-application-grid.component';
 import { DutyDateListComponent } from './duty-date-list.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-duty-application',
@@ -23,7 +23,7 @@ import { DutyDateListComponent } from './duty-date-list.component';
     NzInputTextComponent,
     NzCrudButtonGroupComponent,
     NzInputDateComponent,
-    NzInputSelectComponent,
+    NzFormInputSelectComponent,
     NzInputSelectStaffComponent,
     NzPageHeaderCustomComponent,
 

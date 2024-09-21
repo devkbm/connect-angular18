@@ -3,7 +3,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
@@ -20,6 +19,7 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { HrmCodeService } from './hrm-code.service';
 import { HrmCode } from './hrm-code.model';
 import { existingHrmTypeDetailCodeValidator } from './hrm-code-duplication-validator';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 
 
@@ -30,7 +30,7 @@ import { existingHrmTypeDetailCodeValidator } from './hrm-code-duplication-valid
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
     NzFormModule, NzDividerModule, NzInputTextComponent, NzInputTextareaComponent,
-    NzInputSelectComponent, NzInputDateComponent, NzInputNumberCustomComponent, NzCrudButtonGroupComponent,
+    NzFormInputSelectComponent, NzInputDateComponent, NzInputNumberCustomComponent, NzCrudButtonGroupComponent,
     NzInputCheckboxComponent
   ],
   template: `

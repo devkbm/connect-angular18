@@ -5,7 +5,7 @@ import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
-  selector: 'app-nz-input-select',
+  selector: 'app-nz-form-input-select',
   standalone: true,
   imports: [CommonModule, FormsModule, NzFormModule, NzSelectModule],
   template: `
@@ -36,7 +36,7 @@ import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
   `,
   styles: []
 })
-export class NzInputSelectComponent implements ControlValueAccessor {
+export class NzFormInputSelectComponent implements ControlValueAccessor {
 
   control = viewChild.required(NzFormControlComponent);
 

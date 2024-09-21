@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
 import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
@@ -15,7 +14,9 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { DataDomainService } from './data-domain.service';
 import { DataDomain } from './data-domain.model';
-import { HtmlSelectOption } from 'src/app/shared-component/nz-input-select/html-select-option';
+
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
+import { HtmlSelectOption } from 'src/app/shared-component/nz-form-input-select/html-select-option';
 
 
 @Component({
@@ -23,7 +24,7 @@ import { HtmlSelectOption } from 'src/app/shared-component/nz-input-select/html-
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzInputSelectComponent, NzCrudButtonGroupComponent
+    NzInputTextComponent, NzInputTextareaComponent, NzFormInputSelectComponent, NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -61,12 +62,12 @@ import { HtmlSelectOption } from 'src/app/shared-component/nz-input-select/html-
           </app-nz-input-text>
           -->
 
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="database" itemId="database"
             [options]="databaseList" [opt_value]="'value'" [opt_label]="'label'"
             placeholder="database을 입력해주세요."
             [required]="true" [nzErrorTip]="errorTpl">database
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="8">

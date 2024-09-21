@@ -19,9 +19,9 @@ import { CommonModule } from '@angular/common';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-input-color-picker/nz-input-simple-color-picker.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-input-checkbox.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 export interface NewFormValue {
   workCalendarId: number;
@@ -35,7 +35,7 @@ export interface NewFormValue {
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
     NzInputTextComponent, NzCrudButtonGroupComponent, NzInputSimpleColorPickerComponent,
-    NzInputSelectComponent, NzInputTextareaComponent, NzInputDateTimeComponent, NzInputCheckboxComponent
+    NzFormInputSelectComponent, NzInputTextareaComponent, NzInputDateTimeComponent, NzInputCheckboxComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -51,12 +51,12 @@ export interface NewFormValue {
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
           <!--작업그룹ID 필드-->
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="workCalendarId"
             [itemId]="'workCalendarId'"
             [options]="workGroupList" [opt_value]="'id'" [opt_label]="'name'"
             [placeholder]="'Please select'" [nzErrorTip]="errorTpl" [required]="true">작업그룹 ID
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
 
         <div nz-col nzSpan="12">

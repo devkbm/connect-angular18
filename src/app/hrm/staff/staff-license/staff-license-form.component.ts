@@ -5,7 +5,6 @@ import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -19,6 +18,7 @@ import { StaffLicense } from './staff-license.model';
 import { HrmCode } from '../../hrm-code/hrm-code.model';
 import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 import { ResponseList } from 'src/app/core/model/response-list';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 
 
@@ -27,7 +27,7 @@ import { ResponseList } from 'src/app/core/model/response-list';
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzInputDateComponent, NzInputSelectComponent, NzCrudButtonGroupComponent
+    NzInputTextComponent, NzInputTextareaComponent, NzInputDateComponent, NzFormInputSelectComponent, NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -74,12 +74,12 @@ import { ResponseList } from 'src/app/core/model/response-list';
       <!-- 2 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="6">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="licenseType" itemId="licenseType"
             [options]="licenseTypeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">자격면허
-          </app-nz-input-select>
+          </app-nz-form-input-select>
 
           <!--
           <app-nz-input-text

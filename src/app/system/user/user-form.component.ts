@@ -4,7 +4,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzDeptTreeSelectComponent } from 'src/app/shared-component/nz-dept-tree-select/nz-dept-tree-select.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+
 import { UserImageUploadComponent } from './user-image-upload.component';
 import { NzInputSwitchComponent } from 'src/app/shared-component/nz-input-switch/nz-input-switch.component';
 
@@ -25,6 +25,7 @@ import { existingUserValidator } from './user-duplication-validator.directive';
 import { DeptHierarchy } from '../dept/dept-hierarchy.model';
 import { DeptService } from '../dept/dept.service';
 import { GlobalProperty } from 'src/app/core/global-property';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-form-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-user-form',
@@ -32,7 +33,7 @@ import { GlobalProperty } from 'src/app/core/global-property';
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
     UserImageUploadComponent, NzCrudButtonGroupComponent, NzInputTextComponent,
-    NzDeptTreeSelectComponent, NzInputSelectComponent, NzInputSwitchComponent
+    NzDeptTreeSelectComponent, NzInputSwitchComponent, NzFormInputSelectComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -135,12 +136,12 @@ import { GlobalProperty } from 'src/app/core/global-property';
 
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-input-select
+          <app-nz-form-input-select
             formControlName="roleList" itemId="formauth"
             [options]="authList" [opt_value]="'roleCode'" [opt_label]="'description'" [mode]="'tags'"
             [placeholder]="'Please select'"
             [nzErrorTip]="errorTpl" [required]="true">롤
-          </app-nz-input-select>
+          </app-nz-form-input-select>
         </div>
       </div>
     </form>

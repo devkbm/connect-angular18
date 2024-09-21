@@ -9,7 +9,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
   imports: [FormsModule, NzFormModule],
   template: `
     <nz-form-item>
-      <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
+      <nz-form-label [nzFor]="for()" [nzRequired]="required()">
         {{label()}}
       </nz-form-label>
       <ng-content></ng-content>
@@ -20,11 +20,8 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 })
 export class NzFormItemComponent {
 
-  itemId = input<string>('');
+  for = input<string>('');
   label = input<string>('');
-  required = input<boolean>(false);
+  required = input<boolean | string>(false);
 
-  nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
-
-  nzValidateStatus = input<string | AbstractControl<any, any> | FormControlName | NgModel>('');
 }
