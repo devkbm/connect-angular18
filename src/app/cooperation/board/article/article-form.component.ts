@@ -19,6 +19,8 @@ import { GlobalProperty } from 'src/app/core/global-property';
 // import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Article } from './article.model';
 import { ActivatedRoute } from '@angular/router';
+import { NzFormItemComponent } from "../../../shared-component/nz-form-item/nz-form-item.component";
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 
 @Component({
@@ -27,8 +29,9 @@ import { ActivatedRoute } from '@angular/router';
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
     NzFormModule, NzInputTextComponent, NzInputCkeditorComponent, NzCrudButtonGroupComponent,
-    NzFileUploadComponent
-  ],
+    NzFileUploadComponent,
+    NzFormItemComponent, NzInputModule
+],
   template: `
     <!--{{fg.getRawValue() | json}}-->
     <!--{{fileList | json}}-->
@@ -46,20 +49,25 @@ import { ActivatedRoute } from '@angular/router';
       <input type="hidden" formControlName="articleId">
       <input type="hidden" formControlName="articleParentId">
 
-      <!--일정ID 필드-->
-      <app-nz-input-text #title
-        formControlName="title"
-        [itemId]="'title'"
-        placeholder="제목을 입력해주세요."
-        [required]="false" [nzErrorTip]="errorTpl">제목
-      </app-nz-input-text>
 
-      <app-nz-input-ckeditor
-        formControlName="contents"
-        [itemId]="'contents'"
-        [height]="'45vh'"
-        >내용
-      </app-nz-input-ckeditor>
+      <app-nz-form-item for="title" label="메뉴코드" required>
+        <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+          <input nz-input id="title" formControlName="title" required
+            placeholder="제목을 입력해주세요."
+          />
+        </nz-form-control>
+      </app-nz-form-item>
+
+      <app-nz-form-item for="contents" label="내용">
+        <nz-form-control>
+          <app-nz-input-ckeditor
+            formControlName="contents"
+            [itemId]="'contents'"
+            [height]="'45vh'"
+            >
+          </app-nz-input-ckeditor>
+        </nz-form-control>
+      </app-nz-form-item>
 
       <app-nz-file-upload
         [fileList]="fileList">

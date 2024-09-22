@@ -1,6 +1,5 @@
-import { Self, Optional, Component, TemplateRef, HostBinding, viewChild, effect, input, model } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
-import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
+import { Self, Optional, Component, HostBinding, viewChild, input, model } from '@angular/core';
+import { ControlValueAccessor, NgControl, FormsModule } from '@angular/forms';
 
 import { CKEditorComponent, CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
@@ -18,25 +17,18 @@ import { MyUploadAdapter } from './my-upload-adapter';
 @Component({
   selector: 'app-nz-input-ckeditor',
   standalone: true,
-  imports: [FormsModule, NzFormModule, CKEditorModule],
+  imports: [FormsModule, CKEditorModule],
   template: `
-   <nz-form-item>
-      <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
-        <ng-content></ng-content>
-      </nz-form-label>
-      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip()" #control>
-        <!-- tagName="textarea" -->
-        <ckeditor #ckEditor
-          [editor]="Editor"
-          [config]="editorConfig"
-          [disabled]="_disabled"
-          [ngModel]="_value()"
-          (change)="textChange($event)"
-          (blur)="onTouched()"
-          (ready)="onReady($event)">
-        </ckeditor>
-      </nz-form-control>
-    </nz-form-item>
+    <!-- tagName="textarea" -->
+    <ckeditor #ckEditor
+      [editor]="Editor"
+      [config]="editorConfig"
+      [disabled]="_disabled"
+      [ngModel]="_value()"
+      (change)="textChange($event)"
+      (blur)="onTouched()"
+      (ready)="onReady($event)">
+    </ckeditor>
   `,
   styles: [`
     :host /*::ng-deep*/ .ck-editor__editable {
@@ -47,7 +39,6 @@ import { MyUploadAdapter } from './my-upload-adapter';
 })
 export class NzInputCkeditorComponent implements ControlValueAccessor {
 
-  control = viewChild.required(NzFormControlComponent);
   ckEditor = viewChild.required(CKEditorComponent);
 
   itemId = input<string>('');
@@ -57,8 +48,6 @@ export class NzInputCkeditorComponent implements ControlValueAccessor {
 
   @HostBinding("style.--height")
   height = input<string>('100px');
-
-  nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
 
   _disabled = false;
   _value = model();
@@ -73,12 +62,6 @@ export class NzInputCkeditorComponent implements ControlValueAccessor {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
-
-    effect(() => {
-      if (this.control()) {
-        this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
-      }
-    });
 
     this.editorConfig = {
       language: 'ko',
