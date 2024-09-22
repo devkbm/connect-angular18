@@ -23,8 +23,13 @@ import { HtmlSelectOption } from 'src/app/shared-component/nz-input-select/html-
   selector: 'app-data-domain-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzFormInputSelectComponent, NzCrudButtonGroupComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzFormInputSelectComponent,
+    NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -119,11 +124,10 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
 
   domainName = viewChild.required<NzInputTextComponent>('domainName');
 
-  private fb = inject(FormBuilder);
   private service = inject(DataDomainService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     domainId      : new FormControl<string | null>(null, { validators: Validators.required }),
     domainName    : new FormControl<string | null>(null, { validators: Validators.required }),
     database      : new FormControl<string | null>(null, { validators: Validators.required }),

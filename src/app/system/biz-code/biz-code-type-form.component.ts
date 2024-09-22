@@ -23,8 +23,15 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   selector: 'app-biz-code-type-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzInputNumberCustomComponent, NzCrudButtonGroupComponent, NzFormInputSelectComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzInputNumberCustomComponent,
+    NzCrudButtonGroupComponent,
+    NzFormInputSelectComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -136,11 +143,10 @@ export class BizCodeTypeFormComponent extends FormBase implements OnInit, AfterV
 
   bizTypeList: SelectControlModel[] = [];
 
-  private fb = inject(FormBuilder);
   private service = inject(BizCodeTypeService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     typeId    : new FormControl<string | null>(null, { validators: [Validators.required] }),
     typeName  : new FormControl<string | null>(null, { validators: [Validators.required] }),
     sequence  : new FormControl<number | null>(null),

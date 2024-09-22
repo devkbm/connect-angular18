@@ -18,15 +18,19 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-form-input-checkbox.component';
 
 
-
-
 @Component({
   selector: 'app-biz-code-form',
   standalone: true,
   imports:  [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzInputNumberCustomComponent,
-    NzFormInputCheckboxComponent, NzCrudButtonGroupComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzInputNumberCustomComponent,
+    NzFormInputCheckboxComponent,
+    NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -145,11 +149,10 @@ import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-
 })
 export class BizCodeFormComponent extends FormBase implements OnInit, AfterViewInit {
 
-  private fb = inject(FormBuilder);
   private service = inject(BizCodeService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     typeId      : new FormControl<string | null>(null, { validators: [Validators.required] }),
     code        : new FormControl<string | null>(null, { validators: [Validators.required] }),
     codeName    : new FormControl<string | null>(null),

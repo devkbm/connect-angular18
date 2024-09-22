@@ -1,13 +1,17 @@
+import { AfterViewInit, Component, ElementRef, Input, OnInit, inject, viewChild } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzFormItemComponent } from "../../../shared-component/nz-form-item/nz-form-item.component";
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputCkeditorComponent } from 'src/app/shared-component/nz-input-ckeditor/nz-input-ckeditor.component';
 import { NzFileUploadComponent } from 'src/app/shared-component/nz-file-upload/nz-file-upload.component';
 
-import { AfterViewInit, Component, Input, OnInit, inject, viewChild } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
 //import { ChangeEvent, CKEditorComponent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import { ChangeEvent, CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 import { ArticleService } from './article.service';
@@ -18,25 +22,26 @@ import { NzUploadChangeParam, NzUploadComponent, NzUploadFile } from 'ng-zorro-a
 import { GlobalProperty } from 'src/app/core/global-property';
 // import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Article } from './article.model';
-import { ActivatedRoute } from '@angular/router';
-import { NzFormItemComponent } from "../../../shared-component/nz-form-item/nz-form-item.component";
-import { NzInputModule } from 'ng-zorro-antd/input';
-
 
 @Component({
   selector: 'app-article-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
-    NzFormModule, NzInputTextComponent, NzInputCkeditorComponent, NzCrudButtonGroupComponent,
-    NzFileUploadComponent,
-    NzFormItemComponent, NzInputModule
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputModule,
+    NzFormItemComponent,
+    NzInputCkeditorComponent,
+    NzCrudButtonGroupComponent,
+    NzFileUploadComponent
 ],
   template: `
     <!--{{fg.getRawValue() | json}}-->
     <!--{{fileList | json}}-->
 
-    <form nz-form [formGroup]="fg" [nzLayout]="'vertical'">
+    <form nz-form [formGroup]="fg" [nzLayout]="'vertical'" #form>
 
       <!-- ERROR TEMPLATE-->
       <ng-template #errorTpl let-control>
@@ -72,25 +77,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       <app-nz-file-upload
         [fileList]="fileList">
       </app-nz-file-upload>
-
-    <!--
-      <div class="clearfix" nz-row style="height: 100px">
-          <nz-upload #upload class="upload-list-inline"
-              [nzAction]="fileUploadUrl"
-              nzMultiple
-              [nzListType]="'text'"
-              [nzWithCredentials]="true"
-              [nzData]="imageUploadParam"
-              [nzHeaders]="fileUploadHeader"
-              [nzFileList]="fileList"
-              (nzChange)="fileUploadChange($event)">
-              <button nz-button>
-                <span nz-icon nzType="upload"></span>
-                <span>첨부파일</span>
-              </button>
-          </nz-upload>
-      </div>
-    -->
 
     </form>
 
@@ -166,16 +152,16 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
 
   @Input() boardId!: string;
 
+  formElement = viewChild.required<ElementRef>('form');
+
   upload = viewChild.required<NzUploadComponent>('upload');
   ckEditor = viewChild.required<CKEditorComponent>('ckEditor');
-  title = viewChild.required<NzInputTextComponent>('title');
 
-  private fb = inject(FormBuilder);
   private boardService= inject(ArticleService);
 
   private activatedRoute = inject(ActivatedRoute);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     boardId         : new FormControl<string | null>(null, { validators: [Validators.required] }),
     articleId       : new FormControl<string | null>(null, { validators: [Validators.required] }),
     articleParentId : new FormControl<string | null>(null),
@@ -220,7 +206,12 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
   }
 
   ngAfterViewInit(): void {
-    this.title().focus();
+    this.controlFocus();
+  }
+
+  controlFocus() {
+    const control = this.formElement().nativeElement['title'];
+    control.focus();
   }
 
   newForm(boardId: any): void {

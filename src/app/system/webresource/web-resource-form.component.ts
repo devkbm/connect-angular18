@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 
-import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit, inject, viewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { WebResourceService } from './web-resource.service';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -23,8 +23,13 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   selector: 'app-web-resource-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzCrudButtonGroupComponent, NzFormInputSelectComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzCrudButtonGroupComponent,
+    NzFormInputSelectComponent
   ],
   template: `
     {{fg.getRawValue()| json}} - {{fg.valid}}
@@ -131,11 +136,10 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
 
   resourceTypeList: ResouceTypeEnum[] = [];
 
-  private fb = inject(FormBuilder);
   private service = inject(WebResourceService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     resourceId   : new FormControl<string | null>(null, {
       validators: Validators.required,
       asyncValidators: [existingWebResourceValidator(this.service)],

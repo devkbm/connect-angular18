@@ -13,14 +13,19 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { HolidayService } from './holiday.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { Holiday } from './holiday.model';
-import { style } from '@angular/animations';
 
 @Component({
-  standalone: true,
   selector: 'app-holiday-form',
+  standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzCrudButtonGroupComponent, NzInputTextComponent, NzInputTextareaComponent, NzInputDateComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzCrudButtonGroupComponent,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzInputDateComponent
   ],
   template: `
     {{fg.value | json}} - {{fg.valid}}
@@ -111,11 +116,10 @@ import { style } from '@angular/animations';
 })
 export class HolidayFormComponent extends FormBase implements OnInit, AfterViewInit {
 
-  private fb = inject(FormBuilder);
   private service = inject(HolidayService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     date          : new FormControl<Date | null>(null, { validators: Validators.required }),
     holidayName   : new FormControl<string | null>(null, { validators: Validators.required }),
     comment       : new FormControl<string | null>(null)

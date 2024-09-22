@@ -24,8 +24,14 @@ import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-
   selector: 'app-dept-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule, NzTreeSelectModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzInputNumberCustomComponent,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzTreeSelectModule,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzInputNumberCustomComponent,
     NzInputDateComponent
   ],
   template: `
@@ -217,11 +223,10 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
 
   deptHierarchy: DeptHierarchy[] = [];
 
-  private fb = inject(FormBuilder);
   private service = inject(DeptService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     parentDeptCode          : new FormControl<string | null>(null),
     /*deptId                  : new FormControl<string | null>(null, {
                                 validators: Validators.required,

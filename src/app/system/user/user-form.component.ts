@@ -31,9 +31,16 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   selector: 'app-user-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    UserImageUploadComponent, NzCrudButtonGroupComponent, NzInputTextComponent,
-    NzDeptTreeSelectComponent, NzInputSwitchComponent, NzFormInputSelectComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    UserImageUploadComponent,
+    NzCrudButtonGroupComponent,
+    NzInputTextComponent,
+    NzDeptTreeSelectComponent,
+    NzInputSwitchComponent,
+    NzFormInputSelectComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -198,12 +205,11 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
 
   staffNoField = viewChild.required<NzInputTextComponent>('staffNo');
 
-  private fb = inject(FormBuilder);
   private service = inject(UserService);
   private deptService = inject(DeptService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     userId: new FormControl<string | null>(null, {
       validators: Validators.required,
       asyncValidators: [existingUserValidator(this.service)],

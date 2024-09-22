@@ -5,7 +5,7 @@ import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-
 import { NzInputRregnoComponent } from 'src/app/shared-component/nz-input-rregno/nz-input-rregno.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
-import { Component, OnInit, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -15,14 +15,17 @@ import { ResponseObject } from 'src/app/core/model/response-object';
 import { StaffService } from '../staff.service';
 import { NewStaff } from './new-staff-form.model';
 
-
-
 @Component({
   selector: 'app-new-staff-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzInputRregnoComponent, NzCrudButtonGroupComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputTextComponent,
+    NzInputRregnoComponent,
+    NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -93,11 +96,10 @@ export class NewStaffFormComponent extends FormBase implements OnInit, AfterView
 
   staffNo = viewChild.required<NzInputTextComponent>('staffNo');
 
-  private fb = inject(FormBuilder);
   private service = inject(StaffService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     staffNo                     : new FormControl<string | null>(null, { validators: Validators.required }),
     name                        : new FormControl<string | null>(null, { validators: Validators.required }),
     residentRegistrationNumber  : new FormControl<string | null>(null, { validators: Validators.required }),

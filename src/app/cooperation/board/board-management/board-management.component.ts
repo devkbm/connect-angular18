@@ -13,8 +13,12 @@ import { BoardTreeComponent } from '../board-hierarcy/board-tree.component';
   selector: 'app-board-management',
   standalone: true,
   imports: [
-    CommonModule, NzButtonModule, NzIconModule, NzGridModule,
-    BoardTreeComponent, BoardFormComponent
+    CommonModule,
+    NzButtonModule,
+    NzIconModule,
+     NzGridModule,
+    BoardTreeComponent,
+    BoardFormComponent
   ],
   template: `
     <div nz-row class="search-div">

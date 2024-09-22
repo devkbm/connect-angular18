@@ -5,8 +5,8 @@ import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -23,8 +23,14 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   selector: 'app-staff-family-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzFormInputSelectComponent, NzInputTextareaComponent, NzCrudButtonGroupComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputTextComponent,
+    NzFormInputSelectComponent,
+    NzInputTextareaComponent,
+    NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -183,9 +189,8 @@ export class StaffFamilyFormComponent extends FormBase implements OnInit, AfterV
   service = inject(StaffFamilyService);
   hrmCodeService = inject(HrmCodeService);
   appAlarmService = inject(AppAlarmService);
-  fb = inject(FormBuilder);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     staffNo             : new FormControl<string | null>(null, { validators: Validators.required }),
     staffName           : new FormControl<string | null>(null, { validators: Validators.required }),
     seq                 : new FormControl<string | null>(null),

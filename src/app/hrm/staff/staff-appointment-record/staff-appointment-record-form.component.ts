@@ -7,7 +7,7 @@ import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzDeptTreeSelectComponent } from 'src/app/shared-component/nz-dept-tree-select/nz-dept-tree-select.component';
 
-import { Component, OnInit, Output, EventEmitter, Input, inject } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -28,8 +28,15 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   selector: 'app-staff-appointment-record-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
-    NzFormModule, NzDividerModule, NzInputTextComponent, NzFormInputSelectComponent, NzInputDateComponent, NzCrudButtonGroupComponent,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzDividerModule,
+    NzInputTextComponent,
+    NzFormInputSelectComponent,
+    NzInputDateComponent,
+    NzCrudButtonGroupComponent,
     NzDeptTreeSelectComponent
   ],
   template: `
@@ -304,13 +311,12 @@ export class StaffAppointmentRecordFormComponent extends FormBase implements OnI
    */
   dutyResponsibilityCodeList: HrmCode[] = [];
 
-  private fb = inject(FormBuilder);
   private service = inject(StaffAppointmentRecordService);
   private hrmCodeService = inject(HrmCodeService);
   private deptService = inject(DeptService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
       staffNo                 : new FormControl<string | null>(null, { validators: Validators.required }),
       staffName               : new FormControl<string | null>(null),
       seq                     : new FormControl<string | null>(null),

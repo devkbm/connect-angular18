@@ -1,6 +1,6 @@
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, viewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
-import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
+import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzTimePickerComponent, NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
@@ -17,33 +17,25 @@ export enum TimeFormat {
   imports: [FormsModule, NzFormModule, NzDatePickerModule, NzTimePickerModule],
   template: `
     <!--{{formField.errors | json}}-->
-    <nz-form-item>
-      <nz-form-label [nzFor]="itemId" [nzRequired]="required">
-        <ng-content></ng-content>
-      </nz-form-label>
-      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip">
-        <nz-date-picker #date
-          [nzId]="itemId"
-          [nzPlaceHolder]="placeholder"
-          [required]="required"
-          [nzDisabled]="disabled"
-          [nzInputReadOnly]="readonly"
-          nzAllowClear="false"
-          [(ngModel)]="_value"
-          (ngModelChange)="dateValueChange($event)"
-          (blur)="onTouched()">
-        </nz-date-picker>
-        <nz-time-picker #time
-          [nzDisabled]="disabled"
-          [nzFormat]="timeFormat"
-          [nzNowText]="' '"
-          [nzMinuteStep]="30"
-          [(ngModel)]="_value"
-          (ngModelChange)="timeValueChange($event)">
-        </nz-time-picker>
-      </nz-form-control>
-      <!--style="width: 90px" -->
-    </nz-form-item>
+    <nz-date-picker #date
+      [nzId]="itemId"
+      [nzPlaceHolder]="placeholder"
+      [required]="required"
+      [nzDisabled]="disabled"
+      [nzInputReadOnly]="readonly"
+      nzAllowClear="false"
+      [(ngModel)]="_value"
+      (ngModelChange)="dateValueChange($event)"
+      (blur)="onTouched()">
+    </nz-date-picker>
+    <nz-time-picker #time
+      [nzDisabled]="disabled"
+      [nzFormat]="timeFormat"
+      [nzNowText]="' '"
+      [nzMinuteStep]="30"
+      [(ngModel)]="_value"
+      (ngModelChange)="timeValueChange($event)">
+    </nz-time-picker>
   `,
   styles:[`
     nz-date-picker {
@@ -54,9 +46,8 @@ export enum TimeFormat {
     }
   `]
 })
-export class NzInputDateTimeComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class NzInputDateTimeComponent implements ControlValueAccessor {
 
-  control = viewChild.required(NzFormControlComponent);
   dateElement = viewChild.required(NzDatePickerComponent);
   timeElement = viewChild.required(NzTimePickerComponent);
 
@@ -78,15 +69,6 @@ export class NzInputDateTimeComponent implements ControlValueAccessor, OnInit, A
   constructor(@Self()  @Optional() private ngControl: NgControl) {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
-    }
-  }
-
-  ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    if (this.control()) {
-      this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
     }
   }
 

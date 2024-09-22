@@ -4,8 +4,8 @@ import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
-import { Component, OnInit, Output, EventEmitter, AfterViewInit, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { TermService } from './term.service';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -24,8 +24,13 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   selector: 'app-term-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzFormInputSelectComponent, NzCrudButtonGroupComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzFormInputSelectComponent,
+    NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.value | json}}
@@ -175,13 +180,12 @@ export class TermFormComponent extends FormBase implements OnInit, AfterViewInit
   wordList: Word[] = [];
   dataDomainList: DataDomain[] = [];
 
-  private fb = inject(FormBuilder);
   private service = inject(TermService);
   private wordService = inject(WordService);
   private dataDomainService = inject(DataDomainService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     termId       : new FormControl<string | null>(null),
     system       : new FormControl<string | null>(null, { validators: Validators.required }),
     term         : new FormControl<string | null>(null, { validators: Validators.required }),

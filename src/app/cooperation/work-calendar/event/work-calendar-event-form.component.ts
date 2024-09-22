@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, AfterViewInit, Input, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, AfterViewInit, Input, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
@@ -33,9 +33,17 @@ export interface NewFormValue {
   selector: 'app-work-calendar-event-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzCrudButtonGroupComponent, NzInputSimpleColorPickerComponent,
-    NzFormInputSelectComponent, NzInputTextareaComponent, NzInputDateTimeComponent, NzFormInputCheckboxComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputTextComponent,
+    NzCrudButtonGroupComponent,
+    NzInputSimpleColorPickerComponent,
+    NzFormInputSelectComponent,
+    NzInputTextareaComponent,
+    NzInputDateTimeComponent,
+    NzFormInputCheckboxComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -150,11 +158,10 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
 
   workGroupList: WorkCalendar[] = [];
 
-  private fb = inject(FormBuilder);
   private service = inject(WorkCalendarEventService);
   private workGroupService = inject(WorkCalendarService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     id              : new FormControl<string | null>({value: null, disabled: true}, { validators: [Validators.required] }),
     text            : new FormControl<string | null>(null, { validators: [Validators.required] }),
     start           : new FormControl<string | null>(null),

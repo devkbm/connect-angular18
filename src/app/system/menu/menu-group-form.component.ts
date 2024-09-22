@@ -22,10 +22,15 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   selector: 'app-menu-group-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     NzFormModule,
-    NzCrudButtonGroupComponent, NzInputTextComponent, NzInputTextareaComponent,
-    NzFormItemComponent, NzInputModule
+    NzCrudButtonGroupComponent,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzFormItemComponent,
+    NzInputModule
 ],
   template: `
     {{fg.value | json}}
@@ -112,11 +117,10 @@ export class MenuGroupFormComponent extends FormBase implements OnInit, AfterVie
 
   menuGroupCode = viewChild.required<NzInputTextComponent>('menuGroupCode');
 
-  private fb = inject(FormBuilder);
   private menuService = inject(MenuService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     /*
     menuGroupId     : new FormControl<string | null>(null, {
       validators: Validators.required,

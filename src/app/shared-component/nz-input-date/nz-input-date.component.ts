@@ -1,6 +1,5 @@
-import { Self, Optional, Component,  TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild, input, effect } from '@angular/core';
+import { Self, Optional, Component,  TemplateRef, viewChild, input } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
-import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 import * as dateFns from "date-fns";
@@ -8,27 +7,20 @@ import * as dateFns from "date-fns";
 @Component({
   selector: 'app-nz-input-date',
   standalone: true,
-  imports: [FormsModule, NzFormModule, NzDatePickerModule],
+  imports: [FormsModule, NzDatePickerModule],
   template: `
-    <nz-form-item>
-      <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
-        <ng-content></ng-content>
-      </nz-form-label>
-      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip()">
-        <!-- (ngModelChange)="onChange($event)" -->
-        <nz-date-picker #inputControl
-              [nzId]="itemId()"
-              [nzPlaceHolder]="placeholder()"
-              [required]="required()"
-              [nzDisabled]="_disabled"
-              [nzInputReadOnly]="readonly()"
-              nzAllowClear="false"
-              [(ngModel)]="_value"
-              (ngModelChange)="valueChange($event)"
-              (blur)="onTouched()">
-        </nz-date-picker>
-      </nz-form-control>
-    </nz-form-item>
+    <!-- (ngModelChange)="onChange($event)" -->
+    <nz-date-picker #inputControl
+          [nzId]="itemId()"
+          [nzPlaceHolder]="placeholder()"
+          [required]="required()"
+          [nzDisabled]="_disabled"
+          [nzInputReadOnly]="readonly()"
+          nzAllowClear="false"
+          [(ngModel)]="_value"
+          (ngModelChange)="valueChange($event)"
+          (blur)="onTouched()">
+    </nz-date-picker>
   `,
   styles: [`
     nz-date-picker {
@@ -38,8 +30,6 @@ import * as dateFns from "date-fns";
 })
 export class NzInputDateComponent implements ControlValueAccessor {
 
-
-  control = viewChild.required(NzFormControlComponent);
   element = viewChild.required<NzDatePickerComponent>('inputControl');
 
   itemId = input<string>('');
@@ -60,12 +50,6 @@ export class NzInputDateComponent implements ControlValueAccessor {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
-
-    effect(() => {
-      if (this.control()) {
-        this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
-      }
-    })
   }
 
   writeValue(obj: any): void {

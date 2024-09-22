@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -28,11 +28,18 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   selector: 'app-menu-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzCrudButtonGroupComponent, NzInputTextComponent,
-    NzInputTextareaComponent, NzInputNumberCustomComponent,
-    NzFormItemComponent, NzInputModule,
-    NzInputSelectComponent, NzFormInputSelectComponent,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzCrudButtonGroupComponent,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzInputNumberCustomComponent,
+    NzFormItemComponent,
+    NzInputModule,
+    NzInputSelectComponent,
+    NzFormInputSelectComponent,
     NzInputTreeSelectComponent
 ],
   template: `
@@ -210,11 +217,10 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
    */
   menuHiererachy: MenuHierarchy[] = [];
 
-  private fb = inject(FormBuilder);
   private menuService = inject(MenuService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
       menuGroupCode       : new FormControl<string | null>(null, { validators: Validators.required }),
       menuCode            : new FormControl<string | null>(null, {
         validators: Validators.required,

@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 
 import { SessionManager } from 'src/app/core/session-manager';
-import { Component, OnInit, ViewChild, AfterViewInit, inject, viewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -23,8 +23,14 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   selector: 'app-work-calendar-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzCrudButtonGroupComponent, NzInputSimpleColorPickerComponent, NzFormInputSelectComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputTextComponent,
+    NzCrudButtonGroupComponent,
+    NzInputSimpleColorPickerComponent,
+    NzFormInputSelectComponent
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -126,10 +132,9 @@ export class WorkCalendarFormComponent extends FormBase implements OnInit, After
 
   workCalendarName = viewChild.required<NzInputTextComponent>('workCalendarName');
 
-  private fb = inject(FormBuilder);
   private workGroupService = inject(WorkCalendarService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     workCalendarId    : new FormControl<number | null>({value: null, disabled: true}, { validators: [Validators.required] }),
     workCalendarName  : new FormControl<string | null>(null, { validators: [Validators.required] }),
     color             : new FormControl<string | null>(null),

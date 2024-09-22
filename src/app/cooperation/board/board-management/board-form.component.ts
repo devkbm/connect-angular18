@@ -1,14 +1,6 @@
 import { CommonModule } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, OnChanges, OnInit, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-
-import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { BoardManagementService } from './board-management.service';
@@ -18,21 +10,35 @@ import { BoardManagement } from './board-management.model';
 import { BoardHierarchy } from '../board-hierarcy/board-hierarchy.model';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
 
-import { NzFormItemComponent } from "../../../shared-component/nz-form-item/nz-form-item.component";
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemComponent } from "src/app/shared-component/nz-form-item/nz-form-item.component";
 import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 
 @Component({
   selector: 'app-board-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
-    NzFormModule, NzInputTextComponent, NzInputTextareaComponent, NzFormInputSelectComponent,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputModule,
+    NzIconModule,
+    NzButtonModule,
+    NzDividerModule,
+    NzInputSelectComponent,
     NzCrudButtonGroupComponent,
-    NzButtonModule, NzDividerModule, NzIconModule,
-    NzFormModule, NzFormItemComponent, NzInputTreeSelectComponent
+    NzFormItemComponent,
+    NzInputTreeSelectComponent
 ],
   template: `
     <div>{{fg.getRawValue() | json}}</div>
@@ -61,16 +67,6 @@ import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tr
       <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
     </button>
 
-    <!--
-    <app-nz-crud-button-group
-      [isSavePopupConfirm]="false"
-      (searchClick)="get(this.fg.value.boardId!)"
-      (closeClick)="closeForm()"
-      (saveClick)="save()"
-      (deleteClick)="remove()">
-    </app-nz-crud-button-group>
-    -->
-
     <!-- ERROR TEMPLATE-->
     <ng-template #errorTpl let-control>
       @if (control.hasError('required')) {
@@ -78,7 +74,7 @@ import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tr
       }
     </ng-template>
 
-    <form nz-form [formGroup]="fg" nzLayout="vertical">
+    <form nz-form [formGroup]="fg" nzLayout="vertical" #form>
       <!-- 1 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
@@ -95,12 +91,16 @@ import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tr
         </div>
 
         <div nz-col nzSpan="12">
-          <!--게시판타입 필드-->
-          <app-nz-form-input-select
-            formControlName="boardType"
-            [options]="boardTypeList" [opt_value]="'value'" [opt_label]="'label'"
-            [placeholder]="'게시판타입을 선택해주세요.'" [nzErrorTip]="errorTpl" [required]="true">게시판타입
-          </app-nz-form-input-select>
+          <app-nz-form-item for="boardType" label="게시판타입" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <app-nz-input-select required
+                formControlName="boardType" itemId="boardType"
+                [options]="boardTypeList" [opt_value]="'value'" [opt_label]="'label'"
+                placeholder="게시판타입을 선택해주세요."
+              >
+              </app-nz-input-select>
+            </nz-form-control>
+          </app-nz-form-item>
         </div>
 
       </div>
@@ -108,24 +108,29 @@ import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tr
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <!--게시판명 필드-->
-          <app-nz-input-text #boardName
-            formControlName="boardName"
-            [itemId]="'boardName'"
-            placeholder="게시판명을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">게시판 명
-          </app-nz-input-text>
+          <app-nz-form-item for="boardName" label="게시판 명" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="boardName" formControlName="boardName" required
+                placeholder="게시판명을 입력해주세요."
+              />
+            </nz-form-control>
+          </app-nz-form-item>
         </div>
       </div>
 
-      <!--게시판설명 필드-->
-      <app-nz-input-textarea
-        formControlName="boardDescription"
-        [itemId]="'boardDescription'"
-        placeholder="게시판 설명을 입력해주세요."
-        [rows] = "20"
-        [required]="false" [nzErrorTip]="errorTpl">게시판 설명
-      </app-nz-input-textarea>
+      <!-- 3 row -->
+      <div nz-row nzGutter="8">
+        <div nz-col nzSpan="24">
+          <app-nz-form-item for="boardDescription" label="게시판 설명">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <textarea nz-input id="boardDescription" formControlName="boardDescription"
+                placeholder="게시판 설명을 입력해주세요." [rows]="20"
+              >
+              </textarea>
+            </nz-form-control>
+          </app-nz-form-item>
+        </div>
+      </div>
 
     </form>
 
@@ -168,16 +173,15 @@ import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tr
 })
 export class BoardFormComponent extends FormBase implements OnInit, OnChanges, AfterViewInit {
 
-  boardName = viewChild.required<NzInputTextComponent>('boardName');
+  formElement = viewChild.required<ElementRef>('form');
 
   parentBoardItems: BoardHierarchy[] = [];
 
   boardTypeList: any;
 
-  private fb = inject(FormBuilder);
   private service = inject(BoardManagementService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     boardId         : new FormControl<string | null>(null),
     boardParentId   : new FormControl<string | null>(null),
     boardName       : new FormControl<string | null>('', { validators: [Validators.required] }),
@@ -197,7 +201,7 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
   }
 
   ngAfterViewInit(): void {
-    this.boardName().focus();
+    this.controlFocus();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -214,7 +218,12 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
     this.fg.controls.boardId.enable();
     this.fg.controls.boardType.setValue('BOARD');
 
-    this.boardName().focus();
+    this.controlFocus();
+  }
+
+  controlFocus() {
+    const control = this.formElement().nativeElement['boardName'];
+    control.focus();
   }
 
   modifyForm(formData: BoardManagement): void {

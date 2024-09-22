@@ -21,8 +21,14 @@ import { StaffContact } from './staff-contact.model';
   selector: 'app-staff-contact-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule, NzDividerModule,
-    NzInputTextComponent, NzListRoadAddressComponent, NzCrudButtonGroupComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzDividerModule,
+    NzInputTextComponent,
+    NzListRoadAddressComponent,
+    NzCrudButtonGroupComponent
   ],
   template: `
     <app-nz-crud-button-group
@@ -147,11 +153,10 @@ export class StaffContactFormComponent extends FormBase implements OnInit, After
 
   @Input() staff?: {companyCode: string, staffNo: string, staffName: string};
 
-  private fb = inject(FormBuilder);
   private service = inject(StaffContactService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     //staffId           : new FormControl<string | null>(null, { validators: Validators.required }),
     staffNo           : new FormControl<string | null>(null, { validators: Validators.required }),
     staffName         : new FormControl<string | null>(null, { validators: Validators.required }),

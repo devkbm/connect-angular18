@@ -6,8 +6,8 @@ import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-text
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
 
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -26,8 +26,15 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   selector: 'app-staff-license-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzInputDateComponent, NzFormInputSelectComponent, NzCrudButtonGroupComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzInputDateComponent,
+    NzFormInputSelectComponent,
+    NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -182,9 +189,8 @@ export class StaffLicenseFormComponent extends FormBase implements OnInit, After
   service = inject(StaffLicenseService);
   hrmCodeService = inject(HrmCodeService);
   appAlarmService = inject(AppAlarmService);
-  fb = inject(FormBuilder);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     staffNo                 : new FormControl<string | null>(null, { validators: Validators.required }),
     staffName               : new FormControl<string | null>(null, { validators: Validators.required }),
     seq                     : new FormControl<string | null>(null),

@@ -23,8 +23,13 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   selector: 'app-role-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzCrudButtonGroupComponent, NzFormInputSelectComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzCrudButtonGroupComponent,
+    NzFormInputSelectComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -193,14 +198,13 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
 
   roleCode = viewChild.required<NzInputTextComponent>('roleCode');
 
-  private fb = inject(FormBuilder);
   private service = inject(RoleService);
   private appAlarmService = inject(AppAlarmService);
 
   private menuService = inject(MenuService);
   menuGroupList: any;
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     roleCode : new FormControl<string | null>('', {
                                                     validators: Validators.required,
                                                     asyncValidators: [existingRoleValidator(this.service)],

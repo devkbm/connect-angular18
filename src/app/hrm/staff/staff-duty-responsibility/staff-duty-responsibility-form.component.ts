@@ -5,7 +5,7 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
 import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 
-import { Component, OnInit, Output, EventEmitter, Input, AfterViewInit, inject } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -24,8 +24,15 @@ import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-
   selector: 'app-staff-duty-responsibility-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzFormInputSelectComponent, NzInputDateComponent, NzFormInputCheckboxComponent, NzCrudButtonGroupComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputTextComponent,
+    NzFormInputSelectComponent,
+    NzInputDateComponent,
+    NzFormInputCheckboxComponent,
+    NzCrudButtonGroupComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -157,9 +164,8 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
   service = inject(StaffDutyResponsibilityService);
   hrmCodeService = inject(HrmCodeService);
   appAlarmService = inject(AppAlarmService);
-  fb = inject(FormBuilder);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
       staffNo                 : new FormControl<string | null>(null, { validators: Validators.required }),
       staffName               : new FormControl<string | null>(null),
       seq                     : new FormControl<string | null>({value: null, disabled: true}, { validators: [Validators.required] }),

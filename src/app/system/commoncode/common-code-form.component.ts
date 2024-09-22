@@ -29,11 +29,19 @@ import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tr
   selector: 'app-common-code-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
-    NzFormModule, NzInputModule, NzInputNumberModule, NzInputDateComponent,
-    NzInputTextComponent, NzInputTextareaComponent,
-    NzFormInputSelectComponent, NzInputNumberCustomComponent,
-    NzFormItemComponent, NzInputTreeSelectComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputModule,
+    NzInputNumberModule,
+    NzInputDateComponent,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzFormInputSelectComponent,
+    NzInputNumberCustomComponent,
+    NzFormItemComponent,
+    NzInputTreeSelectComponent
 ],
   template: `
     {{fg.getRawValue() | json}}
@@ -223,11 +231,10 @@ export class CommonCodeFormComponent extends FormBase implements OnInit {
   nodeItems: CommonCodeHierarchy[] = [];
   systemTypeCodeList: SystemTypeEnum[] = [];
 
-  private fb = inject(FormBuilder);
   private commonCodeService = inject(CommonCodeService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     systemTypeCode          : new FormControl<string | null>(null),
     codeId                  : new FormControl<string | null>(null),
     parentId                : new FormControl<string | null>(null),
@@ -251,24 +258,24 @@ export class CommonCodeFormComponent extends FormBase implements OnInit {
     this.formType = FormType.NEW;
     this.fg.reset();
 
-    this.fg.get('codeId')?.disable();
-    this.fg.get('code')?.enable();
-    this.fg.get('systemTypeCode')?.enable();
-    this.fg.get('systemTypeCode')?.setValue(systemTypeCode);
-    this.fg.get('parentId')?.setValue(parentId);
-    this.fg.get('seq')?.setValue(1);
-    this.fg.get('lowLevelCodeLength')?.setValue(0);
-    this.fg.get('fromDate')?.setValue(new Date());
-    this.fg.get('toDate')?.setValue(new Date(9999, 11, 31));
+    this.fg.controls.codeId.disable();
+    this.fg.controls.code.enable();
+    this.fg.controls.systemTypeCode.enable();
+    this.fg.controls.systemTypeCode.setValue(systemTypeCode);
+    this.fg.controls.parentId.setValue(parentId);
+    this.fg.controls.seq.setValue(1);
+    this.fg.controls.lowLevelCodeLength.setValue(0);
+    this.fg.controls.fromDate.setValue(new Date());
+    this.fg.controls.toDate.setValue(new Date(9999, 11, 31));
   }
 
   modifyForm(formData: CommonCode): void {
     this.formType = FormType.MODIFY;
 
-    this.fg.get('codeId')?.disable();
-    this.fg.get('code')?.disable();
-    this.fg.get('systemTypeCode')?.disable();
-    this.fg.get('parentId')?.disable();
+    this.fg.controls.codeId.disable();
+    this.fg.controls.code.disable();
+    this.fg.controls.systemTypeCode.disable();
+    this.fg.controls.parentId.disable();
 
     this.fg.patchValue(formData);
   }

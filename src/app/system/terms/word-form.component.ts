@@ -20,8 +20,13 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   selector: 'app-word-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzFormInputSelectComponent, NzCrudButtonGroupComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzFormInputSelectComponent,
+    NzCrudButtonGroupComponent
   ],
   template: `
     {{initLoadId | json}} - {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -93,11 +98,10 @@ export class WordFormComponent extends FormBase implements OnInit, AfterViewInit
 
   logicalName = viewChild.required<NzInputTextComponent>('logicalName');
 
-  private fb = inject(FormBuilder);
   private service = inject(WordService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     logicalName     : new FormControl<string | null>(null, { validators: Validators.required }),
     physicalName    : new FormControl<string | null>(null, { validators: Validators.required }),
     logicalNameEng  : new FormControl<string | null>(null),

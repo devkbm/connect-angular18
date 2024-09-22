@@ -90,13 +90,12 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 })
 export class LoginComponent implements OnInit {
 
-  private fb = inject(FormBuilder);
   private loginService = inject(LoginService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private winRef = inject(WindowRef);
 
-  form = this.fb.group({
+  form = inject(FormBuilder).group({
     companyCode  : new FormControl<string | null>('001', { validators: Validators.required }),
     staffNo           : new FormControl<string | null>(null, { validators: Validators.required }),
     password          : new FormControl<string | null>(null, { validators: Validators.required }),
