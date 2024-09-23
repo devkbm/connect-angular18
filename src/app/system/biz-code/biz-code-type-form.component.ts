@@ -1,12 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-
 import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 
@@ -16,8 +12,13 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { BizCodeType } from './biz-code-type.model';
 import { BizCodeTypeService } from './biz-code-type.service';
 import { SelectControlModel } from 'src/app/core/model/select-control.model.ts';
+
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
+import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
 
 @Component({
   selector: 'app-biz-code-type-form',
@@ -27,12 +28,12 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
-    NzInputNumberCustomComponent,
+    NzInputModule,
+    NzInputNumberModule,
     NzCrudButtonGroupComponent,
-    NzFormInputSelectComponent
-  ],
+    NzFormItemCustomComponent,
+    NzInputSelectCustomComponent
+],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
     <form nz-form [formGroup]="fg" nzLayout="vertical">
@@ -47,26 +48,29 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <!-- 1 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="typeId" itemId="typeId"
-            placeholder=""
-            [required]="true" [nzErrorTip]="errorTpl">코드분류ID
-          </app-nz-input-text>
+          <nz-form-item-custom for="typeId" label="업무코드분류ID" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="typeId" formControlName="typeId" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="typeName" itemId="typeName"
-            [required]="true" [nzErrorTip]="errorTpl">코드분류명
-          </app-nz-input-text>
+          <nz-form-item-custom for="typeName" label="코드분류명" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="typeName" formControlName="typeName" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-number-custom
-            formControlName="sequence" itemId="sequence"
-            [required]="true"
-            [nzErrorTip]="errorTpl">순번
-          </app-nz-input-number-custom>
+          <nz-form-item-custom for="sequence" label="순번" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-number nzId="sequence" formControlName="sequence" required
+                [nzMin]="0" [nzMax]="9999"
+              ></nz-input-number>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
       </div>
@@ -74,24 +78,28 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-form-input-select
-            formControlName="bizType"
-            [itemId]="'bizType'"
-            [options]="bizTypeList" [opt_value]="'value'" [opt_label]="'label'"
-            [placeholder]="'Please select'" [nzErrorTip]="errorTpl" [required]="true">시스템
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="bizType" label="시스템" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select-custom required
+                formControlName="bizType" itemId="bizType"
+                [options]="bizTypeList" [opt_value]="'value'" [opt_label]="'label'"
+                placeholder="Please select">
+              </nz-input-select-custom>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 3 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-input-textarea
-            formControlName="comment" itemId="comment"
-            placeholder="비고를 입력해주세요."
-            [rows]="24"
-            [required]="false" [nzErrorTip]="errorTpl">비고
-          </app-nz-input-textarea>
+          <nz-form-item-custom for="comment" label="비고">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <textarea nz-input id="comment" formControlName="comment"
+              placeholder="비고를 입력해주세요." [rows]="10">
+              </textarea>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -106,8 +114,6 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
         (deleteClick)="remove()">
       </app-nz-crud-button-group>
     </div>
-
-
   `,
   styles: [`
     [nz-button] {

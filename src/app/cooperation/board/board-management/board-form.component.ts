@@ -18,9 +18,9 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzFormItemComponent } from "src/app/shared-component/nz-form-item/nz-form-item.component";
 import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+import { NzFormItemCustomComponent } from "src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component";
+import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
 
 
 @Component({
@@ -35,10 +35,10 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
     NzIconModule,
     NzButtonModule,
     NzDividerModule,
-    NzInputSelectComponent,
     NzCrudButtonGroupComponent,
-    NzFormItemComponent,
-    NzInputTreeSelectComponent
+    NzInputTreeSelectComponent,
+    NzFormItemCustomComponent,
+    NzInputSelectCustomComponent
 ],
   template: `
     <div>{{fg.getRawValue() | json}}</div>
@@ -78,29 +78,29 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
       <!-- 1 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <app-nz-form-item for="boardParentId" label="상위 게시판">
+          <nz-form-item-custom for="boardParentId" label="상위 게시판">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <app-nz-input-tree-select
+              <nz-input-tree-select
                 formControlName="boardParentId" itemId="boardParentId"
                 [nodes]="parentBoardItems"
                 placeholder="상위 게시판 없음"
               >
-              </app-nz-input-tree-select>
+              </nz-input-tree-select>
             </nz-form-control>
-          </app-nz-form-item>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-form-item for="boardType" label="게시판타입" required>
+          <nz-form-item-custom for="boardType" label="게시판타입" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <app-nz-input-select required
+              <nz-input-select-custom required
                 formControlName="boardType" itemId="boardType"
                 [options]="boardTypeList" [opt_value]="'value'" [opt_label]="'label'"
                 placeholder="게시판타입을 선택해주세요."
               >
-              </app-nz-input-select>
+              </nz-input-select-custom>
             </nz-form-control>
-          </app-nz-form-item>
+          </nz-form-item-custom>
         </div>
 
       </div>
@@ -108,27 +108,27 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-form-item for="boardName" label="게시판 명" required>
+          <nz-form-item-custom for="boardName" label="게시판 명" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <input nz-input id="boardName" formControlName="boardName" required
                 placeholder="게시판명을 입력해주세요."
               />
             </nz-form-control>
-          </app-nz-form-item>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 3 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-form-item for="boardDescription" label="게시판 설명">
+          <nz-form-item-custom for="boardDescription" label="게시판 설명">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <textarea nz-input id="boardDescription" formControlName="boardDescription"
                 placeholder="게시판 설명을 입력해주세요." [rows]="20"
               >
               </textarea>
             </nz-form-control>
-          </app-nz-form-item>
+          </nz-form-item-custom>
         </div>
       </div>
 

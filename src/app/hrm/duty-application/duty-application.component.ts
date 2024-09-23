@@ -11,7 +11,8 @@ import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-he
 import { DutyApplicationFormComponent } from './duty-application-form.component';
 import { DutyApplicationGridComponent } from './duty-application-grid.component';
 import { DutyDateListComponent } from './duty-date-list.component';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
+
 
 @Component({
   selector: 'app-duty-application',

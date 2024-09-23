@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzFormItemComponent } from "../../shared-component/nz-form-item/nz-form-item.component";
+import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
 
 @Component({
   selector: 'app-form-test',
@@ -12,7 +12,7 @@ import { NzFormItemComponent } from "../../shared-component/nz-form-item/nz-form
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
     NzGridModule, NzFormModule, NzInputModule,
-    NzFormItemComponent
+    NzFormItemCustomComponent
 ],
   template: `
     {{fg.getRawValue() | json}}
@@ -34,11 +34,11 @@ import { NzFormItemComponent } from "../../shared-component/nz-form-item/nz-form
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-form-item for="input_text2" label="input_text2" [required]="true">
+          <nz-form-item-custom for="input_text2" label="input_text2" [required]="true">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <input nz-input id="input_text2" formControlName="input_text2" />
             </nz-form-control>
-          </app-nz-form-item>
+          </nz-form-item-custom>
         </div>
       </div>
     </form>

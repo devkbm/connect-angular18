@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 
 @Component({
-  selector: 'app-nz-form-item',
+  selector: 'nz-form-item-custom',
   standalone: true,
   imports: [FormsModule, NzFormModule],
   template: `
@@ -21,7 +21,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
   styles: `
   `
 })
-export class NzFormItemComponent {
+export class NzFormItemCustomComponent {
 
   for = input<string>('');
   label = input<string>('');

@@ -1,22 +1,22 @@
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
-
 import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
+
 import { DataDomainService } from './data-domain.service';
 import { DataDomain } from './data-domain.model';
+import { HtmlSelectOption } from 'src/app/shared-component/nz-input-select-custom/html-select-option';
 
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
-import { HtmlSelectOption } from 'src/app/shared-component/nz-input-select/html-select-option';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
 
 
 @Component({
@@ -26,10 +26,11 @@ import { HtmlSelectOption } from 'src/app/shared-component/nz-input-select/html-
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
-    NzFormInputSelectComponent,
-    NzCrudButtonGroupComponent
+    NzFormModule,
+    NzInputModule,
+    NzCrudButtonGroupComponent,
+    NzFormItemCustomComponent,
+    NzInputSelectCustomComponent
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -48,59 +49,58 @@ import { HtmlSelectOption } from 'src/app/shared-component/nz-input-select/html-
       <!-- 1 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <app-nz-input-text
-            formControlName="domainId" itemId="domainId"
-            placeholder="도메인Id를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">도메인ID
-          </app-nz-input-text>
+          <nz-form-item-custom for="domainId" label="도메인ID" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="domainId" formControlName="domainId" required
+                placeholder="도메인Id를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 2 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <!--
-          <app-nz-input-text
-            formControlName="database" itemId="database"
-            placeholder="database을 입력해주세요."
-            [nzErrorTip]="errorTpl" [required]="true">database
-          </app-nz-input-text>
-          -->
-
-          <app-nz-form-input-select
-            formControlName="database" itemId="database"
-            [options]="databaseList" [opt_value]="'value'" [opt_label]="'label'"
-            placeholder="database을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">database
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="database" label="database" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select-custom required
+                formControlName="database" itemId="database"
+                [options]="databaseList" [opt_value]="'value'" [opt_label]="'label'"
+                placeholder="database을 입력해주세요.">
+              </nz-input-select-custom>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text #domainName
-            formControlName="domainName" itemId="domainName"
-            placeholder="도메인명을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">도메인명
-          </app-nz-input-text>
+          <nz-form-item-custom for="domainName" label="도메인명" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="domainName" formControlName="domainName" required
+                placeholder="도메인명을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="dataType" itemId="dataType"
-            placeholder="dataType을 입력해주세요."
-            [nzErrorTip]="errorTpl" [required]="true">dataType
-          </app-nz-input-text>
+          <nz-form-item-custom for="dataType" label="dataType" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="dataType" formControlName="dataType" required
+                placeholder="dataType을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 3 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-input-textarea
-            formControlName="comment" itemId="comment"
-            placeholder="비고를 입력해주세요."
-            [rows] = "23"
-            [required]="false" [nzErrorTip]="errorTpl">비고
-          </app-nz-input-textarea>
+          <nz-form-item-custom for="comment" label="비고">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <textarea nz-input id="comment" formControlName="comment"
+                placeholder="비고를 입력해주세요." [rows]="10">
+              </textarea>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -122,7 +122,7 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
 
   databaseList: HtmlSelectOption[] = [];
 
-  domainName = viewChild.required<NzInputTextComponent>('domainName');
+  //domainName = viewChild.required<NzInputTextComponent>('domainName');
 
   private service = inject(DataDomainService);
   private appAlarmService = inject(AppAlarmService);
@@ -153,7 +153,7 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
   }
 
   focus() {
-    this.domainName().focus();
+//    this.domainName().focus();
   }
 
   newForm() {

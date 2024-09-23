@@ -17,8 +17,9 @@ import { HrmCode } from '../../hrm-code/hrm-code.model';
 import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 import { StaffDutyResponsibility } from './staff-duty-responsibility.model';
 import { StaffDutyResponsibilityService } from './staff-duty-responsibility.service';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+
 import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-form-input-checkbox.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
 
 @Component({
   selector: 'app-staff-duty-responsibility-form',

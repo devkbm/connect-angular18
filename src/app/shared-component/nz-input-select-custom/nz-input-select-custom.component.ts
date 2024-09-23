@@ -4,7 +4,7 @@ import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
 import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
-  selector: 'app-nz-input-select',
+  selector: 'nz-input-select-custom',
   standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
@@ -28,7 +28,7 @@ import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
   styles: `
   `
 })
-export class NzInputSelectComponent implements ControlValueAccessor {
+export class NzInputSelectCustomComponent implements ControlValueAccessor {
 
   itemId = input<string>('');
   required = input<boolean | string>(false);

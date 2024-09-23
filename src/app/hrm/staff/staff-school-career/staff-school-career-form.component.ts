@@ -18,7 +18,8 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { HrmCode } from '../../hrm-code/hrm-code.model';
 import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 import { StaffSchoolCareerService } from './staff-school-career.service';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
+
 
 @Component({
   selector: 'app-staff-school-career-form',

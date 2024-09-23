@@ -1,6 +1,6 @@
-import { Self, Optional, Component, ElementRef, TemplateRef, viewChild, input, model, effect } from '@angular/core';
-import { AbstractControl, ControlValueAccessor,  NgModel, NgControl, FormsModule } from '@angular/forms';
-import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
+import { Self, Optional, Component, ElementRef, viewChild, input, model } from '@angular/core';
+import { ControlValueAccessor, NgControl, FormsModule } from '@angular/forms';
+
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { NgxMaskDirective, provideNgxMask, IConfig } from 'ngx-mask'
@@ -9,35 +9,27 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 @Component({
   selector: 'app-nz-input-rregno',
   standalone: true,
-  imports: [FormsModule, NzFormModule, NzInputModule, NgxMaskDirective],
+  imports: [FormsModule, NzInputModule, NgxMaskDirective],
   providers: [
     provideNgxMask()
   ],
   template: `
-    <nz-form-item>
-      <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
-        <ng-content></ng-content>
-      </nz-form-label>
-      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip()">
-        <input #inputControl nz-input
-              [required]="required()"
-              [disabled]="_disabled"
-              [id]="itemId()"
-              [placeholder]="placeholder()"
-              [ngModel]="_value()"
-              [readonly]="readonly()"
-              mask="000000-0000000"
-              (ngModelChange)="onChange($event)"
-              (ngModelChange)="valueChange($event)"
-              (blur)="onTouched()"/>
-      </nz-form-control>
-    </nz-form-item>
+    <input #inputControl nz-input
+          [required]="required()"
+          [disabled]="_disabled"
+          [id]="itemId()"
+          [placeholder]="placeholder()"
+          [ngModel]="_value()"
+          [readonly]="readonly()"
+          mask="000000-0000000"
+          (ngModelChange)="onChange($event)"
+          (ngModelChange)="valueChange($event)"
+          (blur)="onTouched()"/>
   `,
   styles: []
 })
 export class NzInputRregnoComponent implements ControlValueAccessor {
 
-  control = viewChild.required(NzFormControlComponent);
   element = viewChild.required<ElementRef<HTMLInputElement>>('inputControl');
 
   itemId = input<string>('');
@@ -45,8 +37,6 @@ export class NzInputRregnoComponent implements ControlValueAccessor {
   disabled = input<boolean>(false);
   placeholder = input<string>('');
   readonly = input<boolean>(false);
-
-  nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
 
   _disabled = false;
   _value = model();
@@ -58,12 +48,6 @@ export class NzInputRregnoComponent implements ControlValueAccessor {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
-
-    effect(() => {
-      if (this.control()) {
-        this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
-      }
-    })
   }
 
   writeValue(obj: any): void {

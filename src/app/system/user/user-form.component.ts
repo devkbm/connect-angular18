@@ -1,15 +1,8 @@
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NzFormModule } from 'ng-zorro-antd/form';
-
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzDeptTreeSelectComponent } from 'src/app/shared-component/nz-dept-tree-select/nz-dept-tree-select.component';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { UserImageUploadComponent } from './user-image-upload.component';
-import { NzInputSwitchComponent } from 'src/app/shared-component/nz-input-switch/nz-input-switch.component';
-
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormType, FormBase } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -19,13 +12,18 @@ import { ResponseObject } from 'src/app/core/model/response-object';
 import { UserService } from './user.service';
 import { User } from './user.model';
 import { Role } from '../role/role.model';
-
 import { existingUserValidator } from './user-duplication-validator.directive';
-
 import { DeptHierarchy } from '../dept/dept-hierarchy.model';
 import { DeptService } from '../dept/dept.service';
 import { GlobalProperty } from 'src/app/core/global-property';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzDeptTreeSelectComponent } from 'src/app/shared-component/nz-dept-tree-select/nz-dept-tree-select.component';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
 
 @Component({
   selector: 'app-user-form',
@@ -34,13 +32,15 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NzFormModule,
     UserImageUploadComponent,
+
+    NzFormModule,
+    NzInputModule,
+    NzSwitchModule,
+    NzFormItemCustomComponent,
     NzCrudButtonGroupComponent,
-    NzInputTextComponent,
     NzDeptTreeSelectComponent,
-    NzInputSwitchComponent,
-    NzFormInputSelectComponent
+    NzInputSelectCustomComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -72,34 +72,38 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="6">
-          <app-nz-input-text
-            formControlName="userId" itemId="userId"
-            [required]="true" [readonly]="true" [nzErrorTip]="errorTpl">아이디
-          </app-nz-input-text>
+          <nz-form-item-custom for="userId" label="아이디" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="userId" formControlName="userId" required readonly/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-text
-            formControlName="companyCode" itemId="companyCode"
-            placeholder="조직코드를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">조직코드
-          </app-nz-input-text>
+          <nz-form-item-custom for="companyCode" label="조직코드" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="companyCode" formControlName="companyCode" required
+                placeholder="조직코드를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-text #staffNo
-            formControlName="staffNo" itemId="staffNo"
-            placeholder="직원번호를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원번호
-          </app-nz-input-text>
+          <nz-form-item-custom for="staffNo" label="직원번호" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="staffNo" formControlName="staffNo" required
+                placeholder="직원번호를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-text
-            formControlName="name" itemId="name"
-            placeholder="이름을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">이름
-          </app-nz-input-text>
+          <nz-form-item-custom for="name" label="이름" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="name" formControlName="name" required
+                placeholder="이름을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
       </div>
@@ -107,25 +111,29 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <!-- 3 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="4">
-          <app-nz-input-switch formControlName="enabled" >
-            사용여부
-          </app-nz-input-switch>
+          <nz-form-item-custom for="enabled" label="사용여부" required>
+            <nz-form-control>
+              <nz-switch nzId="enabled" formControlName="enabled">
+              </nz-switch>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="10">
-          <app-nz-input-text
-            formControlName="mobileNum" itemId="mobileNum"
-            placeholder="휴대폰 번호을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">휴대폰번호
-          </app-nz-input-text>
+          <nz-form-item-custom for="mobileNum" label="휴대폰번호" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="mobileNum" formControlName="mobileNum" required
+                placeholder="휴대폰 번호을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="10">
-          <app-nz-input-text
-            formControlName="email" itemId="email"
-            placeholder=""
-            [required]="true" [nzErrorTip]="errorTpl">이메일
-          </app-nz-input-text>
+          <nz-form-item-custom for="email" label="이메일" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="email" formControlName="email" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
       </div>
@@ -143,12 +151,15 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
 
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-form-input-select
-            formControlName="roleList" itemId="formauth"
-            [options]="authList" [opt_value]="'roleCode'" [opt_label]="'description'" [mode]="'tags'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">롤
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="roleList" label="롤" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select-custom required
+                formControlName="roleList" itemId="roleList"
+                [options]="authList" [opt_value]="'roleCode'" [opt_label]="'description'" [mode]="'tags'"
+                placeholder="Please select">
+              </nz-input-select-custom>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
     </form>
@@ -203,7 +214,7 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
 
   imageBase64: any;
 
-  staffNoField = viewChild.required<NzInputTextComponent>('staffNo');
+  //staffNoField = viewChild.required<NzInputTextComponent>('staffNo');
 
   private service = inject(UserService);
   private deptService = inject(DeptService);
@@ -238,7 +249,7 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   ngAfterViewInit(): void {
-    this.staffNoField().focus();
+    //this.staffNoField().focus();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

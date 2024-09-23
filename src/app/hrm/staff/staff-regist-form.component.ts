@@ -22,6 +22,8 @@ import { Staff } from './staff.model';
 import { GlobalProperty } from 'src/app/core/global-property';
 import { NzUploadChangeParam, NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 import { saveAs } from 'file-saver';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 
 
 @Component({
@@ -34,13 +36,15 @@ import { saveAs } from 'file-saver';
     NzFormModule,
     NzButtonModule,
     NzIconModule,
+    NzInputModule,
     NzAvatarModule,
     NzUploadModule,
     NzDividerModule,
     NzInputTextComponent,
     NzInputRadioGroupComponent,
     NzInputRregnoComponent,
-    NzInputDateComponent
+    NzInputDateComponent,
+    NzFormItemCustomComponent
   ],
   template: `
     <!--{{fg.getRawValue() | json}}-->
@@ -127,11 +131,15 @@ import { saveAs } from 'file-saver';
 
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12" >
-          <app-nz-input-rregno
-            formControlName="residentRegistrationNumber" itemId="residentRegistrationNumber"
-            placeholder=""
-            [required]="false" [readonly]="true" [nzErrorTip]="errorTpl">주민등록번호
-          </app-nz-input-rregno>
+          <nz-form-item-custom for="residentRegistrationNumber" label="주민등록번호" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <app-nz-input-rregno
+                formControlName="residentRegistrationNumber" itemId="residentRegistrationNumber"
+                placeholder="주민등록번호를 입력해주세요."
+                [required]="true">
+              </app-nz-input-rregno>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">

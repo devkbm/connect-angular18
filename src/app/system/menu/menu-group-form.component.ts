@@ -15,7 +15,7 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzFormItemComponent } from "../../shared-component/nz-form-item/nz-form-item.component";
+import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
@@ -29,7 +29,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzCrudButtonGroupComponent,
     NzInputTextComponent,
     NzInputTextareaComponent,
-    NzFormItemComponent,
+    NzFormItemCustomComponent,
     NzInputModule
 ],
   template: `
@@ -50,40 +50,40 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       <div nz-row nzGutter="8">
 
         <div nz-col nzSpan="8">
-          <app-nz-form-item for="menuGroupCode" label="메뉴그룹코드" required="true">
+          <nz-form-item-custom for="menuGroupCode" label="메뉴그룹코드" required="true">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <input nz-input id="menuGroupCode" formControlName="menuGroupCode" placeholder="메뉴그룹코드를 입력해주세요." />
             </nz-form-control>
-          </app-nz-form-item>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-form-item for="menuGroupName" label="메뉴그룹명" required="true">
+          <nz-form-item-custom for="menuGroupName" label="메뉴그룹명" required="true">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <input nz-input id="menuGroupName" formControlName="menuGroupName" placeholder="메뉴그룹명을 입력해주세요." />
             </nz-form-control>
-          </app-nz-form-item>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-form-item for="menuGroupUrl" label="메뉴그룹URL" required="true">
+          <nz-form-item-custom for="menuGroupUrl" label="메뉴그룹URL" required="true">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <input nz-input id="menuGroupUrl" formControlName="menuGroupUrl" placeholder="메뉴그룹URL을 입력해주세요." />
             </nz-form-control>
-          </app-nz-form-item>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-form-item for="description" label="비고">
+          <nz-form-item-custom for="description" label="비고">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <textarea nz-input id="description" formControlName="description"
               placeholder="비고" [rows]="25">
               </textarea>
             </nz-form-control>
-          </app-nz-form-item>
+          </nz-form-item-custom>
         </div>
       </div>
 

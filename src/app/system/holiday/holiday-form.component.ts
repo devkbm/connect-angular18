@@ -1,18 +1,20 @@
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { CommonModule, formatDate } from '@angular/common';
-import { NzFormModule } from 'ng-zorro-antd/form';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-
-import { Component, OnInit, Output, EventEmitter, AfterViewInit, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ResponseObject } from 'src/app/core/model/response-object';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
+
 import { HolidayService } from './holiday.service';
-import { ResponseObject } from 'src/app/core/model/response-object';
 import { Holiday } from './holiday.model';
+
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
+
 
 @Component({
   selector: 'app-holiday-form',
@@ -22,10 +24,10 @@ import { Holiday } from './holiday.model';
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
+    NzInputModule,
+    NzDatePickerModule,
     NzCrudButtonGroupComponent,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
-    NzInputDateComponent
+    NzFormItemCustomComponent
   ],
   template: `
     {{fg.value | json}} - {{fg.valid}}
@@ -44,20 +46,22 @@ import { Holiday } from './holiday.model';
       <!-- 1 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <!--휴일 필드-->
-          <app-nz-input-date
-            formControlName="date" itemId="date"
-            [required]="true" [nzErrorTip]="errorTpl">휴일
-          </app-nz-input-date>
+          <nz-form-item-custom for="date" label="휴일" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-date-picker nzId="date" formControlName="date" style="width: 150px">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <!--휴일명 필드 -->
-          <app-nz-input-text
-            formControlName="holidayName" itemId="holidayName"
-            placeholder="휴일명을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">휴일명
-          </app-nz-input-text>
+          <nz-form-item-custom for="holidayName" label="휴일명" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="holidayName" formControlName="holidayName" required
+                placeholder="휴일명을 입력해주세요."
+              />
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
       </div>
@@ -65,13 +69,13 @@ import { Holiday } from './holiday.model';
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <!--설명 필드-->
-          <app-nz-input-textarea
-            formControlName="comment" itemId="comment"
-            placeholder="설명을 입력해주세요."
-            [rows]="15"
-            [required]="false" [nzErrorTip]="errorTpl">설명
-          </app-nz-input-textarea>
+          <nz-form-item-custom for="comment" label="설명">
+            <nz-form-control>
+              <textarea nz-input id="comment" formControlName="comment"
+                placeholder="설명을 입력해주세요." [rows]="13">
+              </textarea>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -172,7 +176,7 @@ export class HolidayFormComponent extends FormBase implements OnInit, AfterViewI
 
   save(): void {
     if (this.fg.invalid) {
-      this.checkForm()
+      this.checkForm();
       return;
     }
 

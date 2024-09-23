@@ -1,23 +1,24 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
+import { ResponseList } from 'src/app/core/model/response-list';
 
 import { Role } from './role.model';
 import { existingRoleValidator } from './role-duplication-validator.directive';
 import { RoleService } from './role.service';
-
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-
-import { ResponseList } from 'src/app/core/model/response-list';
 import { MenuService } from '../menu/menu.service';
 import { MenuGroup } from '../menu/menu-group.model';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
+
 
 @Component({
   selector: 'app-role-form',
@@ -26,10 +27,11 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
+    NzFormModule,
+    NzInputModule,
+    NzFormItemCustomComponent,
     NzCrudButtonGroupComponent,
-    NzFormInputSelectComponent
+    NzInputSelectCustomComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -46,30 +48,37 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       </ng-template>
 
       <div class="card-1">
-        <app-nz-input-text #roleCode
-          formControlName="roleCode" itemId="roleCode"
-          placeholder="롤 코드를 입력해주세요."
-          [required]="true" [nzErrorTip]="errorTpl">롤 코드
-        </app-nz-input-text>
+        <nz-form-item-custom for="roleCode" label="롤 코드" required>
+          <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+            <input nz-input id="roleCode" formControlName="roleCode" required
+              placeholder="롤 코드를 입력해주세요."/>
+          </nz-form-control>
+        </nz-form-item-custom>
 
-        <app-nz-input-text
-          formControlName="roleName" itemId="roleName"
-          placeholder="롤 명을 입력해주세요."
-          [required]="false" [nzErrorTip]="errorTpl">롤 명
-        </app-nz-input-text>
+        <nz-form-item-custom for="roleName" label="롤 명" required>
+          <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+            <input nz-input id="roleName" formControlName="roleName" required
+              placeholder="롤 명을 입력해주세요."/>
+          </nz-form-control>
+        </nz-form-item-custom>
 
-        <app-nz-form-input-select
-            formControlName="menuGroupCode" itemId="menuGroupCode"
-            [options]="menuGroupList" [opt_value]="'menuGroupCode'" [opt_label]="'menuGroupName'"
-            [placeholder]="'Please select'" [nzErrorTip]="errorTpl" [required]="true">메뉴그룹
-          </app-nz-form-input-select>
+        <nz-form-item-custom for="menuGroupCode" label="메뉴그룹" required>
+          <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+            <nz-input-select-custom required
+              formControlName="menuGroupCode" itemId="menuGroupCode"
+              [options]="menuGroupList" [opt_value]="'menuGroupCode'" [opt_label]="'menuGroupName'"
+              placeholder="Please select"
+            ></nz-input-select-custom>
+          </nz-form-control>
+        </nz-form-item-custom>
 
-        <app-nz-input-textarea
-          formControlName="description" itemId="description"
-          placeholder="권한에 대한 설명을 입력해주세요."
-          [rows]="10"
-          [required]="false" [nzErrorTip]="errorTpl">설명
-        </app-nz-input-textarea>
+        <nz-form-item-custom for="description" label="설명">
+          <nz-form-control>
+            <textarea nz-input id="description" formControlName="description"
+            placeholder="권한에 대한 설명을 입력해주세요." [rows]="10">
+            </textarea>
+          </nz-form-control>
+        </nz-form-item-custom>
       </div>
     </form>
 
@@ -81,8 +90,6 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
         (deleteClick)="remove()">
       </app-nz-crud-button-group>
     </div>
-
-
   `,
   styles: [`
     .footer {
@@ -196,7 +203,7 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
 })
 export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  roleCode = viewChild.required<NzInputTextComponent>('roleCode');
+  //roleCode = viewChild.required<NzInputTextComponent>('roleCode');
 
   private service = inject(RoleService);
   private appAlarmService = inject(AppAlarmService);
@@ -226,7 +233,7 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   ngAfterViewInit(): void {
-    this.roleCode().focus();
+    //this.roleCode().focus();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

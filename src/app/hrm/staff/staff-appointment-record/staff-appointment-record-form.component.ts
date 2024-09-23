@@ -21,7 +21,8 @@ import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 import { StaffAppointmentRecord } from './staff-appointment-record.model';
 import { StaffAppointmentRecordService } from './staff-appointment-record.service';
 import { ResponseMap } from 'src/app/core/model/response-map';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
+
 
 
 @Component({

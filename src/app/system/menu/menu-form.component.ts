@@ -1,28 +1,25 @@
 import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 
 import { MenuService } from './menu.service';
 import { Menu } from './menu.model';
 import { MenuHierarchy } from './menu-hierarchy.model';
 import { MenuGroup } from './menu-group.model';
 import { existingMenuValidator } from './menu-duplication-validator.directive';
-import { CommonModule } from '@angular/common';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzFormItemComponent } from "../../shared-component/nz-form-item/nz-form-item.component";
-import { NzInputSelectComponent } from "../../shared-component/nz-input-select/nz-input-select.component";
-import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree-select/nz-input-tree-select.component";
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
+import { NzInputSelectCustomComponent } from "../../shared-component/nz-input-select-custom/nz-input-select-custom.component";
+import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree-select/nz-input-tree-select.component";
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
 @Component({
   selector: 'app-menu-form',
@@ -33,13 +30,11 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     ReactiveFormsModule,
     NzFormModule,
     NzCrudButtonGroupComponent,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
-    NzInputNumberCustomComponent,
-    NzFormItemComponent,
+
+    NzFormItemCustomComponent,
     NzInputModule,
-    NzInputSelectComponent,
-    NzFormInputSelectComponent,
+    NzInputNumberModule,
+    NzInputSelectCustomComponent,
     NzInputTreeSelectComponent
 ],
   template: `
@@ -59,108 +54,88 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <!-- 1 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <app-nz-form-item for="menuGroupCode" label="메뉴그룹코드" required="true">
+          <nz-form-item-custom for="menuGroupCode" label="메뉴그룹코드" required="true">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <app-nz-input-select required="true"
+              <nz-input-select-custom required="true"
                 formControlName="menuGroupCode" itemId="menuGroupCode"
                 (ngModelChange)="selectMenuGroup($event)"
                 [options]="menuGroupList" [opt_value]="'menuGroupCode'" [opt_label]="'menuGroupName'"
-                [placeholder]="'Please select'"
+                placeholder="Please select"
               >
-              </app-nz-input-select>
+              </nz-input-select-custom>
             </nz-form-control>
-          </app-nz-form-item>
-
-          <!--
-          <app-nz-form-input-select
-            formControlName="menuGroupCode" itemId="menuGroupCode"
-            (ngModelChange)="selectMenuGroup($event)"
-            [options]="menuGroupList" [opt_value]="'menuGroupCode'" [opt_label]="'menuGroupName'"
-            [placeholder]="'Please select'" [nzErrorTip]="errorTpl" [required]="true">메뉴그룹
-          </app-nz-form-input-select>
-          -->
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-form-item for="parentMenuCode" label="상위 메뉴" required="true">
+          <nz-form-item-custom for="parentMenuCode" label="상위 메뉴" required="true">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <app-nz-input-tree-select
+              <nz-input-tree-select
                 formControlName="parentMenuCode" itemId="parentMenuCode"
                 [nodes]="menuHiererachy"
-                placeholder="상위 메뉴 없음"
-              >
-              </app-nz-input-tree-select>
+                placeholder="상위 메뉴 없음">
+              </nz-input-tree-select>
             </nz-form-control>
-          </app-nz-form-item>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 2 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-form-item for="menuCode" label="메뉴코드" required>
+          <nz-form-item-custom for="menuCode" label="메뉴코드" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <input nz-input id="menuCode" formControlName="menuCode" required
                 placeholder="메뉴코드를 입력해주세요."
               />
             </nz-form-control>
-          </app-nz-form-item>
-
-          <!--
-          <app-nz-input-text #menuCode
-            formControlName="menuCode" itemId="menuCode"
-            placeholder="메뉴코드를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">메뉴코드
-          </app-nz-input-text>
-          -->
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-form-item for="menuName" label="메뉴명" required>
+          <nz-form-item-custom for="menuName" label="메뉴명" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <input nz-input id="menuName" formControlName="menuName" required
-                placeholder="메뉴명을 입력해주세요."
-              />
+                placeholder="메뉴명을 입력해주세요."/>
             </nz-form-control>
-          </app-nz-form-item>
-
-          <!--
-          <app-nz-input-text
-            formControlName="menuName" itemId="menuName"
-            placeholder="메뉴명을 입력해주세요."
-            [nzErrorTip]="errorTpl" [required]="true">메뉴명
-          </app-nz-input-text>
-          -->
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 3 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <app-nz-form-input-select
-            formControlName="menuType" itemId="menuType"
-            [options]="menuTypeList" [opt_value]="'value'" [opt_label]="'label'"
-            [placeholder]="'메뉴타입을 선택해주세요'" [nzErrorTip]="errorTpl" [required]="true">메뉴타입
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="menuType" label="메뉴타입" required="true">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select-custom required="true"
+                formControlName="menuType" itemId="menuType"
+                [options]="menuTypeList" [opt_value]="'value'" [opt_label]="'label'"
+                placeholder="메뉴타입을 선택해주세요">
+              </nz-input-select-custom>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-input-text
-            formControlName="appUrl" itemId="appUrl"
-            placeholder="URL을 입력해주세요."
-            [nzErrorTip]="errorTpl" [required]="true">APP URL
-          </app-nz-input-text>
+          <nz-form-item-custom for="appUrl" label="APP URL" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="appUrl" formControlName="appUrl" required
+                placeholder="URL을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 4 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <app-nz-input-number-custom
-            formControlName="sequence" itemId="sequence"
-            placeholder="순번을 입력해주세요."
-            [nzErrorTip]="errorTpl" [required]="true">순번
-          </app-nz-input-number-custom>
+          <nz-form-item-custom for="sequence" label="순번" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-number nzId="sequence" formControlName="sequence" required
+                [nzMin]="0" [nzMax]="9999" placeholder="순번을 입력해주세요.">
+              </nz-input-number>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -204,7 +179,7 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
 })
 export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  menuCode = viewChild.required<NzInputTextComponent>('menuCode');
+  //menuCode = viewChild.required<NzInputTextComponent>('menuCode');
 
   @Input() menuGroupId: any;
 
@@ -259,7 +234,7 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
     this.fg.controls.menuGroupCode.setValue(this.menuGroupId);
     //this.fg.controls.menuCode.disable();
 
-    this.menuCode().focus();
+    //this.menuCode().focus();
   }
 
   modifyForm(formData: Menu): void {

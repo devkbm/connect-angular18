@@ -1,11 +1,6 @@
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputRregnoComponent } from 'src/app/shared-component/nz-input-rregno/nz-input-rregno.component';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -15,6 +10,12 @@ import { ResponseObject } from 'src/app/core/model/response-object';
 import { StaffService } from '../staff.service';
 import { NewStaff } from './new-staff-form.model';
 
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputRregnoComponent } from 'src/app/shared-component/nz-input-rregno/nz-input-rregno.component';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+
 @Component({
   selector: 'app-new-staff-form',
   standalone: true,
@@ -23,7 +24,8 @@ import { NewStaff } from './new-staff-form.model';
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
-    NzInputTextComponent,
+    NzInputModule,
+    NzFormItemCustomComponent,
     NzInputRregnoComponent,
     NzCrudButtonGroupComponent
   ],
@@ -44,27 +46,33 @@ import { NewStaff } from './new-staff-form.model';
       <!-- 1 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-input-text #staffNo
-            formControlName="staffNo" itemId="staffNo"
-            placeholder="직원번호를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원번호
-          </app-nz-input-text>
+          <nz-form-item-custom for="staffNo" label="직원번호" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="staffNo" formControlName="staffNo" required
+                placeholder="직원번호를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="name" itemId="name"
-            placeholder="직원명을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원명
-          </app-nz-input-text>
+          <nz-form-item-custom for="name" label="직원명" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="name" formControlName="name" required
+                placeholder="직원명을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-rregno
-            formControlName="residentRegistrationNumber" itemId="residentRegistrationNumber"
-            placeholder="주민등록번호를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">주민등록번호
-          </app-nz-input-rregno>
+          <nz-form-item-custom for="residentRegistrationNumber" label="주민등록번호" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <app-nz-input-rregno
+                formControlName="residentRegistrationNumber" itemId="residentRegistrationNumber"
+                placeholder="주민등록번호를 입력해주세요."
+                [required]="true">
+              </app-nz-input-rregno>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -94,7 +102,7 @@ import { NewStaff } from './new-staff-form.model';
 })
 export class NewStaffFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  staffNo = viewChild.required<NzInputTextComponent>('staffNo');
+  //staffNo = viewChild.required<NzInputTextComponent>('staffNo');
 
   private service = inject(StaffService);
   private appAlarmService = inject(AppAlarmService);
@@ -120,7 +128,7 @@ export class NewStaffFormComponent extends FormBase implements OnInit, AfterView
   newForm(id: String) {
     this.formType = FormType.NEW;
 
-    this.staffNo().focus();
+    //this.staffNo().focus();
   }
 
   /*

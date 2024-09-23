@@ -1,23 +1,23 @@
-import { CommonModule } from '@angular/common';
-
 import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { WebResourceService } from './web-resource.service';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
-
 import { ResponseObject } from 'src/app/core/model/response-object';
-import { WebResource } from './web-resource.model';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
-import { existingWebResourceValidator } from './web-resource-duplication-validator.directive';
 import { ResponseList } from 'src/app/core/model/response-list';
+
+import { WebResourceService } from './web-resource.service';
+import { WebResource } from './web-resource.model';
+import { existingWebResourceValidator } from './web-resource-duplication-validator.directive';
 import { ResouceTypeEnum } from './resource-type-enum';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
 
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
 
 @Component({
   selector: 'app-web-resource-form',
@@ -26,10 +26,11 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
+    NzFormModule,
+    NzInputModule,
     NzCrudButtonGroupComponent,
-    NzFormInputSelectComponent
+    NzFormItemCustomComponent,
+    NzInputSelectCustomComponent
   ],
   template: `
     {{fg.getRawValue()| json}} - {{fg.valid}}
@@ -48,49 +49,57 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <!-- 1 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <app-nz-input-text #resourceCode
-            formControlName="resourceId" itemId="resourceId"
-            placeholder="리소스ID를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">리소스ID
-          </app-nz-input-text>
+          <nz-form-item-custom for="resourceId" label="리소스ID" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="resourceId" formControlName="resourceId" required
+                placeholder="리소스ID를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-input-text
-            formControlName="resourceName" itemId="resourceName"
-            [required]="true" [nzErrorTip]="errorTpl">리소스명
-          </app-nz-input-text>
+          <nz-form-item-custom for="resourceName" label="리소스명" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="resourceName" formControlName="resourceName" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <app-nz-form-input-select
-            formControlName="resourceType" itemId="resourceType"
-            [options]="resourceTypeList"
-            [placeholder]="'리소스타입을 선택해주세요'" [nzErrorTip]="errorTpl" [required]="true">리소스타입
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="resourceType" label="리소스타입" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select-custom required
+                formControlName="resourceType" itemId="resourceType"
+                [options]="resourceTypeList" [opt_value]="'value'" [opt_label]="'label'"
+                placeholder="Please select">
+              </nz-input-select-custom>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-input-text
-            formControlName="url" itemId="url"
-            placeholder="URL 정보를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">URL 정보
-          </app-nz-input-text>
-
+          <nz-form-item-custom for="url" label="URL 정보" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="url" formControlName="url" required
+                placeholder="URL 정보를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 3 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-input-textarea
-            formControlName="description" itemId="description"
-            placeholder="설명를 입력해주세요."
-            [rows]="20">설명
-          </app-nz-input-textarea>
+          <nz-form-item-custom for="description" label="설명">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <textarea nz-input id="description" formControlName="description"
+                placeholder="설명를 입력해주세요." [rows]="10">
+              </textarea>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -132,7 +141,7 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
 })
 export class WebResourceFormComponent extends FormBase implements OnInit, AfterViewInit {
 
-  resourceCode = viewChild.required<NzInputTextComponent>('resourceCode');
+  //resourceCode = viewChild.required<NzInputTextComponent>('resourceCode');
 
   resourceTypeList: ResouceTypeEnum[] = [];
 
@@ -162,7 +171,7 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
   }
 
   ngAfterViewInit(): void {
-    this.resourceCode().focus();
+    //this.resourceCode().focus();
   }
 
   newForm(): void {

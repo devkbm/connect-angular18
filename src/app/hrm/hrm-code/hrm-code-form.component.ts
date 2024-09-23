@@ -18,8 +18,9 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { HrmCodeService } from './hrm-code.service';
 import { HrmCode } from './hrm-code.model';
 import { existingHrmTypeDetailCodeValidator } from './hrm-code-duplication-validator';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+
 import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-form-input-checkbox.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
 
 
 
@@ -28,9 +29,17 @@ import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-
   selector: 'app-hrm-code-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
-    NzFormModule, NzDividerModule, NzInputTextComponent, NzInputTextareaComponent,
-    NzFormInputSelectComponent, NzInputDateComponent, NzInputNumberCustomComponent, NzCrudButtonGroupComponent,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzDividerModule,
+    NzInputTextComponent,
+    NzInputTextareaComponent,
+    NzFormInputSelectComponent,
+    NzInputDateComponent,
+    NzInputNumberCustomComponent,
+    NzCrudButtonGroupComponent,
     NzFormInputCheckboxComponent
   ],
   template: `

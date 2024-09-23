@@ -22,16 +22,25 @@ import { HrmCodeService } from '../hrm-code/hrm-code.service';
 import { DutyDate, DutyApplication } from './duty-application.model';
 import { DutyApplicationService } from './duty-application.service';
 import { DutyCodeService } from './duty-code.service';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
+
 
 
 @Component({
   selector: 'app-duty-application-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
-    NzFormModule, NzDividerModule, NzInputTextComponent, NzFormInputSelectComponent, NzInputDateComponent, NzCrudButtonGroupComponent,
-    DutyDateListComponent, NzInputSelectStaffComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzDividerModule,
+    NzInputTextComponent,
+    NzFormInputSelectComponent,
+    NzInputDateComponent,
+    NzCrudButtonGroupComponent,
+    DutyDateListComponent,
+    NzInputSelectStaffComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}

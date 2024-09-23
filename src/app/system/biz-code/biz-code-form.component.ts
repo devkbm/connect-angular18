@@ -1,11 +1,7 @@
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
 
-import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -14,24 +10,28 @@ import { ResponseObject } from 'src/app/core/model/response-object';
 
 import { BizCodeService } from './biz-code.service';
 import { BizCode } from './biz-code.model';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-form-input-checkbox.component';
 
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
 
 @Component({
   selector: 'app-biz-code-form',
   standalone: true,
-  imports:  [
+  imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
-    NzInputNumberCustomComponent,
-    NzFormInputCheckboxComponent,
-    NzCrudButtonGroupComponent
-  ],
+    NzInputModule,
+    NzCheckboxModule,
+    NzInputNumberModule,
+    NzCrudButtonGroupComponent,
+    NzFormItemCustomComponent
+],
   template: `
     {{fg.getRawValue() | json}}
     <form nz-form [formGroup]="fg" nzLayout="vertical">
@@ -46,61 +46,61 @@ import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-
       <!-- 1 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="typeId" itemId="typeId"
-            placeholder=""
-            [required]="true" [nzErrorTip]="errorTpl">업무코드분류ID
-          </app-nz-input-text>
+          <nz-form-item-custom for="typeId" label="업무코드분류ID" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="typeId" formControlName="typeId" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="code" itemId="code"
-            [required]="true"
-            [nzErrorTip]="errorTpl">코드
-          </app-nz-input-text>
+          <nz-form-item-custom for="code" label="코드" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="code" formControlName="code" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="codeName" itemId="codeName"
-            [required]="true"
-            [nzErrorTip]="errorTpl">코드명
-          </app-nz-input-text>
+          <nz-form-item-custom for="codeName" label="코드명" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="codeName" formControlName="codeName" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <!--사용여부 필드-->
-          <app-nz-form-input-checkbox
-            formControlName="useYn"
-            checkboxText="사용여부"
-            [required]="true">사용여부
-          </app-nz-form-input-checkbox>
+          <nz-form-item-custom for="useYn" label="사용여부" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <label nz-checkbox nzId="useYn" formControlName="useYn"></label>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <!--순번 필드-->
-          <app-nz-input-number-custom
-            formControlName="sequence" itemId="sequence"
-            [required]="true"
-            [nzErrorTip]="errorTpl">순번
-          </app-nz-input-number-custom>
+          <nz-form-item-custom for="sequence" label="순번" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-number nzId="sequence" formControlName="sequence" required
+                [nzMin]="0" [nzMax]="9999"
+              ></nz-input-number>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 3 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <!--비고 필드-->
-          <app-nz-input-textarea
-            formControlName="comment" itemId="comment"
-            placeholder="비고를 입력해주세요."
-            [rows]="20"
-            [required]="false" [nzErrorTip]="errorTpl">비고
-          </app-nz-input-textarea>
+          <nz-form-item-custom for="comment" label="비고">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <textarea nz-input id="comment" formControlName="comment"
+              placeholder="비고를 입력해주세요." [rows]="20">
+              </textarea>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 

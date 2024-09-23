@@ -1,20 +1,21 @@
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
-
 import { ResponseObject } from 'src/app/core/model/response-object';
+
 import { WordService } from './word.service';
 import { Word } from './word.model';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+
+
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 
 @Component({
   selector: 'app-word-form',
@@ -23,9 +24,9 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
-    NzFormInputSelectComponent,
+    NzFormModule,
+    NzInputModule,
+    NzFormItemCustomComponent,
     NzCrudButtonGroupComponent
   ],
   template: `
@@ -44,39 +45,43 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <!-- 1 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-input-text #logicalName
-            formControlName="logicalName" itemId="logicalName"
-            placeholder="logicalName을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">logicalName
-          </app-nz-input-text>
+          <nz-form-item-custom for="logicalName" label="logicalName" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="logicalName" formControlName="logicalName" required
+                placeholder="logicalName을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="physicalName" itemId="physicalName"
-            placeholder="physicalName 입력해주세요."
-            [nzErrorTip]="errorTpl" [required]="true">physicalName
-          </app-nz-input-text>
+          <nz-form-item-custom for="physicalName" label="physicalName" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="physicalName" formControlName="physicalName" required
+                placeholder="physicalName 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="logicalNameEng" itemId="logicalNameEng"
-            placeholder="logicalNameEng 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">logicalNameEng
-          </app-nz-input-text>
+          <nz-form-item-custom for="logicalNameEng" label="logicalNameEng">
+            <nz-form-control>
+              <input nz-input id="logicalNameEng" formControlName="logicalNameEng"
+                placeholder="logicalNameEng 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 2 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-input-textarea
-            formControlName="comment" itemId="comment"
-            placeholder="비고를 입력해주세요."
-            [rows] = "25"
-            [required]="false" [nzErrorTip]="errorTpl">비고
-          </app-nz-input-textarea>
+          <nz-form-item-custom for="comment" label="비고">
+            <nz-form-control>
+              <textarea nz-input id="comment" formControlName="comment"
+                placeholder="비고를 입력해주세요." [rows]="10">
+              </textarea>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 

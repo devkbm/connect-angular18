@@ -11,14 +11,20 @@ import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-
 import { CommonModule } from '@angular/common';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
+import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
+
 
 @Component({
   selector: 'app-team-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NzFormModule,
-    NzInputTextComponent, NzCrudButtonGroupComponent, NzFormInputSelectComponent
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputTextComponent,
+    NzCrudButtonGroupComponent,
+    NzFormInputSelectComponent
   ],
   template: `
     <form nz-form [formGroup]="fg" nzLayout="vertical">
@@ -92,11 +98,10 @@ export class TeamFormComponent extends FormBase implements OnInit, AfterViewInit
 
   members: TeamJoinableUserModel[] = [];
 
-  private fb = inject(FormBuilder);
   private service = inject(TeamService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  override fg = inject(FormBuilder).group({
     teamId      : new FormControl<string | null>(null, { validators: [Validators.required] }),
     teamName    : new FormControl<string | null>(null, { validators: [Validators.required] }),
     memberList  : new FormControl<string[] | null>(null)

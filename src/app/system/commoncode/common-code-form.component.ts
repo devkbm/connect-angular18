@@ -1,14 +1,6 @@
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
-import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
-
-import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { CommonCodeService } from './common-code.service';
@@ -20,10 +12,14 @@ import { CommonCodeHierarchy } from './common-code-hierarchy.model';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { SystemTypeEnum } from './system-type-enum.model';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-form-input-select.component';
-import { NzFormItemComponent } from "../../shared-component/nz-form-item/nz-form-item.component";
-import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
 
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzFormItemCustomComponent } from "src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component";
+import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
+import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
 
 @Component({
   selector: 'app-common-code-form',
@@ -35,14 +31,11 @@ import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tr
     NzFormModule,
     NzInputModule,
     NzInputNumberModule,
-    NzInputDateComponent,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
-    NzFormInputSelectComponent,
-    NzInputNumberCustomComponent,
-    NzFormItemComponent,
+    NzDatePickerModule,
+    NzFormItemCustomComponent,
+    NzInputSelectCustomComponent,
     NzInputTreeSelectComponent
-],
+  ],
   template: `
     {{fg.getRawValue() | json}}
     {{fg.get('fixedLengthYn')?.value}}
@@ -60,28 +53,29 @@ import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tr
       <!-- 1 row -->
       <div nz-row nzGutter="8">
 
-        <!--시스템구분코드 필드-->
         <div nz-col nzSpan="4">
-          <app-nz-form-input-select
-            formControlName="systemTypeCode" itemId="systemTypeCode"
-            [options]="systemTypeCodeList" [opt_value]="'value'" [opt_label]="'label'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">시스템구분코드
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="systemTypeCode" label="시스템구분코드" required="true">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select-custom required="true"
+                formControlName="systemTypeCode" itemId="systemTypeCode"
+                [options]="systemTypeCodeList" [opt_value]="'value'" [opt_label]="'label'"
+                placeholder="Please select">
+              </nz-input-select-custom>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <!--상위 공통코드 필드-->
         <div nz-col nzSpan="8">
-          <app-nz-form-item for="parentId" label="상위 공통코드">
+          <nz-form-item-custom for="parentId" label="상위 공통코드">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <app-nz-input-tree-select
+              <nz-input-tree-select
                 formControlName="parentId" itemId="parentId"
                 [nodes]="nodeItems"
-                placeholder="Please select"
-              >
-              </app-nz-input-tree-select>
+                placeholder="Please select">
+              </nz-input-tree-select>
             </nz-form-control>
-          </app-nz-form-item>
+          </nz-form-item-custom>
         </div>
 
       </div>
@@ -89,27 +83,32 @@ import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tr
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="code" itemId="code"
-            placeholder="코드를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">코드
-          </app-nz-input-text>
+          <nz-form-item-custom for="code" label="코드" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="code" formControlName="code" required
+                placeholder="코드를 입력해주세요."
+              />
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="codeName" itemId="codeName"
-            placeholder="코드명 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">코드명
-          </app-nz-input-text>
+          <nz-form-item-custom for="codeName" label="코드명" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="codeName" formControlName="codeName" required
+                placeholder="코드명 입력해주세요."
+              />
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="codeNameAbbreviation" itemId="codeNameAbbreviation"
-            placeholder="코드약어를 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">코드약어
-          </app-nz-input-text>
+          <nz-form-item-custom for="codeNameAbbreviation" label="코드약어">
+            <nz-form-control>
+              <input nz-input id="codeNameAbbreviation" formControlName="codeNameAbbreviation"
+                placeholder="코드약어를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
       </div>
@@ -117,46 +116,53 @@ import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tr
       <!-- 3 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="5">
-          <!--시작일 필드-->
-          <app-nz-input-date
-            formControlName="fromDate" itemId="fromDate"
-            [required]="true" [nzErrorTip]="errorTpl">시작일
-          </app-nz-input-date>
+          <nz-form-item-custom for="fromDate" label="시작일" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-date-picker nzId="fromDate" formControlName="fromDate">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
         <div nz-col nzSpan="5">
-          <!--종료일 필드-->
-          <app-nz-input-date
-            formControlName="toDate" itemId="toDate"
-            [required]="true" [nzErrorTip]="errorTpl">종료일
-          </app-nz-input-date>
-        </div>
-
-        <div nz-col nzSpan="5">
-        <app-nz-input-number-custom
-            formControlName="seq" itemId="seq"
-            [required]="true"
-            [nzErrorTip]="errorTpl">출력 순번
-          </app-nz-input-number-custom>
+          <nz-form-item-custom for="toDate" label="종료일" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-date-picker nzId="toDate" formControlName="toDate">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="5">
-        <app-nz-input-number-custom
-            formControlName="lowLevelCodeLength" itemId="lowLevelCodeLength"
-            [required]="false"
-            [nzErrorTip]="errorTpl">하위 코드 길이
-          </app-nz-input-number-custom>
+          <nz-form-item-custom for="seq" label="출력 순번" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-number nzId="seq" formControlName="seq" required
+                [nzMin]="0" [nzMax]="9999">
+              </nz-input-number>
+            </nz-form-control>
+          </nz-form-item-custom>
+        </div>
+
+        <div nz-col nzSpan="5">
+          <nz-form-item-custom for="lowLevelCodeLength" label="하위 코드 길이">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-number nzId="lowLevelCodeLength" formControlName="lowLevelCodeLength"
+                [nzMin]="0" [nzMax]="9999">
+              </nz-input-number>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 4 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-input-textarea
-            formControlName="cmt" itemId="cmt"
-            placeholder="비고를 입력해주세요."
-            [rows]="13"
-            [required]="false" [nzErrorTip]="errorTpl">비고
-          </app-nz-input-textarea>
+          <nz-form-item-custom for="cmt" label="비고">
+            <nz-form-control>
+              <textarea nz-input id="cmt" formControlName="cmt"
+                placeholder="비고" [rows]="13">
+              </textarea>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
