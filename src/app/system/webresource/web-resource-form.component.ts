@@ -16,7 +16,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
-import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 
 @Component({
@@ -30,7 +30,7 @@ import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-
     NzInputModule,
     NzCrudButtonGroupComponent,
     NzFormItemCustomComponent,
-    NzInputSelectCustomComponent
+    NzInputSelectComponent
   ],
   template: `
     {{fg.getRawValue()| json}} - {{fg.valid}}
@@ -71,11 +71,11 @@ import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-
         <div nz-col nzSpan="12">
           <nz-form-item-custom for="resourceType" label="리소스타입" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <nz-input-select-custom required
+              <nz-input-select required
                 formControlName="resourceType" itemId="resourceType"
                 [options]="resourceTypeList" [opt_value]="'value'" [opt_label]="'label'"
                 placeholder="Please select">
-              </nz-input-select-custom>
+              </nz-input-select>
             </nz-form-control>
           </nz-form-item-custom>
         </div>

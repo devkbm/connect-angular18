@@ -1,13 +1,6 @@
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzDeptTreeSelectComponent } from 'src/app/shared-component/nz-dept-tree-select/nz-dept-tree-select.component';
-
-import { Component, OnInit, Input, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -15,14 +8,21 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { DeptService } from 'src/app/system/dept/dept.service';
-import { HrmCode } from '../../hrm-code/hrm-code.model';
-import { HrmCodeService } from '../../hrm-code/hrm-code.service';
+import { ResponseMap } from 'src/app/core/model/response-map';
 
 import { StaffAppointmentRecord } from './staff-appointment-record.model';
 import { StaffAppointmentRecordService } from './staff-appointment-record.service';
-import { ResponseMap } from 'src/app/core/model/response-map';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
+import { HrmCode } from '../../hrm-code/hrm-code.model';
+import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzInputTreeSelectDeptComponent } from 'src/app/shared-component/nz-input-tree-select-dept/nz-input-tree-select-dept.component';
 
 
 @Component({
@@ -33,12 +33,13 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
+    NzInputModule,
+    NzDatePickerModule,
     NzDividerModule,
-    NzInputTextComponent,
-    NzFormInputSelectComponent,
-    NzInputDateComponent,
     NzCrudButtonGroupComponent,
-    NzDeptTreeSelectComponent
+    NzInputTreeSelectDeptComponent,
+    NzFormItemCustomComponent,
+    NzInputSelectComponent,
   ],
   template: `
     {{fg.value | json}}
@@ -55,19 +56,21 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <div nz-row nzGutter="8">
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="staffNo" itemId="staffNo"
-            placeholder="직원번호를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원번호
-          </app-nz-input-text>
+          <nz-form-item-custom for="staffNo" label="직원번호" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="staffNo" formControlName="staffNo" required
+                placeholder="직원번호를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="staffName" itemId="staffName"
-            placeholder="직원명을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원명
-          </app-nz-input-text>
+          <nz-form-item-custom for="staffName" label="직원명" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="staffName" formControlName="staffName" required
+                placeholder="직원명을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -75,61 +78,63 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <div nz-row nzGutter="8">
 
         <div nz-col nzSpan="6">
-          <app-nz-input-text
-            formControlName="seq" itemId="seq"
-            placeholder="신규"
-            [required]="false" [readonly]="true" [nzErrorTip]="errorTpl">발령순번
-          </app-nz-input-text>
+          <nz-form-item-custom for="seq" label="발령순번">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="seq" formControlName="seq" readonly
+                placeholder="신규"/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-
-          <app-nz-form-input-select
-            formControlName="appointmentTypeCode" itemId="appointmentTypeCode"
-            [options]="appointmentTypeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">발령분류
-          </app-nz-form-input-select>
-          <!--
-          <app-nz-input-text
-            formControlName="appointmentTypeCode" itemId="appointmentTypeCode"
-            placeholder=""
-            [required]="false" [nzErrorTip]="errorTpl">발령분류
-          </app-nz-input-text>
-          -->
+          <nz-form-item-custom for="appointmentTypeCode" label="발령분류" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="appointmentTypeCode" itemId="appointmentTypeCode"
+                [options]="appointmentTypeList" [opt_value]="'code'" [opt_label]="'codeName'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-date
-            formControlName="appointmentDate" itemId="appointmentDate"
-            [required]="true" [nzErrorTip]="errorTpl">발령일
-          </app-nz-input-date>
+          <nz-form-item-custom for="appointmentDate" label="발령일" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-date-picker nzId="appointmentDate" formControlName="appointmentDate">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-date
-            formControlName="appointmentEndDate" itemId="appointmentEndDate"
-            [required]="false" [nzErrorTip]="errorTpl">발령종료일
-          </app-nz-input-date>
+          <nz-form-item-custom for="appointmentEndDate" label="발령종료일">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-date-picker nzId="appointmentEndDate" formControlName="appointmentEndDate">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 3 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <app-nz-input-text
-            formControlName="recordName" itemId="recordName"
-            placeholder="발령내용을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">발령내용
-          </app-nz-input-text>
+          <nz-form-item-custom for="recordName" label="발령내용" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="recordName" formControlName="recordName" required
+                placeholder="발령내용을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-input-text
-            formControlName="comment" itemId="comment"
-            placeholder="비고내용을 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">비고
-          </app-nz-input-text>
+          <nz-form-item-custom for="comment" label="비고" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="comment" formControlName="comment" required
+                placeholder="비고내용을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
       </div>
@@ -138,28 +143,33 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <!-- 4 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-dept-tree-select
-            formControlName="blngDeptCode"
-            placeholder="부서 없음"
-            [required]="true">소속부서
-          </app-nz-dept-tree-select>
+          <nz-form-item-custom for="blngDeptCode" label="소속부서" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-tree-select-dept itemId="blngDeptCode" formControlName="blngDeptCode" required>
+              </nz-input-tree-select-dept>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-dept-tree-select
-            formControlName="workDeptCode"
-            placeholder="부서 없음"
-            [required]="true">근무부서
-          </app-nz-dept-tree-select>
+          <nz-form-item-custom for="workDeptCode" label="근무부서" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-tree-select-dept itemId="workDeptCode" formControlName="workDeptCode" required>
+              </nz-input-tree-select-dept>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-form-input-select
-            formControlName="dutyResponsibilityCode" itemId="dutyResponsibilityCode"
-            [options]="dutyResponsibilityCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="false">직책
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="dutyResponsibilityCode" label="직책">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select
+                formControlName="dutyResponsibilityCode" itemId="dutyResponsibilityCode"
+                [options]="dutyResponsibilityCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -167,30 +177,39 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <!-- 5 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-form-input-select
-            formControlName="jobGroupCode" itemId="jobGroupCode"
-            [options]="groupJobCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">직군
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="jobGroupCode" label="직군" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="jobGroupCode" itemId="jobGroupCode"
+                [options]="groupJobCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-form-input-select
-            formControlName="jobPositionCode" itemId="jobPositionCode"
-            [options]="jobPositionCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">직위
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="jobPositionCode" label="직위" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="jobPositionCode" itemId="jobPositionCode"
+                [options]="jobPositionCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-form-input-select
-            formControlName="jobCode" itemId="jobCode"
-            [options]="jobCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">직무
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="jobCode" label="직무" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="jobCode" itemId="jobCode"
+                [options]="jobCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -198,30 +217,39 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <div nz-row nzGutter="8">
 
         <div nz-col nzSpan="8">
-          <app-nz-form-input-select
-            formControlName="occupationCode" itemId="occupationCode"
-            [options]="occupationCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">직종
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="occupationCode" label="직종" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="occupationCode" itemId="occupationCode"
+                [options]="occupationCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-form-input-select
-            formControlName="jobGradeCode" itemId="jobGradeCode"
-            [options]="jobGradeCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">직급
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="jobGradeCode" label="직급" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="jobGradeCode" itemId="jobGradeCode"
+                [options]="jobGradeCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-form-input-select
-            formControlName="payStepCode" itemId="payStepCode"
-            [options]="payStepCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">호봉
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="payStepCode" label="호봉" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="payStepCode" itemId="payStepCode"
+                [options]="payStepCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 

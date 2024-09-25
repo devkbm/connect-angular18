@@ -1,4 +1,4 @@
-export interface NzInputDeptSelectModel {
+export interface NzInputSelectDeptModel {
   deptId: string;
   deptCode: string;
   parentDeptCode: string;

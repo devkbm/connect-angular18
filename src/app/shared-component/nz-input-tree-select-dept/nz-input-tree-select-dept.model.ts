@@ -1,4 +1,4 @@
-export class DeptHierarchy {
+export class NzInputTreeSelectDept {
   constructor(
     public parentDeptCode: string,
     public deptCode: string,
@@ -14,5 +14,5 @@ export class DeptHierarchy {
     public title: string,
     public key: string,
     public isLeaf: boolean,
-    public children: DeptHierarchy[]) {}
+    public children: NzInputTreeSelectDept[]) {}
 }

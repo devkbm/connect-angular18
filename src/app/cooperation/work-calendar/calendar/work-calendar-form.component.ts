@@ -1,9 +1,8 @@
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { SessionManager } from 'src/app/core/session-manager';
-import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { SessionManager } from 'src/app/core/session-manager';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseList } from 'src/app/core/model/response-list';
@@ -12,12 +11,12 @@ import { WorkCalendar } from './work-calendar.model';
 import { WorkCalendarMember } from './work-calendar-member.model';
 import { WorkCalendarService } from './work-calendar.service';
 
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-input-color-picker/nz-input-simple-color-picker.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
-
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-input-color-picker/nz-input-simple-color-picker.component';
 
 
 @Component({
@@ -28,10 +27,11 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
-    NzInputTextComponent,
+    NzInputModule,
     NzCrudButtonGroupComponent,
     NzInputSimpleColorPickerComponent,
-    NzFormInputSelectComponent
+    NzFormItemCustomComponent,
+    NzInputSelectComponent,
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -48,21 +48,19 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
 
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <app-nz-input-text
-            formControlName="workCalendarId"
-            itemId="workCalendarId"
-            placeholder=""
-            [required]="true" [nzErrorTip]="errorTpl">CALEDNAR ID
-          </app-nz-input-text>
+          <nz-form-item-custom for="workCalendarId" label="CALEDNAR ID" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="workCalendarId" formControlName="workCalendarId" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-input-text #workCalendarName
-            formControlName="workCalendarName"
-            itemId="workCalendarName"
-            placeholder=""
-            [required]="true" [nzErrorTip]="errorTpl">CALENDAR NAME
-          </app-nz-input-text>
+          <nz-form-item-custom for="workCalendarName" label="CALENDAR NAME" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="workCalendarName" formControlName="workCalendarName" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -86,14 +84,15 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-form-input-select
-            [mode]="'multiple'"
-            formControlName="memberList"
-            [itemId]="'memberList'"
-            [options]="memberList" [opt_value]="'userId'" [opt_label]="'name'" [mode]="'tags'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">팀원
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="memberList" label="팀원" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="memberList" itemId="memberList"
+                [options]="memberList" [opt_value]="'userId'" [opt_label]="'name'" [mode]="'tags'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
       </div>
@@ -131,7 +130,7 @@ export class WorkCalendarFormComponent extends FormBase implements OnInit, After
   color: any;
   preset_colors = ['#fff', '#000', '#2889e9', '#e920e9', '#fff500', 'rgb(236,64,64)'];
 
-  workCalendarName = viewChild.required<NzInputTextComponent>('workCalendarName');
+  //workCalendarName = viewChild.required<NzInputTextComponent>('workCalendarName');
 
   private workGroupService = inject(WorkCalendarService);
 
@@ -149,7 +148,7 @@ export class WorkCalendarFormComponent extends FormBase implements OnInit, After
   }
 
   ngAfterViewInit(): void {
-    this.workCalendarName().focus();
+    //this.workCalendarName().focus();
   }
 
   newForm(): void {

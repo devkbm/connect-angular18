@@ -11,7 +11,7 @@ import { WorkCalendarEventService } from './work-calendar-event.service';
 import { WorkCalendarService } from '../calendar/work-calendar.service';
 import { WorkCalendar } from '../calendar/work-calendar.model';
 
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
+
 import { NzInputDateTimeComponent, TimeFormat } from 'src/app/shared-component/nz-input-datetime/nz-input-datetime.component';
 
 import * as dateFns from "date-fns";
@@ -19,9 +19,10 @@ import { CommonModule } from '@angular/common';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-input-color-picker/nz-input-simple-color-picker.component';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-form-input-checkbox.component';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 export interface NewFormValue {
   workCalendarId: number;
@@ -37,13 +38,13 @@ export interface NewFormValue {
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
-    NzInputTextComponent,
+    NzInputModule,
+    NzCheckboxModule,
     NzCrudButtonGroupComponent,
     NzInputSimpleColorPickerComponent,
-    NzFormInputSelectComponent,
-    NzInputTextareaComponent,
     NzInputDateTimeComponent,
-    NzFormInputCheckboxComponent
+    NzFormItemCustomComponent,
+    NzInputSelectComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -58,23 +59,24 @@ export interface NewFormValue {
       <!-- 1 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <!--작업그룹ID 필드-->
-          <app-nz-form-input-select
-            formControlName="workCalendarId"
-            [itemId]="'workCalendarId'"
-            [options]="workGroupList" [opt_value]="'id'" [opt_label]="'name'"
-            [placeholder]="'Please select'" [nzErrorTip]="errorTpl" [required]="true">작업그룹 ID
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="workCalendarId" label="작업그룹 ID" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="workCalendarId" itemId="workCalendarId"
+                [options]="workGroupList" [opt_value]="'id'" [opt_label]="'name'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <!--일정ID 필드-->
-          <app-nz-input-text
-            formControlName="id"
-            [itemId]="'id'"
-            placeholder="일정ID를 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">일정ID
-          </app-nz-input-text>
+          <nz-form-item-custom for="id" label="일정ID" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="id" formControlName="id" required
+                placeholder="일정ID를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -105,22 +107,22 @@ export interface NewFormValue {
           </app-nz-input-datetime>
         </div>
         <div nz-col nzSpan="4">
-          <app-nz-form-input-checkbox
-            formControlName="allDay"
-            [required]="false">종일
-          </app-nz-form-input-checkbox>
+          <nz-form-item-custom for="useYn" label="종일">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <label nz-checkbox nzId="useYn" formControlName="useYn"></label>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
       </div>
 
-      <!--제목 필드-->
-      <!-- [nzAutoSize]="{ minRows: 10, maxRows: 20 }" -->
-      <app-nz-input-textarea #text
-        formControlName="text" itemId="text"
-        placeholder="제목을 입력해주세요."
-        [rows] = "20"
-        [required]="true" [nzErrorTip]="errorTpl">제목
-      </app-nz-input-textarea>
+      <nz-form-item-custom for="text" label="제목">
+        <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+          <textarea nz-input id="text" formControlName="text"
+          placeholder="제목을 입력해주세요." [rows]="20">
+          </textarea>
+        </nz-form-control>
+      </nz-form-item-custom>
     </form>
 
     <div class="footer">
@@ -149,7 +151,7 @@ export interface NewFormValue {
 })
 export class WorkCalendarEventFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  text = viewChild.required<NzInputTextareaComponent>('text');
+  //text = viewChild.required<NzInputTextareaComponent>('text');
 
   @Input() override initLoadId: number = -1;
   @Input() newFormValue?: NewFormValue;
@@ -185,7 +187,7 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
   }
 
   ngAfterViewInit(): void {
-    this.text().focus();
+    //this.text().focus();
   }
 
   newForm(params: NewFormValue): void {
@@ -197,11 +199,9 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
     params.end.setSeconds(0);
     params.end.setMilliseconds(0);
 
-    //this.fg.get('workCalendarId')?.setValue(Number.parseInt(params.workCalendarId.toString(),10));
-    this.fg.get('workCalendarId')?.setValue(Number.parseInt(params.workCalendarId.toString(),10));
-    this.fg.get('start')?.setValue(dateFns.format(params.start, "yyyy-MM-dd HH:mm:ss"));
-    this.fg.get('end')?.setValue(dateFns.format(params.end, "yyyy-MM-dd HH:mm:ss"));
-
+    this.fg.controls.workCalendarId.setValue(Number.parseInt(params.workCalendarId.toString(),10));
+    this.fg.controls.start.setValue(dateFns.format(params.start, "yyyy-MM-dd HH:mm:ss"));
+    this.fg.controls.end.setValue(dateFns.format(params.end, "yyyy-MM-dd HH:mm:ss"));
   }
 
   modifyForm(formData: WorkCalendarEvent): void {

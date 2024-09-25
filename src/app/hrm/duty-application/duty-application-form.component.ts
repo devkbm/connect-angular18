@@ -1,15 +1,7 @@
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { DutyDateListComponent } from './duty-date-list.component';
-import { NzInputSelectStaffComponent } from 'src/app/shared-component/nz-input-select-staff/nz-input-select-staff.component';
-
-import { formatDate } from '@angular/common';
 import { Component, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { formatDate } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -21,10 +13,16 @@ import { HrmCode } from '../hrm-code/hrm-code.model';
 import { HrmCodeService } from '../hrm-code/hrm-code.service';
 import { DutyDate, DutyApplication } from './duty-application.model';
 import { DutyApplicationService } from './duty-application.service';
-import { DutyCodeService } from './duty-code.service';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
+import { DutyDateListComponent } from './duty-date-list.component';
 
-
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzInputSelectStaffComponent } from 'src/app/shared-component/nz-input-select-staff/nz-input-select-staff.component';
 
 @Component({
   selector: 'app-duty-application-form',
@@ -34,13 +32,14 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
+    NzInputModule,
+    NzFormItemCustomComponent,
     NzDividerModule,
-    NzInputTextComponent,
-    NzFormInputSelectComponent,
-    NzInputDateComponent,
+    NzDatePickerModule,
+    NzInputSelectComponent,
+    NzInputSelectStaffComponent,
     NzCrudButtonGroupComponent,
     DutyDateListComponent,
-    NzInputSelectStaffComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -59,64 +58,66 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <!-- 1 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <app-nz-input-text
-            formControlName="dutyId" itemId="dutyId"
-            placeholder=""
-            [required]="false" [nzErrorTip]="errorTpl">근태신청ID
-          </app-nz-input-text>
+          <nz-form-item-custom for="dutyId" label="근태신청ID" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="dutyId" formControlName="dutyId" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-input-select-staff
-            formControlName="staffId" itemId="staffId"
-            placeholder="비고를 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">직원
-          </app-nz-input-select-staff>
+          <nz-form-item-custom for="staffId" label="직원">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select-staff required
+                formControlName="staffId" itemId="staffId"
+                placeholder="Please select">
+              </nz-input-select-staff>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <!--
-          <app-nz-input-text
-            formControlName="dutyCode" itemId="dutyCode"
-            placeholder=""
-            [required]="false" [nzErrorTip]="errorTpl">근태코드
-          </app-nz-input-text>
-          -->
-
-          <app-nz-form-input-select
-            formControlName="dutyCode" itemId="dutyCode"
-            [options]="dutyCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">근태코드
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="dutyCode" label="근태코드" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="dutyCode" itemId="dutyCode"
+                [options]="dutyCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-input-text
-            formControlName="dutyReason" itemId="dutyReason"
-            placeholder="근태사유를 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">근태사유
-          </app-nz-input-text>
+          <nz-form-item-custom for="dutyReason" label="근태사유">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="dutyReason" formControlName="dutyReason"/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 3 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <app-nz-input-date
-            formControlName="fromDate" itemId="fromDate"
-            [required]="true" [nzErrorTip]="errorTpl">근태 시작일
-          </app-nz-input-date>
+          <nz-form-item-custom for="fromDate" label="근태 시작일" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-date-picker nzId="fromDate" formControlName="fromDate">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-input-date
-            formControlName="toDate" itemId="toDate"
-            [required]="true" [nzErrorTip]="errorTpl">근태 종료일
-          </app-nz-input-date>
+          <nz-form-item-custom for="toDate" label="근태 종료일" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-date-picker nzId="toDate" formControlName="toDate">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 

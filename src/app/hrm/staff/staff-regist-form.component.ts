@@ -1,16 +1,6 @@
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputRadioGroupComponent } from 'src/app/shared-component/nz-input-radio-group/nz-input-radio-group.component';
-import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
-import { NzInputRregnoComponent } from 'src/app/shared-component/nz-input-rregno/nz-input-rregno.component';
-
-import { Component, OnInit, Input, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -20,11 +10,19 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { StaffService } from './staff.service';
 import { Staff } from './staff.model';
 import { GlobalProperty } from 'src/app/core/global-property';
-import { NzUploadChangeParam, NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
-import { saveAs } from 'file-saver';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 
+import { saveAs } from 'file-saver';
+
+import { NzUploadChangeParam, NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputRadioGroupComponent } from 'src/app/shared-component/nz-input-radio-group/nz-input-radio-group.component';
+import { NzInputRregnoComponent } from 'src/app/shared-component/nz-input-rregno/nz-input-rregno.component';
 
 @Component({
   selector: 'app-staff-regist-form',
@@ -40,10 +38,8 @@ import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item
     NzAvatarModule,
     NzUploadModule,
     NzDividerModule,
-    NzInputTextComponent,
     NzInputRadioGroupComponent,
     NzInputRregnoComponent,
-    NzInputDateComponent,
     NzFormItemCustomComponent
   ],
   template: `
@@ -86,19 +82,19 @@ import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item
 
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="staffNo" itemId="staffNo"
-            placeholder=""
-            [required]="true" [readonly]="true" [nzErrorTip]="errorTpl">직원번호
-          </app-nz-input-text>
+          <nz-form-item-custom for="staffNo" label="직원번호" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="staffNo" formControlName="staffNo" required readonly/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="name" itemId="name"
-            placeholder=""
-            [required]="true" [nzErrorTip]="errorTpl">직원명
-          </app-nz-input-text>
+          <nz-form-item-custom for="name" label="직원명" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="name" formControlName="name" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
@@ -113,19 +109,19 @@ import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item
 
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="nameEng" itemId="nameEng"
-            placeholder=""
-            [required]="false" [nzErrorTip]="errorTpl">직원명(영문)
-          </app-nz-input-text>
+          <nz-form-item-custom for="nameEng" label="직원명(영문)">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="nameEng" formControlName="nameEng"/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="nameChi" itemId="nameChi"
-            placeholder=""
-            [required]="false" [nzErrorTip]="errorTpl">직원명(한문)
-          </app-nz-input-text>
+          <nz-form-item-custom for="nameChi" label="직원명(한문)">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="nameChi" formControlName="nameChi"/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -133,20 +129,22 @@ import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item
         <div nz-col nzSpan="12" >
           <nz-form-item-custom for="residentRegistrationNumber" label="주민등록번호" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <app-nz-input-rregno
+              <nz-input-rregno
                 formControlName="residentRegistrationNumber" itemId="residentRegistrationNumber"
                 placeholder="주민등록번호를 입력해주세요."
                 [required]="true">
-              </app-nz-input-rregno>
+              </nz-input-rregno>
             </nz-form-control>
           </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-input-date
-            formControlName="birthday" itemId="birthday"
-            [required]="true" [nzErrorTip]="errorTpl">생년월일
-          </app-nz-input-date>
+          <nz-form-item-custom for="birthday" label="생년월일" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-date-picker nzId="birthday" formControlName="birthday">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
     </form>

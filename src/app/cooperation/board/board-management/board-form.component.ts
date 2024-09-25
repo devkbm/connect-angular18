@@ -20,7 +20,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
 import { NzFormItemCustomComponent } from "src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component";
-import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 
 @Component({
@@ -38,7 +38,7 @@ import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-
     NzCrudButtonGroupComponent,
     NzInputTreeSelectComponent,
     NzFormItemCustomComponent,
-    NzInputSelectCustomComponent
+    NzInputSelectComponent
 ],
   template: `
     <div>{{fg.getRawValue() | json}}</div>
@@ -93,12 +93,12 @@ import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-
         <div nz-col nzSpan="12">
           <nz-form-item-custom for="boardType" label="게시판타입" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <nz-input-select-custom required
+              <nz-input-select required
                 formControlName="boardType" itemId="boardType"
                 [options]="boardTypeList" [opt_value]="'value'" [opt_label]="'label'"
                 placeholder="게시판타입을 선택해주세요."
               >
-              </nz-input-select-custom>
+              </nz-input-select>
             </nz-form-control>
           </nz-form-item-custom>
         </div>

@@ -1,13 +1,6 @@
+import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
-
-import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -15,10 +8,17 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { StaffSchoolCareer } from './staff-school-career.model';
 import { ResponseList } from 'src/app/core/model/response-list';
+
 import { HrmCode } from '../../hrm-code/hrm-code.model';
 import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 import { StaffSchoolCareerService } from './staff-school-career.service';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
+
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 
 @Component({
@@ -29,11 +29,10 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
-    NzFormInputSelectComponent,
-    NzInputNumberCustomComponent,
-    NzInputDateComponent,
+    NzInputModule,
+    NzInputNumberModule,
+    NzFormItemCustomComponent,
+    NzInputSelectComponent,
     NzCrudButtonGroupComponent
   ],
   template: `
@@ -49,113 +48,101 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
         }
       </ng-template>
 
-      <!-- 1 Row -->
-      <!--
-      <div nz-row nzGutter="8">
-        <div nz-col nzSpan="8">
-          <app-nz-input-text #staffId
-            formControlName="staffId" itemId="contact_staffId"
-            placeholder="직원ID를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원ID
-          </app-nz-input-text>
-        </div>
-
-        <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="staffNo" itemId="contact_staffNo"
-            placeholder="직원번호를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원번호
-          </app-nz-input-text>
-        </div>
-
-        <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="staffName" itemId="contact_staffName"
-            placeholder="직원명을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원명
-          </app-nz-input-text>
-        </div>
-      </div>
-      -->
-
       <!-- 2 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="6">
-          <app-nz-form-input-select
-            formControlName="schoolCareerType" itemId="schoolCareerType"
-            [options]="schoolCareerTypeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">학력
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="schoolCareerType" label="학력" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="schoolCareerType" itemId="schoolCareerType"
+                [options]="schoolCareerTypeList" [opt_value]="'code'" [opt_label]="'codeName'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-form-input-select
-            formControlName="schoolCode" itemId="schoolCode"
-            [options]="schoolCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">학교
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="schoolCode" label="학교" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="schoolCode" itemId="schoolCode"
+                [options]="schoolCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-date
-            formControlName="fromDate" itemId="fromDate"
-            [required]="false" [nzErrorTip]="errorTpl">시작일
-          </app-nz-input-date>
+          <nz-form-item-custom for="fromDate" label="시작일">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-date-picker nzId="fromDate" formControlName="fromDate">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-date
-            formControlName="toDate" itemId="toDate"
-            [required]="false" [nzErrorTip]="errorTpl">종료일
-          </app-nz-input-date>
+          <nz-form-item-custom for="toDate" label="종료일">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-date-picker nzId="toDate" formControlName="toDate">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 3 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="6">
-          <app-nz-input-text
-            formControlName="majorName" itemId="majorName"
-            placeholder="전공을 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">전공
-          </app-nz-input-text>
+          <nz-form-item-custom for="majorName" label="전공">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="majorName" formControlName="majorName"
+                placeholder="전공을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-text
-            formControlName="pluralMajorName" itemId="pluralMajorName"
-            placeholder="부전공을 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">부전공
-          </app-nz-input-text>
+          <nz-form-item-custom for="pluralMajorName" label="부전공">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="pluralMajorName" formControlName="pluralMajorName"
+                placeholder="부전공을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-text
-            formControlName="location" itemId="location"
-            placeholder="지역을 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">지역
-          </app-nz-input-text>
+          <nz-form-item-custom for="location" label="지역">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="location" formControlName="location"
+                placeholder="지역을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-number-custom
-            formControlName="lessonYear" itemId="lessonYear"
-            [required]="false" [nzErrorTip]="errorTpl">수업년한
-          </app-nz-input-number-custom>
+          <nz-form-item-custom for="lessonYear" label="수업년한">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-number nzId="lessonYear" formControlName="lessonYear"
+                [nzMin]="0" [nzMax]="9999">
+              </nz-input-number>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 4 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-input-textarea
-            formControlName="comment" itemId="comment"
-            placeholder="비고를 입력해주세요."
-            [rows]="23"
-            [required]="false" [nzErrorTip]="errorTpl">비고
-          </app-nz-input-textarea>
+          <nz-form-item-custom for="comment" label="비고">
+            <nz-form-control>
+              <textarea nz-input id="comment" formControlName="comment"
+                placeholder="비고를 입력해주세요." [rows]="23">
+              </textarea>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 

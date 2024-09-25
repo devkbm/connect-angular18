@@ -7,7 +7,7 @@ import { NgxMaskDirective, provideNgxMask, IConfig } from 'ngx-mask'
 export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
 @Component({
-  selector: 'app-nz-input-rregno',
+  selector: 'nz-input-rregno',
   standalone: true,
   imports: [FormsModule, NzInputModule, NgxMaskDirective],
   providers: [

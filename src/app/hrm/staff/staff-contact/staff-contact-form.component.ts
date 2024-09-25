@@ -1,21 +1,21 @@
+import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzListRoadAddressComponent } from 'src/app/shared-component/nz-list-road-address/nz-list-road-address.component';
-
-import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
-
 import { ResponseObject } from 'src/app/core/model/response-object';
+
 import { StaffContactService } from './staff-contact.service';
 import { StaffContact } from './staff-contact.model';
 
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzListRoadAddressComponent } from 'src/app/shared-component/nz-list-road-address/nz-list-road-address.component';
 
 @Component({
   selector: 'app-staff-contact-form',
@@ -25,10 +25,11 @@ import { StaffContact } from './staff-contact.model';
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
+    NzInputModule,
     NzDividerModule,
-    NzInputTextComponent,
     NzListRoadAddressComponent,
-    NzCrudButtonGroupComponent
+    NzCrudButtonGroupComponent,
+    NzFormItemCustomComponent,
   ],
   template: `
     <app-nz-crud-button-group
@@ -50,78 +51,54 @@ import { StaffContact } from './staff-contact.model';
         }
       </ng-template>
 
-      <!-- 1 Row -->
-      <!--
-      <div nz-row nzGutter="8">
-        <div nz-col nzSpan="8">
-          <app-nz-input-text #staffId
-             formControlName="staffId" itemId="contact_staffId"
-            placeholder="직원ID를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원ID
-          </app-nz-input-text>
-        </div>
-
-        <div nz-col nzSpan="8">
-          <app-nz-input-text
-             formControlName="staffNo" itemId="contact_staffNo"
-            placeholder="직원번호를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원번호
-          </app-nz-input-text>
-        </div>
-
-        <div nz-col nzSpan="8">
-          <app-nz-input-text
-             formControlName="staffName" itemId="contact_staffName"
-            placeholder="직원명을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원명
-          </app-nz-input-text>
-        </div>
-      </div>
-      -->
-
       <!-- 2 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="2">
-          <app-nz-input-text
-             formControlName="homePostNumber" itemId="contact_homePostNumber"
-            placeholder="우편번호를 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">우편번호
-          </app-nz-input-text>
+          <nz-form-item-custom for="contact_homePostNumber" label="우편번호">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="contact_homePostNumber" formControlName="homePostNumber"
+                placeholder="우편번호를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">
-          <app-nz-input-text
-             formControlName="homeMainAddress" itemId="contact_homeMainAddress"
-            placeholder="기본주소를 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">기본주소
-          </app-nz-input-text>
+          <nz-form-item-custom for="contact_homeMainAddress" label="기본주소">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="contact_homeMainAddress" formControlName="homeMainAddress"
+                placeholder="기본주소를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="10">
-          <app-nz-input-text
-             formControlName="homeSubAddress" itemId="contact_homeSubAddress"
-            placeholder="상세주소를 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">상세주소
-          </app-nz-input-text>
+          <nz-form-item-custom for="contact_homeSubAddress" label="상세주소">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="contact_homeSubAddress" formControlName="homeSubAddress"
+                placeholder="상세주소를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 3 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-             formControlName="extensionNumber" itemId="contact_extensionNumber"
-            placeholder="내선번호를 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">내선번호
-          </app-nz-input-text>
+          <nz-form-item-custom for="contact_extensionNumber" label="내선번호">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="contact_extensionNumber" formControlName="extensionNumber"
+                placeholder="내선번호를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-             formControlName="mobileNumber" itemId="contact_mobileNumber"
-            placeholder="휴대번호를 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">휴대번호
-          </app-nz-input-text>
+          <nz-form-item-custom for="contact_mobileNumber" label="휴대번호">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="contact_mobileNumber" formControlName="mobileNumber"
+                placeholder="휴대번호를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 

@@ -2,8 +2,6 @@ import { Component, inject, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-
-import { MenuRoleTreeComponent } from './menu-role-tree.component';
 import { ResponseList } from 'src/app/core/model/response-list';
 
 import { MenuGroup } from '../menu/menu-group.model';
@@ -18,7 +16,11 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { MenuGridComponent } from '../menu/menu-grid.component';
 import { MenuFormComponent } from '../menu/menu-form.component';
 import { MenuGroupFormComponent } from '../menu/menu-group-form.component';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
+import { MenuRoleTreeComponent } from './menu-role-tree.component';
+
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 
 
 @Component({
@@ -27,9 +29,11 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   imports: [
     CommonModule,
     FormsModule,
+    NzFormModule,
     NzButtonModule,
     NzDrawerModule,
-    NzFormInputSelectComponent,
+    NzFormItemCustomComponent,
+    NzInputSelectComponent,
     MenuGroupGridComponent,
     MenuGroupFormComponent,
     MenuGridComponent,
@@ -43,20 +47,27 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     <button nz-button (click)="newMenuGroup()">신규 메뉴그룹</button>
     <button nz-button (click)="newMenu()">신규 메뉴</button>
     <div nz-col nzSpan="12">
-      <app-nz-form-input-select
-        [(ngModel)]="menuGroup.selectedItem"
-        [options]="menuGroup.list" [opt_value]="'menuGroupCode'" [opt_label]="'menuGroupName'"
-        [placeholder]="'Please select'"
-        [required]="true">메뉴그룹
-      </app-nz-form-input-select>
+      <nz-form-item-custom for="menuGroup" label="메뉴그룹">
+        <nz-form-control>
+          <nz-input-select
+            [(ngModel)]="menuGroup.selectedItem" itemId="menuGroup"
+            [options]="menuGroup.list" [opt_value]="'menuGroupCode'" [opt_label]="'menuGroupName'"
+            placeholder="Please select">
+          </nz-input-select>
+        </nz-form-control>
+      </nz-form-item-custom>
     </div>
+
     <div nz-col nzSpan="12">
-      <app-nz-form-input-select
-        [(ngModel)]="role.selectedItem"
-        [options]="role.list" [opt_value]="'roleCode'" [opt_label]="'description'"
-        [placeholder]="'Please select'"
-        [required]="true">롤
-      </app-nz-form-input-select>
+      <nz-form-item-custom for="roleCode" label="롤">
+        <nz-form-control>
+          <nz-input-select
+            [(ngModel)]="role.selectedItem" itemId="roleCode"
+            [options]="role.list" [opt_value]="'roleCode'" [opt_label]="'description'"
+            placeholder="Please select">
+          </nz-input-select>
+        </nz-form-control>
+      </nz-form-item-custom>
     </div>
 
     <div class="page-content">

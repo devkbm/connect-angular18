@@ -32,11 +32,6 @@ import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-
       <div nz-row nzGutter="8">
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="companyCode" itemId="companyCode"
-            placeholder="회사코드를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">회사코드
-          </app-nz-input-text>
         </div>
 
       </div>

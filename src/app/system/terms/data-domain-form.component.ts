@@ -10,13 +10,13 @@ import { ResponseObject } from 'src/app/core/model/response-object';
 
 import { DataDomainService } from './data-domain.service';
 import { DataDomain } from './data-domain.model';
-import { HtmlSelectOption } from 'src/app/shared-component/nz-input-select-custom/html-select-option';
+import { HtmlSelectOption } from 'src/app/shared-component/nz-input-select/html-select-option';
 
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 
 @Component({
@@ -30,7 +30,7 @@ import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-
     NzInputModule,
     NzCrudButtonGroupComponent,
     NzFormItemCustomComponent,
-    NzInputSelectCustomComponent
+    NzInputSelectComponent
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -63,11 +63,11 @@ import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-
         <div nz-col nzSpan="8">
           <nz-form-item-custom for="database" label="database" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <nz-input-select-custom required
+              <nz-input-select required
                 formControlName="database" itemId="database"
                 [options]="databaseList" [opt_value]="'value'" [opt_label]="'label'"
                 placeholder="database을 입력해주세요.">
-              </nz-input-select-custom>
+              </nz-input-select>
             </nz-form-control>
           </nz-form-item-custom>
         </div>

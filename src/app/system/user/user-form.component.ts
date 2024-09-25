@@ -21,9 +21,9 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzDeptTreeSelectComponent } from 'src/app/shared-component/nz-dept-tree-select/nz-dept-tree-select.component';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
-import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+import { NzInputTreeSelectDeptComponent } from 'src/app/shared-component/nz-input-tree-select-dept/nz-input-tree-select-dept.component';
 
 @Component({
   selector: 'app-user-form',
@@ -39,8 +39,8 @@ import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-
     NzSwitchModule,
     NzFormItemCustomComponent,
     NzCrudButtonGroupComponent,
-    NzDeptTreeSelectComponent,
-    NzInputSelectCustomComponent
+    NzInputTreeSelectDeptComponent,
+    NzInputSelectComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -142,10 +142,12 @@ import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-
 
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-dept-tree-select
-            formControlName="deptCode"
-            placeholder="부서 없음">부서
-          </app-nz-dept-tree-select>
+          <nz-form-item-custom for="deptCode" label="부서">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-tree-select-dept itemId="deptCode" formControlName="deptCode" placeholder="부서 없음">
+              </nz-input-tree-select-dept>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -153,11 +155,11 @@ import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-
         <div nz-col nzSpan="24">
           <nz-form-item-custom for="roleList" label="롤" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <nz-input-select-custom required
+              <nz-input-select required
                 formControlName="roleList" itemId="roleList"
                 [options]="authList" [opt_value]="'roleCode'" [opt_label]="'description'" [mode]="'tags'"
                 placeholder="Please select">
-              </nz-input-select-custom>
+              </nz-input-select>
             </nz-form-control>
           </nz-form-item-custom>
         </div>

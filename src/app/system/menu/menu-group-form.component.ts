@@ -1,22 +1,19 @@
 import { CommonModule } from '@angular/common';
-
 import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 
 import { MenuService } from './menu.service';
 import { MenuGroup } from './menu-group.model';
 import { existingMenuGroupValidator } from './menu-group-duplication-validator.directive';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
 
 @Component({
   selector: 'app-menu-group-form',
@@ -27,8 +24,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     ReactiveFormsModule,
     NzFormModule,
     NzCrudButtonGroupComponent,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
     NzFormItemCustomComponent,
     NzInputModule
 ],
@@ -115,7 +110,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 })
 export class MenuGroupFormComponent extends FormBase implements OnInit, AfterViewInit {
 
-  menuGroupCode = viewChild.required<NzInputTextComponent>('menuGroupCode');
+  //menuGroupCode = viewChild.required<NzInputTextComponent>('menuGroupCode');
 
   private menuService = inject(MenuService);
   private appAlarmService = inject(AppAlarmService);
@@ -149,7 +144,7 @@ export class MenuGroupFormComponent extends FormBase implements OnInit, AfterVie
     this.fg.reset();
 
     this.fg.controls.menuGroupCode.enable();
-    this.menuGroupCode().focus();
+    //this.menuGroupCode().focus();
   }
 
   modifyForm(formData: MenuGroup): void {

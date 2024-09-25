@@ -17,7 +17,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
-import { NzInputSelectCustomComponent } from "../../shared-component/nz-input-select-custom/nz-input-select-custom.component";
+import { NzInputSelectComponent } from "../../shared-component/nz-input-select/nz-input-select.component";
 import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree-select/nz-input-tree-select.component";
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
@@ -34,7 +34,7 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
     NzFormItemCustomComponent,
     NzInputModule,
     NzInputNumberModule,
-    NzInputSelectCustomComponent,
+    NzInputSelectComponent,
     NzInputTreeSelectComponent
 ],
   template: `
@@ -56,13 +56,13 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
         <div nz-col nzSpan="12">
           <nz-form-item-custom for="menuGroupCode" label="메뉴그룹코드" required="true">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <nz-input-select-custom required="true"
+              <nz-input-select required="true"
                 formControlName="menuGroupCode" itemId="menuGroupCode"
                 (ngModelChange)="selectMenuGroup($event)"
                 [options]="menuGroupList" [opt_value]="'menuGroupCode'" [opt_label]="'menuGroupName'"
                 placeholder="Please select"
               >
-              </nz-input-select-custom>
+              </nz-input-select>
             </nz-form-control>
           </nz-form-item-custom>
         </div>
@@ -107,11 +107,11 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
         <div nz-col nzSpan="12">
           <nz-form-item-custom for="menuType" label="메뉴타입" required="true">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <nz-input-select-custom required="true"
+              <nz-input-select required="true"
                 formControlName="menuType" itemId="menuType"
                 [options]="menuTypeList" [opt_value]="'value'" [opt_label]="'label'"
                 placeholder="메뉴타입을 선택해주세요">
-              </nz-input-select-custom>
+              </nz-input-select>
             </nz-form-control>
           </nz-form-item-custom>
         </div>

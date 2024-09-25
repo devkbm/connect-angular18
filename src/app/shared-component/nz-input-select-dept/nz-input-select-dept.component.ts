@@ -1,30 +1,30 @@
-import { Self, Optional, Component, Input, OnInit, input, model, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Self, Optional, OnInit, input, model, effect, viewChild, inject } from '@angular/core';
 import { ControlValueAccessor, NgControl, FormsModule } from '@angular/forms';
-
-import { ResponseList } from 'src/app/core/model/response-list';
-import { Staff, NzInputSelectStaffService } from './nz-input-select-staff.service';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
 
+import { ResponseList } from 'src/app/core/model/response-list';
+import { NzInputSelectDeptModel } from './nz-input-select-dept.model';
+import { NzInputSelectDeptService } from './nz-input-select-dept.service';
+
 @Component({
-  selector: 'nz-input-select-staff',
+  selector: 'nz-input-select-dept',
   standalone: true,
-  imports: [CommonModule, FormsModule, NzFormModule, NzSelectModule],
+  imports: [FormsModule, NzFormModule, NzSelectModule],
   template: `
     <nz-select
         [nzId]="itemId()"
         [ngModel]="_value()"
-        [nzDisabled]="_disabled"
+        [nzDisabled]="disabled()"
         [nzPlaceHolder]="placeholder()"
         [nzMode]="mode()"
         nzShowSearch
         (blur)="onTouched()"
         (ngModelChange)="onChange($event)">
-        @for (option of _list; track option[opt_value()]) {
+        @for (option of deptList; track option[opt_value()]) {
           <nz-option
-            [nzLabel]="custom_label ? custom_label(option, $index) : option[opt_label()]"
+            [nzLabel]="option[opt_label()]"
             [nzValue]="option[opt_value()]">
           </nz-option>
         }
@@ -32,28 +32,25 @@ import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
   `,
   styles: []
 })
-export class NzInputSelectStaffComponent implements ControlValueAccessor, OnInit {
+export class NzInputSelectDeptComponent implements ControlValueAccessor, OnInit {
 
   itemId = input<string>('');
-  required = input<boolean | string>(false);
+  required = input<boolean>(false);
   disabled = input<boolean>(false);
   placeholder = input<string>('');
+  opt_label = input<string>('deptNameKorean');
+  opt_value = input<'deptId' | 'deptCode'>('deptCode');
   mode = input<NzSelectModeType>('default');
-  options = input<any[]>();
-  opt_label = input<string>('name');
-  opt_value = input<string>('staffNo');
-
-  @Input() custom_label?: (option: any, index: number) => {};
 
   onChange!: (value: string) => void;
   onTouched!: () => void;
 
-  _list: Staff[] = [];
-
   _disabled = false;
   _value = model();
 
-  private service = inject(NzInputSelectStaffService);
+  deptList: NzInputSelectDeptModel[] = [];
+
+  private service = inject(NzInputSelectDeptService);
 
   constructor(@Self()  @Optional() private ngControl: NgControl) {
     if (this.ngControl) {
@@ -62,7 +59,7 @@ export class NzInputSelectStaffComponent implements ControlValueAccessor, OnInit
   }
 
   ngOnInit(): void {
-    this.getStaffList();
+    this.getDeptList();
   }
 
   writeValue(obj: any): void {
@@ -83,14 +80,14 @@ export class NzInputSelectStaffComponent implements ControlValueAccessor, OnInit
 
   compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.value === o2.value : o1 === o2);
 
-  getStaffList(): void {
+  getDeptList(): void {
     const params = {isEnabled: true};
 
     this.service
-         .getList(params)
+         .getDeptList(params)
          .subscribe(
-          (model: ResponseList<Staff>) => {
-            this._list = model.data;
+          (model: ResponseList<NzInputSelectDeptModel>) => {
+            this.deptList = model.data;
           }
       );
   }

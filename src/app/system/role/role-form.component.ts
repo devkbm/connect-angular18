@@ -17,7 +17,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
-import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 
 @Component({
@@ -31,7 +31,7 @@ import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-
     NzInputModule,
     NzFormItemCustomComponent,
     NzCrudButtonGroupComponent,
-    NzInputSelectCustomComponent
+    NzInputSelectComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -64,11 +64,11 @@ import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-
 
         <nz-form-item-custom for="menuGroupCode" label="메뉴그룹" required>
           <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-            <nz-input-select-custom required
+            <nz-input-select required
               formControlName="menuGroupCode" itemId="menuGroupCode"
               [options]="menuGroupList" [opt_value]="'menuGroupCode'" [opt_label]="'menuGroupName'"
               placeholder="Please select"
-            ></nz-input-select-custom>
+            ></nz-input-select>
           </nz-form-control>
         </nz-form-item-custom>
 

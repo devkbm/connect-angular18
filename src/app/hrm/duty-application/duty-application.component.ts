@@ -1,18 +1,17 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppBase } from 'src/app/core/app/app-base';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
-import { NzInputSelectStaffComponent } from 'src/app/shared-component/nz-input-select-staff/nz-input-select-staff.component';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
+
 import { DutyApplicationFormComponent } from './duty-application-form.component';
 import { DutyApplicationGridComponent } from './duty-application-grid.component';
 import { DutyDateListComponent } from './duty-date-list.component';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
 
+
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @Component({
   selector: 'app-duty-application',
@@ -21,11 +20,9 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NzInputTextComponent,
+    NzDatePickerModule,
     NzCrudButtonGroupComponent,
-    NzInputDateComponent,
-    NzFormInputSelectComponent,
-    NzInputSelectStaffComponent,
+
     NzPageHeaderCustomComponent,
 
     DutyDateListComponent,

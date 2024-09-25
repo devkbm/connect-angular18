@@ -7,19 +7,19 @@ import { DataService } from 'src/app/core/service/data.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { ResponseList } from 'src/app/core/model/response-list';
 
-import { DeptHierarchy } from './dept-hierarchy.model';
+import { NzInputTreeSelectDept } from './nz-input-tree-select-dept.model';
 import { GlobalProperty } from 'src/app/core/global-property';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DeptHierarchyService extends DataService {
+export class NzInputTreeSelectService extends DataService {
 
   constructor() {
     super('/api/system/dept');
   }
 
-  getDeptHierarchyList(params?: any): Observable<ResponseList<DeptHierarchy>> {
+  getDeptHierarchyList(params?: any): Observable<ResponseList<NzInputTreeSelectDept>> {
     const url = GlobalProperty.serverUrl + '/api/system/depttree';
     const options = {
         headers: this.getAuthorizedHttpHeaders(),
@@ -27,8 +27,8 @@ export class DeptHierarchyService extends DataService {
         params: params
      };
 
-    return this.http.get<ResponseList<DeptHierarchy>>(url, options).pipe(
-      catchError(this.handleError<ResponseList<DeptHierarchy>>('getDeptHierarchyList', undefined))
+    return this.http.get<ResponseList<NzInputTreeSelectDept>>(url, options).pipe(
+      catchError(this.handleError<ResponseList<NzInputTreeSelectDept>>('getDeptHierarchyList', undefined))
     );
   }
 

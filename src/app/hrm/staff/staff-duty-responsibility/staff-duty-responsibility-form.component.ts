@@ -1,11 +1,6 @@
+import { Component, OnInit, Input, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-
-import { Component, OnInit, Input, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -18,8 +13,13 @@ import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 import { StaffDutyResponsibility } from './staff-duty-responsibility.model';
 import { StaffDutyResponsibilityService } from './staff-duty-responsibility.service';
 
-import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-form-input-checkbox.component';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 @Component({
   selector: 'app-staff-duty-responsibility-form',
@@ -29,11 +29,12 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
-    NzInputTextComponent,
-    NzFormInputSelectComponent,
-    NzInputDateComponent,
-    NzFormInputCheckboxComponent,
-    NzCrudButtonGroupComponent
+    NzInputModule,
+    NzDatePickerModule,
+    NzCheckboxModule,
+    NzFormItemCustomComponent,
+    NzInputSelectComponent,
+    NzCrudButtonGroupComponent,
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -50,19 +51,21 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <div nz-row nzGutter="8">
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="staffNo" itemId="duty_staffNo"
-            placeholder="직원번호를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원번호
-          </app-nz-input-text>
+          <nz-form-item-custom for="duty_staffNo" label="직원번호" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="duty_staffNo" formControlName="staffNo" required
+                placeholder="직원번호를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="staffName" itemId="duty_staffName"
-            placeholder="직원명을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원명
-          </app-nz-input-text>
+          <nz-form-item-custom for="duty_staffName" label="직원명" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="duty_staffName" formControlName="staffName" required
+                placeholder="직원명을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
@@ -70,48 +73,53 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <div nz-row nzGutter="8">
 
         <div nz-col nzSpan="4">
-          <app-nz-input-text
-            formControlName="seq" itemId="seq"
-            placeholder=""
-            [required]="true" [nzErrorTip]="errorTpl">순번
-          </app-nz-input-text>
+          <nz-form-item-custom for="seq" label="순번" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="seq" formControlName="seq" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-form-input-select
-            formControlName="dutyResponsibilityCode" itemId="dutyResponsibilityCode"
-            [options]="dutyResponsibilityCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">직책
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="dutyResponsibilityCode" label="직책" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="dutyResponsibilityCode" itemId="dutyResponsibilityCode"
+                [options]="dutyResponsibilityCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-date
-            formControlName="fromDate" itemId="fromDate"
-            [required]="true" [nzErrorTip]="errorTpl">시작일
-          </app-nz-input-date>
+          <nz-form-item-custom for="fromDate" label="시작일" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-date-picker nzId="fromDate" formControlName="fromDate">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-date
-            formControlName="toDate" itemId="toDate"
-            [required]="false" [nzErrorTip]="errorTpl">종료일
-          </app-nz-input-date>
+          <nz-form-item-custom for="toDate" label="종료일" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-date-picker nzId="toDate" formControlName="toDate">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="2">
-          <app-nz-form-input-checkbox
-            formControlName="isPayApply"
-            checkboxText="Y"
-            [required]="false">급여적용
-          </app-nz-form-input-checkbox>
+          <nz-form-item-custom for="isPayApply" label="급여적용">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <label nz-checkbox nzId="isPayApply" formControlName="isPayApply"></label>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
       </div>
     </form>
-
-
 
     <div class="footer">
       <app-nz-crud-button-group

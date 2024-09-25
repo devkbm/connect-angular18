@@ -6,19 +6,19 @@ import { NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 import { ButtonTemplate, NzButtonsComponent } from 'src/app/shared-component/nz-buttons/nz-buttons.component';
 import { NzInputCkeditorComponent } from 'src/app/shared-component/nz-input-ckeditor/nz-input-ckeditor.component';
 import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-input-color-picker/nz-input-simple-color-picker.component';
-import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
 import { NzInputDateTimeComponent } from 'src/app/shared-component/nz-input-datetime/nz-input-datetime.component';
-import { NzInputDeptSelectComponent } from 'src/app/shared-component/nz-input-dept-select/nz-input-dept-select.component';
-import { NzInputMobileComponent } from 'src/app/shared-component/nz-input-mobile/nz-input-mobile.component';
-import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
+
+
 import { NzInputRadioGroupComponent } from 'src/app/shared-component/nz-input-radio-group/nz-input-radio-group.component';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 
 import { DutyDateListComponent } from './duty-date-list.component';
 import { NzInputTreeSelectComponent } from 'src/app/shared-component/nz-input-tree-select/nz-input-tree-select.component';
-import { NzFormInputCheckboxComponent } from 'src/app/shared-component/nz-input-checkbox/nz-form-input-checkbox.component';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 @Component({
   selector: 'app-welcome',
@@ -27,22 +27,20 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NzFormModule,
+    NzInputModule,
+    NzInputNumberModule,
+    NzDatePickerModule,
+    NzFormItemCustomComponent,
     NzCheckboxModule,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
     NzButtonsComponent,
-    NzFormInputCheckboxComponent,
     NzInputCkeditorComponent,
-    NzInputDateComponent,
     NzInputDateTimeComponent,
-    NzInputDeptSelectComponent,
-    NzInputMobileComponent,
-    NzInputNumberCustomComponent,
     NzInputRadioGroupComponent,
-    NzFormInputSelectComponent,
     NzInputTreeSelectComponent,
     NzInputSimpleColorPickerComponent,
-    DutyDateListComponent
+    DutyDateListComponent,
+    NzInputSelectComponent
   ],
   templateUrl: './welcome.component.html',
   styles: `

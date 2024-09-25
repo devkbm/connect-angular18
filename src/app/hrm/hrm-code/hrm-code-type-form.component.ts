@@ -1,14 +1,6 @@
+import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-
-import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -18,8 +10,13 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { HrmCodeTypeService } from './hrm-code-type.service';
 import { HrmType } from './hrm-type.model';
 import { existingHrmTypeValidator } from './hrm-code-type-duplication-validator';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
 
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
 @Component({
   selector: 'app-hrm-code-type-form',
@@ -29,13 +26,11 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
+    NzInputModule,
+    NzInputNumberModule,
     NzDividerModule,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
-    NzFormInputSelectComponent,
-    NzInputDateComponent,
-    NzInputNumberCustomComponent,
-    NzCrudButtonGroupComponent
+    NzCrudButtonGroupComponent,
+    NzFormItemCustomComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -53,92 +48,46 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <!-- 1 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="10">
-          <app-nz-input-text #typeId
-            formControlName="typeId" itemId="typeId"
-            placeholder="구분ID를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">구분ID
-          </app-nz-input-text>
+          <nz-form-item-custom for="typeId" label="구분ID" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="typeId" formControlName="typeId" required
+                placeholder="구분ID를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="10">
-          <app-nz-input-text
-            formControlName="typeName" itemId="typeName"
-            placeholder="구분명을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">구분명
-          </app-nz-input-text>
+          <nz-form-item-custom for="typeName" label="구분명" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="typeName" formControlName="typeName" required
+                placeholder="구분명을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="4">
-          <app-nz-input-number-custom
-            formControlName="sequence" itemId="sequence"
-            [required]="true" [nzErrorTip]="errorTpl">출력 순번
-          </app-nz-input-number-custom>
+          <nz-form-item-custom for="sequence" label="출력 순번" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-number nzId="sequence" formControlName="sequence" required
+                [nzMin]="0" [nzMax]="9999"
+              ></nz-input-number>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
       <!-- 2 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-input-textarea
-            formControlName="comment" itemId="comment"
-            placeholder="설명을 입력해주세요."
-            [rows] = "8"
-            [required]="false" [nzErrorTip]="errorTpl">설명
-          </app-nz-input-textarea>
+          <nz-form-item-custom for="comment" label="설명">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <textarea nz-input id="comment" formControlName="comment"
+              placeholder="설명을 입력해주세요." [rows]="8">
+              </textarea>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
-
-      <!--
-      <div nz-row nzGutter="8">
-        <div nz-col nzSpan="12">
-          <app-nz-input-textarea
-            formControlName="the1AddInfoDesc" itemId="the1AddInfoDesc"
-            placeholder="설명을 입력해주세요."
-            [rows] = "3"
-            [required]="false" [nzErrorTip]="errorTpl">추가정보1 설명
-          </app-nz-input-textarea>
-        </div>
-        <div nz-col nzSpan="12">
-          <app-nz-input-textarea
-            formControlName="the2AddInfoDesc" itemId="the2AddInfoDesc"
-            placeholder="설명을 입력해주세요."
-            [rows] = "3"
-            [required]="false" [nzErrorTip]="errorTpl">추가정보2 설명
-          </app-nz-input-textarea>
-        </div>
-      </div>
-
-
-      <div nz-row nzGutter="8">
-        <div nz-col nzSpan="12">
-          <app-nz-input-textarea
-            formControlName="the3AddInfoDesc" itemId="the3AddInfoDesc"
-            placeholder="설명을 입력해주세요."
-            [rows] = "3"
-            [required]="false" [nzErrorTip]="errorTpl">추가정보3 설명
-          </app-nz-input-textarea>
-        </div>
-        <div nz-col nzSpan="12">
-          <app-nz-input-textarea
-            formControlName="the4AddInfoDesc" itemId="the4AddInfoDesc"
-            placeholder="설명을 입력해주세요."
-            [rows] = "3"
-            [required]="false" [nzErrorTip]="errorTpl">추가정보4 설명
-          </app-nz-input-textarea>
-        </div>
-      </div>
-
-      <div nz-row nzGutter="8">
-        <div nz-col nzSpan="12">
-          <app-nz-input-textarea
-            formControlName="the5AddInfoDesc" itemId="the5AddInfoDesc"
-            placeholder="설명을 입력해주세요."
-            [rows] = "3"
-            [required]="false" [nzErrorTip]="errorTpl">추가정보5 설명
-          </app-nz-input-textarea>
-        </div>
-      </div>
-      -->
 
     </form>
 
@@ -186,7 +135,7 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
 })
 export class HrmCodeTypeFormComponent extends FormBase implements OnInit, AfterViewInit {
 
-  typeId = viewChild.required<NzInputTextComponent>('typeId');
+  //typeId = viewChild.required<NzInputTextComponent>('typeId');
 
   private fb = inject(FormBuilder);
   private service = inject(HrmCodeTypeService);
@@ -228,7 +177,7 @@ export class HrmCodeTypeFormComponent extends FormBase implements OnInit, AfterV
     this.fg.reset();
     this.fg.controls.typeId.enable();
 
-    this.typeId().focus();
+    //this.typeId().focus();
   }
 
   modifyForm(formData: HrmType): void {

@@ -18,7 +18,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
-import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 @Component({
   selector: 'app-biz-code-type-form',
@@ -32,7 +32,7 @@ import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-
     NzInputNumberModule,
     NzCrudButtonGroupComponent,
     NzFormItemCustomComponent,
-    NzInputSelectCustomComponent
+    NzInputSelectComponent
 ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -80,11 +80,11 @@ import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-
         <div nz-col nzSpan="24">
           <nz-form-item-custom for="bizType" label="시스템" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <nz-input-select-custom required
+              <nz-input-select required
                 formControlName="bizType" itemId="bizType"
                 [options]="bizTypeList" [opt_value]="'value'" [opt_label]="'label'"
                 placeholder="Please select">
-              </nz-input-select-custom>
+              </nz-input-select>
             </nz-form-control>
           </nz-form-item-custom>
         </div>

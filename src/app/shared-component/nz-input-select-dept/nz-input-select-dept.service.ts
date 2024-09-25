@@ -5,18 +5,18 @@ import { map, tap, catchError } from 'rxjs/operators';
 
 import { DataService } from 'src/app/core/service/data.service';
 import { ResponseList } from 'src/app/core/model/response-list';
-import { NzInputDeptSelectModel } from './nz-input-dept-select.model';
+import { NzInputSelectDeptModel } from './nz-input-select-dept.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NzInputDeptSelectService extends DataService {
+export class NzInputSelectDeptService extends DataService {
 
   constructor() {
     super('/api/system/dept');
   }
 
-  getDeptList(params?: any): Observable<ResponseList<NzInputDeptSelectModel>> {
+  getDeptList(params?: any): Observable<ResponseList<NzInputSelectDeptModel>> {
     const url = `${this.API_URL}`;
     const options = {
         headers: this.getAuthorizedHttpHeaders(),
@@ -24,8 +24,8 @@ export class NzInputDeptSelectService extends DataService {
         params: params
      };
 
-    return this.http.get<ResponseList<NzInputDeptSelectModel>>(url, options).pipe(
-      catchError(this.handleError<ResponseList<NzInputDeptSelectModel>>('getDeptList', undefined))
+    return this.http.get<ResponseList<NzInputSelectDeptModel>>(url, options).pipe(
+      catchError(this.handleError<ResponseList<NzInputSelectDeptModel>>('getDeptList', undefined))
     );
   }
 

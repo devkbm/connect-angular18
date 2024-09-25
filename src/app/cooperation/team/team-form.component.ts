@@ -1,18 +1,19 @@
 import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-
 import { FormBase, FormType } from 'src/app/core/form/form-base';
+
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { TeamService } from './team.service';
 import { TeamJoinableUserModel, TeamModel } from './team.model';
 import { ResponseList } from 'src/app/core/model/response-list';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { CommonModule } from '@angular/common';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
 
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 @Component({
   selector: 'app-team-form',
@@ -22,9 +23,10 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
-    NzInputTextComponent,
+    NzInputModule,
     NzCrudButtonGroupComponent,
-    NzFormInputSelectComponent
+    NzFormItemCustomComponent,
+    NzInputSelectComponent
   ],
   template: `
     <form nz-form [formGroup]="fg" nzLayout="vertical">
@@ -40,28 +42,31 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
 
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="teamId" itemId="teamId"
-            placeholder="팀ID는 자동으로 생성됩니다."
-            [required]="true" [readonly]="true" [nzErrorTip]="errorTpl">팀ID
-          </app-nz-input-text>
+          <nz-form-item-custom for="teamId" label="팀ID" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="teamId" formControlName="teamId" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-input-text #teamName
-            formControlName="teamName" itemId="teamName"
-            placeholder="팀 이름을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">팀명
-          </app-nz-input-text>
+          <nz-form-item-custom for="teamName" label="팀명" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="teamName" formControlName="teamName" required/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="8">
-          <app-nz-form-input-select
-            formControlName="memberList" itemId="memberList"
-            [options]="members" [opt_value]="'userId'" [opt_label]="'name'" [mode]="'multiple'"
-            placeholder="팀원을 선택해주세요."
-            [nzErrorTip]="errorTpl">팀원
-          </app-nz-form-input-select>
+          <nz-form-item-custom for="memberList" label="팀원" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="memberList" itemId="memberList"
+                [options]="members" [opt_value]="'userId'" [opt_label]="'name'" [mode]="'multiple'"
+                placeholder="팀원을 선택해주세요.">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
     </form>
@@ -94,7 +99,7 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
   `]
 })
 export class TeamFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
-  teamName = viewChild.required<NzInputTextComponent>('teamName');
+  //teamName = viewChild.required<NzInputTextComponent>('teamName');
 
   members: TeamJoinableUserModel[] = [];
 
@@ -119,9 +124,9 @@ export class TeamFormComponent extends FormBase implements OnInit, AfterViewInit
 
   ngAfterViewInit(): void {
     if (this.formType === FormType.NEW) {
-      this.teamName().focus();
+      //this.teamName().focus();
     } else {
-      this.teamName().focus();
+      //this.teamName().focus();
     }
 
 

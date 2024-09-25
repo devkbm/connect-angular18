@@ -18,7 +18,7 @@ import { DataDomainService } from './data-domain.service';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
-import { NzInputSelectCustomComponent } from 'src/app/shared-component/nz-input-select-custom/nz-input-select-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
 @Component({
@@ -31,7 +31,7 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
     NzFormModule,
     NzInputModule,
     NzFormItemCustomComponent,
-    NzInputSelectCustomComponent,
+    NzInputSelectComponent,
     NzCrudButtonGroupComponent
   ],
   template: `
@@ -58,11 +58,11 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
         <div nz-col nzSpan="12">
           <nz-form-item-custom for="system" label="시스템" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <nz-input-select-custom required
+              <nz-input-select required
                 formControlName="system" itemId="system"
                 [options]="systemTypeList" [opt_value]="'value'" [opt_label]="'label'"
                 placeholder="Please select">
-              </nz-input-select-custom>
+              </nz-input-select>
             </nz-form-control>
           </nz-form-item-custom>
         </div>
@@ -73,11 +73,11 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
         <div nz-col nzSpan="6">
           <nz-form-item-custom for="term" label="용어" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <nz-input-select-custom required
+              <nz-input-select required
                 formControlName="term" itemId="term"
                 [options]="wordList" [opt_value]="'logicalName'" [opt_label]="'logicalName'" [mode]="'multiple'"
                 placeholder="Please select">
-              </nz-input-select-custom>
+              </nz-input-select>
             </nz-form-control>
           </nz-form-item-custom>
         </div>
@@ -93,11 +93,11 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
         <div nz-col nzSpan="6">
           <nz-form-item-custom for="dataDomainId" label="도메인" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <nz-input-select-custom required
+              <nz-input-select required
                 formControlName="dataDomainId" itemId="dataDomainId"
                 [options]="dataDomainList" [opt_value]="'domainId'" [opt_label]="'domainName'"
                 placeholder="Please select">
-              </nz-input-select-custom>
+              </nz-input-select>
             </nz-form-control>
           </nz-form-item-custom>
         </div>

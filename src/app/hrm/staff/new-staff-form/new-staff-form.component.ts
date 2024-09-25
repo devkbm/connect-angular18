@@ -66,11 +66,11 @@ import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item
         <div nz-col nzSpan="8">
           <nz-form-item-custom for="residentRegistrationNumber" label="주민등록번호" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <app-nz-input-rregno
+              <nz-input-rregno
                 formControlName="residentRegistrationNumber" itemId="residentRegistrationNumber"
                 placeholder="주민등록번호를 입력해주세요."
                 [required]="true">
-              </app-nz-input-rregno>
+              </nz-input-rregno>
             </nz-form-control>
           </nz-form-item-custom>
         </div>

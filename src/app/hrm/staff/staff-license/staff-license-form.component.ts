@@ -1,12 +1,6 @@
+import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
-import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-input-date.component';
-
-import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -18,10 +12,13 @@ import { StaffLicense } from './staff-license.model';
 import { HrmCode } from '../../hrm-code/hrm-code.model';
 import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 import { ResponseList } from 'src/app/core/model/response-list';
-import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-select-custom/nz-form-input-select.component';
 
-
-
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
 @Component({
   selector: 'app-staff-license-form',
@@ -31,11 +28,11 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
-    NzInputTextComponent,
-    NzInputTextareaComponent,
-    NzInputDateComponent,
-    NzFormInputSelectComponent,
-    NzCrudButtonGroupComponent
+    NzInputModule,
+    NzDatePickerModule,
+    NzFormItemCustomComponent,
+    NzCrudButtonGroupComponent,
+    NzInputSelectComponent,
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -50,75 +47,45 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
         }
       </ng-template>
 
-      <!-- 1 Row -->
-      <!--
-      <div nz-row nzGutter="8">
-        <div nz-col nzSpan="8">
-          <app-nz-input-text #staffId
-            formControlName="staffId" itemId="contact_staffId"
-            placeholder="직원ID를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원ID
-          </app-nz-input-text>
-        </div>
-
-        <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="staffNo" itemId="contact_staffNo"
-            placeholder="직원번호를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원번호
-          </app-nz-input-text>
-        </div>
-
-        <div nz-col nzSpan="8">
-          <app-nz-input-text
-            formControlName="staffName" itemId="contact_staffName"
-            placeholder="직원명을 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">직원명
-          </app-nz-input-text>
-        </div>
-      </div>
-      -->
-
       <!-- 2 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="6">
-          <app-nz-form-input-select
-            formControlName="licenseType" itemId="licenseType"
-            [options]="licenseTypeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">자격면허
-          </app-nz-form-input-select>
-
-          <!--
-          <app-nz-input-text
-            formControlName="licenseType" itemId="licenseType"
-            placeholder="자격면허를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">자격면허
-          </app-nz-input-text>
-          -->
+          <nz-form-item-custom for="licenseType" label="자격면허" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-select required
+                formControlName="licenseType" itemId="licenseType"
+                [options]="licenseTypeList" [opt_value]="'code'" [opt_label]="'codeName'"
+                placeholder="Please select">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-text
-            formControlName="licenseNumber" itemId="licenseNumber"
-            placeholder="자격면허 번호를 입력해주세요."
-            [required]="true" [nzErrorTip]="errorTpl">자격면허 번호
-          </app-nz-input-text>
+          <nz-form-item-custom for="licenseNumber" label="자격면허 번호" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="licenseNumber" formControlName="licenseNumber" required
+                placeholder="자격면허 번호를 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-date
-            formControlName="dateOfAcquisition" itemId="dateOfAcquisition"
-            [required]="true" [nzErrorTip]="errorTpl">취득일자
-          </app-nz-input-date>
+          <nz-form-item-custom for="dateOfAcquisition" label="취득일자" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-date-picker nzId="dateOfAcquisition" formControlName="dateOfAcquisition">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="6">
-          <app-nz-input-text
-            formControlName="certificationAuthority" itemId="certificationAuthority"
-            placeholder="인증기관을 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">인증기관
-          </app-nz-input-text>
+          <nz-form-item-custom for="certificationAuthority" label="인증기관">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <input nz-input id="certificationAuthority" formControlName="certificationAuthority"
+                placeholder="인증기관을 입력해주세요."/>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
       </div>
@@ -126,17 +93,17 @@ import { NzFormInputSelectComponent } from 'src/app/shared-component/nz-input-se
       <!-- 3 Row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="24">
-          <app-nz-input-textarea
-            formControlName="comment" itemId="comment"
-            placeholder="비고를 입력해주세요."
-            [rows]="23"
-            [required]="false" [nzErrorTip]="errorTpl">비고
-          </app-nz-input-textarea>
+          <nz-form-item-custom for="comment" label="비고">
+            <nz-form-control>
+              <textarea nz-input id="comment" formControlName="comment"
+                placeholder="비고를 입력해주세요." [rows]="23">
+              </textarea>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
       </div>
 
     </form>
-
 
     <div class="footer">
       <app-nz-crud-button-group
