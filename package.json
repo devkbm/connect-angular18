@@ -30,7 +30,7 @@
     "css-loader": "^7.1.2",
     "date-fns": "^3.6.0",
     "file-saver": "^2.0.5",
-    "ng-zorro-antd": "^18.1.0",
+    "ng-zorro-antd": "^18.1.1",
     "ngx-colors": "^3.6.0",
     "ngx-infinite-scroll": "^18.0.0",
     "ngx-mask": "^17.1.8",
