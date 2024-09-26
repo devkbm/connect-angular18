@@ -9,7 +9,6 @@ import { ResponseObject } from 'src/app/core/model/response-object';
 import { MenuService } from './menu.service';
 import { MenuGroup } from './menu-group.model';
 import { existingMenuGroupValidator } from './menu-group-duplication-validator.directive';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -23,9 +22,8 @@ import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-c
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
-    NzCrudButtonGroupComponent,
-    NzFormItemCustomComponent,
-    NzInputModule
+    NzInputModule,
+    NzFormItemCustomComponent
 ],
   template: `
     {{fg.value | json}}
@@ -83,30 +81,8 @@ import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-c
       </div>
 
     </form>
-
-    <div class="footer">
-      <app-nz-crud-button-group
-        [isSavePopupConfirm]="false"
-        (closeClick)="closeForm()"
-        (saveClick)="save()"
-        (deleteClick)="remove()">
-      </app-nz-crud-button-group>
-    </div>
-
   `,
-  styles: [`
-    .footer {
-      position: absolute;
-      bottom: 0px;
-      width: 100%;
-      border-top: 1px solid rgb(232, 232, 232);
-      padding: 10px 16px;
-      text-align: right;
-      left: 0px;
-      /*background: #fff;*/
-    }
-
-  `]
+  styles: []
 })
 export class MenuGroupFormComponent extends FormBase implements OnInit, AfterViewInit {
 

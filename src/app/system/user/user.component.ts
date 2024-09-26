@@ -1,29 +1,28 @@
 import { Component, OnInit, inject, viewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppBase } from 'src/app/core/app/app-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
 
+import { UserProfileComponent } from '../../app-layout/user-profile/user-profile.component';
+import { UserPopupComponent } from './user-popup.component';
 import { UserGridComponent } from './user-grid.component';
+import { UserImageUploadComponent } from './user-image-upload.component';
+import { UserFormDrawerComponent } from './user-form-drawer.component';
 import { UserService } from './user.service';
 import { User } from './user.model';
 
-import { ButtonTemplate } from 'src/app/shared-component/nz-buttons/nz-buttons.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
-import { UserFormComponent } from './user-form.component';
-import { UserImageUploadComponent } from './user-image-upload.component';
-import { UserPopupComponent } from './user-popup.component';
-import { UserProfileComponent } from '../../app-layout/user-profile/user-profile.component';
-import { NzButtonExcelUploadComponent } from "../../shared-component/nz-button-excel-upload/nz-button-excel-upload.component";
+import { ButtonTemplate } from 'src/app/shared-component/nz-buttons/nz-buttons.component';
+import { NzButtonExcelUploadComponent } from "src/app/shared-component/nz-button-excel-upload/nz-button-excel-upload.component";
 
 @Component({
   selector: 'app-user',
@@ -36,21 +35,20 @@ import { NzButtonExcelUploadComponent } from "../../shared-component/nz-button-e
     NzSelectModule,
     NzInputModule,
     NzIconModule,
-    NzDrawerModule,
     NzDividerModule,
     NzButtonModule,
     NzPageHeaderCustomComponent,
     NzSearchAreaComponent,
+    NzButtonExcelUploadComponent,
     UserPopupComponent,
     UserGridComponent,
     UserImageUploadComponent,
-    UserFormComponent,
-    UserProfileComponent,
-    NzButtonExcelUploadComponent
+    UserFormDrawerComponent,
+    UserProfileComponent
 ],
   template: `
 <div class="page-header">
-  <app-nz-page-header-custom title="사용자 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+  <nz-page-header-custom title="사용자 등록" subtitle="This is a subtitle"></nz-page-header-custom>
 </div>
 
 <app-nz-search-area [height]="'var(--page-search-height)'">
@@ -108,22 +106,10 @@ import { NzButtonExcelUploadComponent } from "../../shared-component/nz-button-e
   </app-user-grid>
 </div>
 
-
-<nz-drawer
-  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-  [nzMaskClosable]="true"
-  [nzWidth]="720"
-  [nzVisible]="drawer.user.visible"
-  nzTitle="사용자 등록"
-  (nzOnClose)="drawer.user.visible = false">
-    <app-user-form *nzDrawerContent
-      [initLoadId]="drawer.user.initLoadId"
-      (formSaved)="getUserList()"
-      (formDeleted)="getUserList()"
-      (formClosed)="drawer.user.visible = false">
-    </app-user-form>
-</nz-drawer>
-
+<app-user-form-drawer
+  [drawer]="drawer.user"
+  (drawerClosed)="getUserList()">
+</app-user-form-drawer>
   `,
   styles: `
 :host {
@@ -172,7 +158,6 @@ import { NzButtonExcelUploadComponent } from "../../shared-component/nz-button-e
 [nz-button] {
   margin: auto;
 }
-
   `
 })
 export class UserComponent extends AppBase implements OnInit {

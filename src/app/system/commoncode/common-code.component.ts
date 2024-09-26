@@ -36,7 +36,7 @@ import { CommonCodeGridComponent } from './common-code-grid.component';
     CommonCodeFormComponent
   ],
   template: `
-<app-nz-page-header-custom title="공통코드 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+<nz-page-header-custom title="공통코드 등록" subtitle="This is a subtitle"></nz-page-header-custom>
 
 <!--조회 조건-->
 <app-nz-search-area [height]="'var(--page-search-height)'">

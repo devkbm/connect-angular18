@@ -29,7 +29,7 @@ import { TeamFormComponent } from './team-form.component';
     NzPageHeaderCustomComponent
   ],
   template: `
-<app-nz-page-header-custom title="팀 정보" subtitle="팀 정보 관리"></app-nz-page-header-custom>
+<nz-page-header-custom title="팀 정보" subtitle="팀 정보 관리"></nz-page-header-custom>
 
 <div nz-row class="btn-group">
   <button nz-button (click)="getGridList('d')">

@@ -15,7 +15,6 @@ import { MenuGroup } from '../menu/menu-group.model';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
@@ -30,7 +29,6 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
     NzFormModule,
     NzInputModule,
     NzFormItemCustomComponent,
-    NzCrudButtonGroupComponent,
     NzInputSelectComponent
   ],
   template: `
@@ -81,28 +79,8 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
         </nz-form-item-custom>
       </div>
     </form>
-
-    <div class="footer">
-      <app-nz-crud-button-group
-        [searchVisible]="false"
-        (closeClick)="closeForm()"
-        (saveClick)="save()"
-        (deleteClick)="remove()">
-      </app-nz-crud-button-group>
-    </div>
   `,
   styles: [`
-    .footer {
-        position: absolute;
-        bottom: 0px;
-        width: 100%;
-        border-top: 1px solid rgb(232, 232, 232);
-        padding: 10px 16px;
-        text-align: right;
-        background-color: black;
-        left: 0px;
-    }
-
     .box {
         box-shadow:  0 6px 4px -4px rgba(0,0,0,0.7);
     }

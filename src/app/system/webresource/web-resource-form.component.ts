@@ -14,7 +14,6 @@ import { ResouceTypeEnum } from './resource-type-enum';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
@@ -28,7 +27,6 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
     ReactiveFormsModule,
     NzFormModule,
     NzInputModule,
-    NzCrudButtonGroupComponent,
     NzFormItemCustomComponent,
     NzInputSelectComponent
   ],
@@ -104,40 +102,8 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
       </div>
 
     </form>
-
-    <div class="footer">
-      <app-nz-crud-button-group
-        [isSavePopupConfirm]="false"
-        (closeClick)="closeForm()"
-        (saveClick)="save()"
-        (deleteClick)="remove()">
-      </app-nz-crud-button-group>
-    </div>
-
   `,
-  styles: [`
-    [nz-button] {
-        margin-right: 8px;
-    }
-
-    .btn-group {
-        padding: 6px;
-        /*background: #fbfbfb;*/
-        border: 1px solid #d9d9d9;
-        border-radius: 6px;
-    }
-
-    .footer {
-        position: absolute;
-        bottom: 0px;
-        width: 100%;
-        border-top: 1px solid rgb(232, 232, 232);
-        padding: 10px 16px;
-        text-align: right;
-        left: 0px;
-        /*background: #fff;*/
-    }
-  `]
+  styles: []
 })
 export class WebResourceFormComponent extends FormBase implements OnInit, AfterViewInit {
 

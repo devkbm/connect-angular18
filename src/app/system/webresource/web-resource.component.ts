@@ -10,14 +10,13 @@ import { WebResource } from './web-resource.model';
 
 import { ButtonTemplate, NzButtonsComponent } from 'src/app/shared-component/nz-buttons/nz-buttons.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
-import { WebResourceFormComponent } from './web-resource-form.component';
+import { WebResourceFormDrawerComponent } from './web-resource-form-drawer.component';
 
 @Component({
   selector: 'app-web-resource',
@@ -30,16 +29,15 @@ import { WebResourceFormComponent } from './web-resource-form.component';
     NzFormModule,
     NzSelectModule,
     NzInputModule,
-    NzDrawerModule,
     NzButtonsComponent,
     NzPageHeaderCustomComponent,
     NzSearchAreaComponent,
 
     WebResourceGridComponent,
-    WebResourceFormComponent
+    WebResourceFormDrawerComponent
   ],
   template: `
-<app-nz-page-header-custom title="리소스 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+<nz-page-header-custom title="리소스 등록" subtitle="This is a subtitle"></nz-page-header-custom>
 
 <app-nz-search-area [height]="'var(--page-search-height)'">
   <div nz-row>
@@ -89,21 +87,10 @@ import { WebResourceFormComponent } from './web-resource-form.component';
   </app-web-resource-grid>
 </div>
 
-<nz-drawer
-  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-  [nzMaskClosable]="true"
-  nzWidth="80%"
-  [nzVisible]="drawer.resource.visible"
-  nzTitle="리소스 등록"
-  (nzOnClose)="drawer.resource.visible = false">
-    <app-web-resource-form #form *nzDrawerContent
-      [initLoadId]="drawer.resource.initLoadId"
-      (formSaved)="getList()"
-      (formDeleted)="getList()"
-      (formClosed)="drawer.resource.visible = false">
-    </app-web-resource-form>
-</nz-drawer>
-
+<app-web-resource-form-drawer
+  [drawer]="drawer.resource"
+  (drawerClosed)="getList()">
+</app-web-resource-form-drawer>
   `,
   styles: `
 :host {

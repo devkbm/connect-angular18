@@ -17,7 +17,7 @@ export const routes: Routes = [
   {path: 'login3', component: Login3Component },
   //{path: 'home', component: AppLayoutComponent, canActivateChild: [AuthGuardService]},
   {path: 'home', component: AppLayoutComponent, canActivateChild: [AuthGuardChildFunction]},
-  {path: 'system', loadChildren: () => import('src/app/system/system-management-routing.module').then(m => m.routes)},
+  {path: 'system', data: {breadcrumb: 'system'}, loadChildren: () => import('src/app/system/system-management-routing.module').then(m => m.routes)},
   {path: 'hrm', loadChildren: () => import('src/app/hrm/hrm-routing.module').then(m => m.routes)},
   {path: 'grw', loadChildren: () => import('src/app/cooperation/cooperation-routing.module').then(m => m.routes)},
   {path: 'article-write/:boardId', component: ArticleFormComponent},

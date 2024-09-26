@@ -71,7 +71,7 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
     StaffDutyResponsibilityListComponent
   ],
   template: `
-<app-nz-page-header-custom title="직원정보관리" subtitle="This is a subtitle"></app-nz-page-header-custom>
+<nz-page-header-custom title="직원정보관리" subtitle="This is a subtitle"></nz-page-header-custom>
 
 <div nz-row class="btn-group">
 

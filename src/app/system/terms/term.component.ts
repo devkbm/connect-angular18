@@ -50,7 +50,7 @@ import { WordFormComponent } from './word-form.component';
   ],
   template: `
 <div class="page-header">
-  <app-nz-page-header-custom title="용어사전 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+  <nz-page-header-custom title="용어사전 등록" subtitle="This is a subtitle"></nz-page-header-custom>
 </div>
 
 <app-nz-search-area [height]="'var(--page-search-height)'">

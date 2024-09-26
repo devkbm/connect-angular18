@@ -1,24 +1,23 @@
 import { Component, OnInit, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppBase } from 'src/app/core/app/app-base';
 
 import { MenuGroupGridComponent } from './menu-group-grid.component';
 import { MenuGridComponent } from './menu-grid.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
+import { MenuFormDrawerComponent } from './menu-form-drawer.component';
+import { MenuGroupFormDrawerComponent } from './menu-group-form-drawer.component';
+
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
-import { MenuFormComponent } from './menu-form.component';
-import { MenuGroupFormComponent } from './menu-group-form.component';
-import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
-
 
 @Component({
   selector: 'app-menu',
@@ -30,20 +29,19 @@ import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
     NzFormModule,
     NzSelectModule,
     NzInputModule,
-    NzDrawerModule,
     NzDividerModule,
     NzButtonModule,
     NzIconModule,
     NzPageHeaderCustomComponent,
     NzSearchAreaComponent,
     MenuGroupGridComponent,
-    MenuGroupFormComponent,
-    MenuFormComponent,
     MenuGridComponent,
-    MenuRoleTreeComponent
+    MenuRoleTreeComponent,
+    MenuGroupFormDrawerComponent,
+    MenuFormDrawerComponent,
   ],
   template: `
-<app-nz-page-header-custom title="메뉴 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+<nz-page-header-custom title="메뉴 등록" subtitle="This is a subtitle"></nz-page-header-custom>
 
 <app-nz-search-area [height]="'var(--page-search-height)'">
   <div nz-row>
@@ -118,36 +116,15 @@ import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
   </app-menu-grid>
 </div>
 
-<nz-drawer
-  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-  [nzMaskClosable]="true"
-  nzWidth="80%"
-  [nzVisible]="drawer.menuGroup.visible"
-  nzTitle="메뉴그룹 등록"
-  (nzOnClose)="drawer.menuGroup.visible = false">
-    <app-menu-group-form #menuGroupForm *nzDrawerContent
-      [initLoadId]="drawer.menuGroup.initLoadId"
-      (formSaved)="getMenuGroupList()"
-      (formDeleted)="getMenuGroupList()"
-      (formClosed)="drawer.menuGroup.visible = false">
-    </app-menu-group-form>
-</nz-drawer>
+<app-menu-group-form-drawer
+  [drawer]="drawer.menuGroup"
+  (drawerClosed)="getMenuGroupList()">
+</app-menu-group-form-drawer>
 
-<nz-drawer
-  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-  [nzMaskClosable]="true"
-  nzWidth="80%"
-  [nzVisible]="drawer.menu.visible"
-  nzTitle="메뉴 등록"
-  (nzOnClose)="drawer.menu.visible = false">
-    <app-menu-form #menuForm *nzDrawerContent
-      [menuGroupId]="drawer.menuGroup.initLoadId"
-      [initLoadId]="drawer.menu.initLoadId"
-      (formSaved)="getMenuList()"
-      (formDeleted)="getMenuList()"
-      (formClosed)="drawer.menu.visible = false">
-    </app-menu-form>
-</nz-drawer>
+<app-menu-form-drawer
+  [drawer]="drawer.menu"
+  (drawerClosed)="getMenuList()">
+</app-menu-form-drawer>
   `,
   styles: `
 :host {

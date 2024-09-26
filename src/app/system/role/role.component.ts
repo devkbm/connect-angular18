@@ -6,6 +6,7 @@ import { AppBase } from 'src/app/core/app/app-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
 
 import { RoleGridComponent } from './role-grid.component';
+import { RoleFormDrawerComponent } from './role-form-drawer.component';
 import { RoleService } from './role.service';
 import { Role } from './role.model';
 
@@ -13,14 +14,12 @@ import { ButtonTemplate, NzButtonsComponent } from 'src/app/shared-component/nz-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
-import { RoleFormComponent } from './role-form.component';
 
 @Component({
   selector: 'app-authority',
@@ -29,25 +28,21 @@ import { RoleFormComponent } from './role-form.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    /* NG-ZORRO  */
     NzButtonModule,
     NzPopconfirmModule,
     NzGridModule,
     NzSelectModule,
     NzInputModule,
-    NzDrawerModule,
     NzDividerModule,
-    /* Shared Component */
     NzButtonsComponent,
     NzPageHeaderCustomComponent,
     NzSearchAreaComponent,
-
     RoleGridComponent,
-    RoleFormComponent
+    RoleFormDrawerComponent
   ],
   template: `
 <div class="page-header">
-  <app-nz-page-header-custom class="page-header" title="롤 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+  <nz-page-header-custom class="page-header" title="롤 등록" subtitle="This is a subtitle"></nz-page-header-custom>
 </div>
 
 <app-nz-search-area [height]="'var(--page-search-height)'">
@@ -86,20 +81,11 @@ import { RoleFormComponent } from './role-form.component';
   </app-role-grid>
 </div>
 
-<nz-drawer
-  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px'}"
-  [nzMaskClosable]="true"
-  [nzWidth]="720"
-  [nzVisible]="drawer.role.visible"
-  nzTitle="롤 등록"
-  (nzOnClose)="closeDrawer()">
-    <app-role-form #form *nzDrawerContent
-      [initLoadId]="drawer.role.initLoadId"
-      (formSaved)="getRoleList()"
-      (formDeleted)="getRoleList()"
-      (formClosed)="closeDrawer()">
-    </app-role-form>
-</nz-drawer>
+<app-role-form-drawer
+  [drawer]="drawer.role"
+  (drawerClosed)="getRoleList()">
+</app-role-form-drawer>
+
   `,
   styles: `
 :host {

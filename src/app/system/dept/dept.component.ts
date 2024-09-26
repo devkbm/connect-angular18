@@ -33,7 +33,7 @@ import { CheckableDeptTreeComponent } from './checkable-dept-tree.component';
   ],
   template: `
 <div class="page-header">
-  <app-nz-page-header-custom title="부서코드 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+  <nz-page-header-custom title="부서코드 등록" subtitle="This is a subtitle"></nz-page-header-custom>
 </div>
 
 

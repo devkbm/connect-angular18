@@ -30,7 +30,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     DutyApplicationFormComponent
   ],
   template: `
-<app-nz-page-header-custom title="부서코드 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+<nz-page-header-custom title="부서코드 등록" subtitle="This is a subtitle"></nz-page-header-custom>
 
 <div nz-row class="btn-group">
 

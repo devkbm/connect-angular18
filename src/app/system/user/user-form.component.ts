@@ -20,7 +20,6 @@ import { GlobalProperty } from 'src/app/core/global-property';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputTreeSelectDeptComponent } from 'src/app/shared-component/nz-input-tree-select-dept/nz-input-tree-select-dept.component';
@@ -38,7 +37,6 @@ import { NzInputTreeSelectDeptComponent } from 'src/app/shared-component/nz-inpu
     NzInputModule,
     NzSwitchModule,
     NzFormItemCustomComponent,
-    NzCrudButtonGroupComponent,
     NzInputTreeSelectDeptComponent,
     NzInputSelectComponent
   ],
@@ -165,31 +163,8 @@ import { NzInputTreeSelectDeptComponent } from 'src/app/shared-component/nz-inpu
         </div>
       </div>
     </form>
-
-    <div class="footer">
-      <app-nz-crud-button-group
-        [searchVisible]="false"
-        [isSavePopupConfirm]="true"
-        (closeClick)="closeForm()"
-        (saveClick)="save()"
-        (deleteClick)="remove()">
-      </app-nz-crud-button-group>
-    </div>
-
   `,
-  styles: [`
-    .footer {
-      position: absolute;
-      bottom: 0px;
-      width: 100%;
-      border-top: 1px solid rgb(232, 232, 232);
-      padding: 10px 16px;
-      text-align: right;
-      left: 0px;
-      /*background: #fff;*/
-    }
-
-  `]
+  styles: []
 })
 export class UserFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 

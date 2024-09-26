@@ -1,11 +1,10 @@
-import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
+import { Component, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
-
 import { ResponseObject } from 'src/app/core/model/response-object';
 
 import { BizCodeService } from './biz-code.service';
@@ -15,8 +14,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
+import { NzFormItemCustomComponent } from "src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component";
 
 @Component({
   selector: 'app-biz-code-form',
@@ -29,7 +27,6 @@ import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-c
     NzInputModule,
     NzCheckboxModule,
     NzInputNumberModule,
-    NzCrudButtonGroupComponent,
     NzFormItemCustomComponent
 ],
   template: `
@@ -84,8 +81,8 @@ import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-c
           <nz-form-item-custom for="sequence" label="순번" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <nz-input-number nzId="sequence" formControlName="sequence" required
-                [nzMin]="0" [nzMax]="9999"
-              ></nz-input-number>
+                [nzMin]="0" [nzMax]="9999">
+              </nz-input-number>
             </nz-form-control>
           </nz-form-item-custom>
         </div>
@@ -97,7 +94,7 @@ import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-c
           <nz-form-item-custom for="comment" label="비고">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <textarea nz-input id="comment" formControlName="comment"
-              placeholder="비고를 입력해주세요." [rows]="20">
+                placeholder="비고를 입력해주세요." [rows]="20">
               </textarea>
             </nz-form-control>
           </nz-form-item-custom>
@@ -105,49 +102,10 @@ import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-c
       </div>
 
     </form>
-
-    <div class="footer">
-      <app-nz-crud-button-group
-        [searchVisible]="false"
-        [isSavePopupConfirm]="false"
-        (closeClick)="closeForm()"
-        (saveClick)="save()"
-        (deleteClick)="remove()">
-      </app-nz-crud-button-group>
-    </div>
-
   `,
-  styles: [`
-    [nz-button] {
-      margin-right: 8px;
-    }
-
-    .form-item {
-      margin-top: 0px;
-      margin-bottom: 5px;
-    }
-
-    .btn-group {
-      padding: 6px;
-      /*background: #fbfbfb;*/
-      border: 1px solid #d9d9d9;
-      border-radius: 6px;
-    }
-
-    .footer {
-      position: absolute;
-      bottom: 0px;
-      width: 100%;
-      border-top: 1px solid rgb(232, 232, 232);
-      padding: 10px 16px;
-      text-align: right;
-      left: 0px;
-      /*background: #fff;*/
-    }
-
-  `]
+  styles: []
 })
-export class BizCodeFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class BizCodeFormComponent extends FormBase implements AfterViewInit {
 
   private service = inject(BizCodeService);
   private appAlarmService = inject(AppAlarmService);
@@ -160,9 +118,6 @@ export class BizCodeFormComponent extends FormBase implements OnInit, AfterViewI
     sequence    : new FormControl<number | null>(null),
     comment     : new FormControl<string | null>(null)
   });
-
-  ngOnInit(): void {
-  }
 
   ngAfterViewInit(): void {
     if (this.initLoadId && this.initLoadId.typeId && this.initLoadId.code) {

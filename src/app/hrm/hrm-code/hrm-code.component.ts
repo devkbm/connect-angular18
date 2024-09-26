@@ -46,7 +46,7 @@ import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
     HrmCodeTypeFormComponent
   ],
   template: `
-<app-nz-page-header-custom title="인사시스템 코드 정보" subtitle="인사시스템 구분 코드 정보 관리"></app-nz-page-header-custom>
+<nz-page-header-custom title="인사시스템 코드 정보" subtitle="인사시스템 구분 코드 정보 관리"></nz-page-header-custom>
 
 <div nz-row class="btn-group">
 

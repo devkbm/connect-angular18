@@ -12,12 +12,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
-import { HolidayFormComponent } from './holiday-form.component';
 import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
+import { HolidayFormDrawerComponent } from './holiday-form-drawer.component';
 
 
 @Component({
@@ -28,7 +27,6 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,
-    NzDrawerModule,
     NzIconModule,
     NzButtonModule,
     NzDatePickerModule,
@@ -36,11 +34,11 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
     NzPageHeaderCustomComponent,
     NzSearchAreaComponent,
     HolidayGridComponent,
-    HolidayFormComponent
+    HolidayFormDrawerComponent
   ],
   template: `
 <div class="page-header">
-  <app-nz-page-header-custom title="공휴일 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+  <nz-page-header-custom title="공휴일 등록" subtitle="This is a subtitle"></nz-page-header-custom>
 </div>
 
 <app-nz-search-area [height]="'var(--page-search-height)'">
@@ -80,20 +78,10 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
   </app-holiday-grid>
 </div>
 
-<nz-drawer
-    [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-    [nzMaskClosable]="true"
-    [nzWidth]="720"
-    [nzVisible]="drawer.holiday.visible"
-    nzTitle="휴일 등록"
-    (nzOnClose)="closeDrawer()">
-    <app-holiday-form #holidayForm *nzDrawerContent
-      [initLoadId]="drawer.holiday.initLoadId"
-      (formSaved)="getHolidayList()"
-      (formDeleted)="getHolidayList()"
-      (formClosed)="closeDrawer()">
-    </app-holiday-form>
-</nz-drawer>
+<app-holiday-form-drawer
+  [drawer]="drawer.holiday"
+  (drawerClosed)="getHolidayList()">
+</app-holiday-form-drawer>
 
   `,
   styles: `

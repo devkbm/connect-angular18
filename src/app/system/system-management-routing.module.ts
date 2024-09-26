@@ -21,7 +21,7 @@ export const routes: Routes = [
     path: '', component: AppLayoutComponent, //canActivateChild: [AuthGuardService],
     children: [
       /* 공통 시스템 */
-      {path: 'user',          component: UserComponent},
+      {path: 'user',          component: UserComponent, data: {breadcrumb: 'user'}},
       {path: 'role',          component: RoleComponent},
       {path: 'menu',          component: MenuComponent},
       {path: 'menu-role',     component: MenuRoleComponent},
