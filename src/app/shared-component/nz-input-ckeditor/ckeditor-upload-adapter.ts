@@ -1,6 +1,6 @@
 // https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/upload-adapter.html#the-complete-implementation
 
-export class MyUploadAdapter {
+export class CkeditorUploadAdapter {
   xhr: any;
   loader: any;
   UPLOAD_URL: string = 'http://localhost:8090/common/file/';

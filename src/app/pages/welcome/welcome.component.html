@@ -86,19 +86,15 @@
   </app-nz-input-select-dept>
 -->
 
-  <app-nz-input-ckeditor
+  <nz-input-ckeditor
     formControlName="input_text" itemId="data1"
     rows="10">
     Editor
-  </app-nz-input-ckeditor>
+  </nz-input-ckeditor>
 
   <app-nz-input-radio-group formControlName="input_text" itemId="data1" [options]="[{label:'a',value:'a'},{label:'b',value:'b'}]">
     라디오버튼
   </app-nz-input-radio-group>
-
-  <app-nz-input-simple-color-picker formControlName="input_color" [required]="true">
-    color-picker
-  </app-nz-input-simple-color-picker>
 
   <app-nz-buttons [buttons]="btns"></app-nz-buttons>
 

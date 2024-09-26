@@ -8,14 +8,14 @@ import { CKEditorComponent, CKEditorModule } from '@ckeditor/ckeditor5-angular';
 //import '@ckeditor/ckeditor5-build-classic/build/translations/ko';
 import Editor from 'ckeditor5/build/ckeditor';
 
-import { MyUploadAdapter } from './my-upload-adapter';
+import { CkeditorUploadAdapter } from './ckeditor-upload-adapter';
 
 // https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/frameworks/angular.html
 // https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/installing-plugins.html
 // https://ckeditor.com/ckeditor-5/online-builder/
 
 @Component({
-  selector: 'app-nz-input-ckeditor',
+  selector: 'nz-input-ckeditor',
   standalone: true,
   imports: [FormsModule, CKEditorModule],
   template: `
@@ -91,7 +91,7 @@ export class NzInputCkeditorComponent implements ControlValueAccessor {
       extraPlugins: [
         function (editor: any) {
           editor.plugins.get('FileRepository').createUploadAdapter = (loader :any) => {
-            return new MyUploadAdapter(loader);
+            return new CkeditorUploadAdapter(loader);
           };
         }
       ]
@@ -106,7 +106,7 @@ export class NzInputCkeditorComponent implements ControlValueAccessor {
 
   MyCustomUploadAdapterPlugin(editor: any ): any {
     editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader: any ) => {
-      return new MyUploadAdapter( loader );
+      return new CkeditorUploadAdapter( loader );
     }
   }
 

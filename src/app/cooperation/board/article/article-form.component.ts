@@ -65,12 +65,11 @@ import { Article } from './article.model';
 
       <nz-form-item-custom for="contents" label="내용">
         <nz-form-control>
-          <app-nz-input-ckeditor
+          <nz-input-ckeditor
             formControlName="contents"
             [itemId]="'contents'"
-            [height]="'45vh'"
-            >
-          </app-nz-input-ckeditor>
+            [height]="'45vh'">
+          </nz-input-ckeditor>
         </nz-form-control>
       </nz-form-item-custom>
 

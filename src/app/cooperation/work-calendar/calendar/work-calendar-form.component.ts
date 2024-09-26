@@ -16,7 +16,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
-import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-input-color-picker/nz-input-simple-color-picker.component';
+import { NzInputNgxColorsComponent } from 'src/app/shared-component/nz-input-ngx-colors/nz-input-ngx-colors.component';
 
 
 @Component({
@@ -29,9 +29,9 @@ import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-i
     NzFormModule,
     NzInputModule,
     NzCrudButtonGroupComponent,
-    NzInputSimpleColorPickerComponent,
     NzFormItemCustomComponent,
     NzInputSelectComponent,
+    NzInputNgxColorsComponent,
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -66,21 +66,14 @@ import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-i
 
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <app-nz-input-simple-color-picker
-            formControlName="color"
-            [itemId]="'color'"
-            [colorPalette]="preset_colors"
-            [required]="false" [nzErrorTip]="errorTpl">색상
-          </app-nz-input-simple-color-picker>
-
-          <!--
-          <app-nz-input-color-picker
-            formControlName="color"
-            [itemId]="'color'"
-            placeholder="색상을 입력해주세요."
-            [required]="false" [nzErrorTip]="errorTpl">색상
-          </app-nz-input-color-picker>
-          -->
+          <nz-form-item-custom for="color" label="색상">
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-ngx-colors formControlName="color"
+                [itemId]="'color'"
+                [colorPalette]="preset_colors">
+              </nz-input-ngx-colors>
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
 
         <div nz-col nzSpan="12">

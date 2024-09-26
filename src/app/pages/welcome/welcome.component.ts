@@ -5,9 +5,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 import { ButtonTemplate, NzButtonsComponent } from 'src/app/shared-component/nz-buttons/nz-buttons.component';
 import { NzInputCkeditorComponent } from 'src/app/shared-component/nz-input-ckeditor/nz-input-ckeditor.component';
-import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-input-color-picker/nz-input-simple-color-picker.component';
 import { NzInputDateTimeComponent } from 'src/app/shared-component/nz-input-datetime/nz-input-datetime.component';
-
 
 import { NzInputRadioGroupComponent } from 'src/app/shared-component/nz-input-radio-group/nz-input-radio-group.component';
 
@@ -38,7 +36,6 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
     NzInputDateTimeComponent,
     NzInputRadioGroupComponent,
     NzInputTreeSelectComponent,
-    NzInputSimpleColorPickerComponent,
     DutyDateListComponent,
     NzInputSelectComponent
   ],

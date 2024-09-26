@@ -1,5 +1,7 @@
 import { Component, OnInit, AfterViewInit, Input, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
@@ -7,22 +9,18 @@ import { ResponseList } from 'src/app/core/model/response-list';
 
 import { WorkCalendarEvent } from './work-calendar-event.model';
 import { WorkCalendarEventService } from './work-calendar-event.service';
-
 import { WorkCalendarService } from '../calendar/work-calendar.service';
 import { WorkCalendar } from '../calendar/work-calendar.model';
 
-
-import { NzInputDateTimeComponent, TimeFormat } from 'src/app/shared-component/nz-input-datetime/nz-input-datetime.component';
-
 import * as dateFns from "date-fns";
-import { CommonModule } from '@angular/common';
+
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-input-color-picker/nz-input-simple-color-picker.component';
-import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+import { NzInputDateTimeComponent, TimeFormat } from 'src/app/shared-component/nz-input-datetime/nz-input-datetime.component';
 
 export interface NewFormValue {
   workCalendarId: number;
@@ -41,7 +39,6 @@ export interface NewFormValue {
     NzInputModule,
     NzCheckboxModule,
     NzCrudButtonGroupComponent,
-    NzInputSimpleColorPickerComponent,
     NzInputDateTimeComponent,
     NzFormItemCustomComponent,
     NzInputSelectComponent
