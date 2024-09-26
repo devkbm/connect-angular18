@@ -1,7 +1,6 @@
-import { Component, OnInit, AfterViewInit, Input, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
@@ -17,7 +16,6 @@ import * as dateFns from "date-fns";
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputDateTimeComponent, TimeFormat } from 'src/app/shared-component/nz-input-datetime/nz-input-datetime.component';
@@ -38,7 +36,6 @@ export interface NewFormValue {
     NzFormModule,
     NzInputModule,
     NzCheckboxModule,
-    NzCrudButtonGroupComponent,
     NzInputDateTimeComponent,
     NzFormItemCustomComponent,
     NzInputSelectComponent
@@ -116,42 +113,20 @@ export interface NewFormValue {
       <nz-form-item-custom for="text" label="제목">
         <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
           <textarea nz-input id="text" formControlName="text"
-          placeholder="제목을 입력해주세요." [rows]="20">
+            placeholder="제목을 입력해주세요." [rows]="10">
           </textarea>
         </nz-form-control>
       </nz-form-item-custom>
     </form>
-
-    <div class="footer">
-      <app-nz-crud-button-group
-        [isSavePopupConfirm]="false"
-        (closeClick)="closeForm()"
-        (saveClick)="save()"
-        (deleteClick)="remove(fg.controls.id.value!)">
-      </app-nz-crud-button-group>
-    </div>
-
   `,
-  styles: [`
-    .footer {
-      position: absolute;
-      bottom: 0px;
-      width: 100%;
-      border-top: 1px solid rgb(232, 232, 232);
-      padding: 10px 16px;
-      text-align: right;
-      left: 0px;
-      /*background: #fff;*/
-    }
-
-  `]
+  styles: []
 })
 export class WorkCalendarEventFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
   //text = viewChild.required<NzInputTextareaComponent>('text');
 
-  @Input() override initLoadId: number = -1;
-  @Input() newFormValue?: NewFormValue;
+  override initLoadId = input<number>(-1);
+  newFormValue = input<NewFormValue>();
 
   timeFormat: TimeFormat = TimeFormat.HourMinute;
 
@@ -172,14 +147,14 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
   ngOnInit(): void {
     this.getMyWorkGroupList();
 
-    if (this.initLoadId > 0) {
-      this.get(this.initLoadId);
+    if (this.initLoadId() > 0) {
+      this.get(this.initLoadId());
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.newFormValue) {
-      this.newForm(this.newFormValue);
+    if (this.newFormValue()) {
+      this.newForm(this.newFormValue()!);
     }
   }
 
@@ -238,7 +213,8 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
         );
   }
 
-  remove(id: string): void {
+  remove(): void {
+    const id = this.fg.controls.id.value!;
     this.service.deleteWorkGroupSchedule(id)
         .subscribe(
             (model: ResponseObject<WorkCalendarEvent>) => {

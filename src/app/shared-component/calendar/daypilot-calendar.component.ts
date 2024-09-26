@@ -40,17 +40,17 @@ export interface ModeChangedArgs {
     </div>
   `,
   styles: `
-  .calendar {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    vertical-align: top;
-  }
+    .calendar {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      vertical-align: top;
+    }
 
-  /* 달력 높이 100%가 안됨 */
-  .contents {
-    flex: 0 0 100%;
-  }
+    /* 달력 높이 100%가 안됨 */
+    .contents {
+      flex: 0 0 100%;
+    }
   `
 })
 export class DaypilotCalendarComponent implements AfterViewInit {

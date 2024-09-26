@@ -1,15 +1,15 @@
+import { Component, Input, AfterViewInit, inject, viewChild, output } from '@angular/core';
 import { CommonModule, formatDate } from '@angular/common';
 
-import { Component, Input, AfterViewInit, inject, viewChild, output } from '@angular/core';
+import { DayPilot } from '@daypilot/daypilot-lite-angular';
 
 import { ResponseList } from 'src/app/core/model/response-list';
 
-import { DaypilotCalendarComponent, ModeChangedArgs } from 'src/app/shared-component/calendar/daypilot-calendar.component';
-import { DayPilot } from '@daypilot/daypilot-lite-angular';
 import { WorkCalendarEventService } from '../event/work-calendar-event.service';
 import { WorkCalendarEvent } from '../event/work-calendar-event.model';
-import { DaypilotCalendarHeaderComponent } from "../../../shared-component/calendar/daypilot-calendar-header.component";
 
+import { DaypilotCalendarHeaderComponent } from "src/app/shared-component/calendar/daypilot-calendar-header.component";
+import { DaypilotCalendarComponent, ModeChangedArgs } from 'src/app/shared-component/calendar/daypilot-calendar.component';
 
 export interface NewDateSelectedArgs {
   workCalendarId: number;
@@ -26,40 +26,34 @@ export interface NewDateSelectedArgs {
     DaypilotCalendarHeaderComponent
   ],
   template: `
-  <!--
-  <div class="calendar-div">
-      <full-calendar #calendar [options]="calendarOptions">
-      </full-calendar>
-  </div>
-  -->
-  <app-daypilot-calendar-header
-    [titleStartDate]="calendar.start.toDate()"
-    [titleEndDate]="calendar.end.toDate()"
-    (previousButtonClicked)="calendar.navigatePrevious($event)"
-    (todayButtonClicked)="calendar.navigateToday($event)"
-    (nextButtonClicked)="calendar.navigateNext($event)"
-    (selectedModeChanged)="calendar.modeChange($event)">
-  </app-daypilot-calendar-header>
 
-  <div class="calendar-div">
-    <app-daypilot-calendar
-      #calendar
-      [events]="eventData"
-      (eventClicked)="eventClicked($event)"
-      (rangeChanged)="rangeChanged($event)"
-      (datesSelected)="onDateClick($event)"
-      (modeChanged)="calendarModeChanged($event)">
-    </app-daypilot-calendar>
-  </div>
-`,
+    <app-daypilot-calendar-header
+      [titleStartDate]="calendar.start.toDate()"
+      [titleEndDate]="calendar.end.toDate()"
+      (previousButtonClicked)="calendar.navigatePrevious($event)"
+      (todayButtonClicked)="calendar.navigateToday($event)"
+      (nextButtonClicked)="calendar.navigateNext($event)"
+      (selectedModeChanged)="calendar.modeChange($event)">
+    </app-daypilot-calendar-header>
+
+    <div class="calendar-div">
+      <app-daypilot-calendar #calendar
+        [events]="eventData"
+        (eventClicked)="eventClicked($event)"
+        (rangeChanged)="rangeChanged($event)"
+        (datesSelected)="onDateClick($event)"
+        (modeChanged)="calendarModeChanged($event)">
+      </app-daypilot-calendar>
+    </div>
+  `,
   styles: [`
-  .calendar-div {
-    /*max-height: 800px; */
-    overflow-y: hidden;
-    overflow-x: hidden;
-    overflow: auto;
-    height: calc(100% - 50px);
-  }
+    .calendar-div {
+      /*max-height: 800px; */
+      overflow-y: hidden;
+      overflow-x: hidden;
+      overflow: auto;
+      height: calc(100% - 50px);
+    }
 `]
 })
 export class WorkCalendarViewComponent implements AfterViewInit {
@@ -113,6 +107,8 @@ export class WorkCalendarViewComponent implements AfterViewInit {
       fromDate: this.from,
       toDate: this.to
     };
+
+    console.log(param);
 
     this.service
         .getWorkScheduleList(param)

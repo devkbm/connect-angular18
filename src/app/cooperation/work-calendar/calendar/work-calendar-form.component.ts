@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -91,30 +91,8 @@ import { NzInputNgxColorsComponent } from 'src/app/shared-component/nz-input-ngx
       </div>
 
     </form>
-
-    <div class="footer">
-      <app-nz-crud-button-group
-        [isSavePopupConfirm]="false"
-        (closeClick)="closeForm()"
-        (saveClick)="save()"
-        (deleteClick)="remove(fg.controls.workCalendarId.value!)">
-      </app-nz-crud-button-group>
-    </div>
-
   `,
-  styles: [`
-    .footer {
-      position: absolute;
-      bottom: 0px;
-      width: 100%;
-      border-top: 1px solid rgb(232, 232, 232);
-      padding: 10px 16px;
-      text-align: right;
-      left: 0px;
-      /*background: #fff;*/
-    }
-
-  `]
+  styles: []
 })
 export class WorkCalendarFormComponent extends FormBase implements OnInit, AfterViewInit {
 
@@ -125,6 +103,8 @@ export class WorkCalendarFormComponent extends FormBase implements OnInit, After
 
   //workCalendarName = viewChild.required<NzInputTextComponent>('workCalendarName');
 
+  override initLoadId = input<number>(-1);
+
   private workGroupService = inject(WorkCalendarService);
 
   override fg = inject(FormBuilder).group({
@@ -134,8 +114,19 @@ export class WorkCalendarFormComponent extends FormBase implements OnInit, After
     memberList        : new FormControl<any | null>(null)
   });
 
-  ngOnInit(): void {
+  constructor() {
+    super();
+
     this.getAllMember();
+
+    effect(() => {
+      if ( this.initLoadId() > 0 ) {
+        this.get(this.initLoadId());
+      }
+    })
+  }
+
+  ngOnInit(): void {
 
     this.newForm();
   }
@@ -147,7 +138,8 @@ export class WorkCalendarFormComponent extends FormBase implements OnInit, After
   newForm(): void {
     this.formType = FormType.NEW;
 
-    this.fg.get('memberList')?.setValue([SessionManager.getUserId()]);
+    this.fg.controls.memberList.setValue([SessionManager.getUserId()]);
+    //this.fg.get('memberList')?.setValue([SessionManager.getUserId()]);
   }
 
   modifyForm(formData: WorkCalendar): void {
@@ -184,7 +176,9 @@ export class WorkCalendarFormComponent extends FormBase implements OnInit, After
         );
   }
 
-  remove(id: number): void {
+  remove(): void {
+    const id: number = this.fg.controls.workCalendarId.value!;
+
     this.workGroupService.deleteWorkGroup(id)
         .subscribe(
             (model: ResponseObject<WorkCalendar>) => {

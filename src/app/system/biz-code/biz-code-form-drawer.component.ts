@@ -10,8 +10,8 @@ import { NzCrudButtonGroupComponent } from "src/app/shared-component/nz-crud-but
   standalone: true,
   imports: [
     NzDrawerModule,
-    BizCodeFormComponent,
-    NzCrudButtonGroupComponent
+    NzCrudButtonGroupComponent,
+    BizCodeFormComponent
 ],
   template: `
     <nz-drawer
