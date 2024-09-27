@@ -1,14 +1,15 @@
 import { AfterViewInit, Component, OnInit, inject, viewChild } from '@angular/core';
-import { CommonModule, formatDate, Location } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AppBase } from 'src/app/core/app/app-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 
+import { HolidayFormDrawerComponent } from './holiday-form-drawer.component';
 import { HolidayGridComponent } from './holiday-grid.component';
 import { HolidayService } from './holiday.service';
 import { Holiday } from './holiday.model';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -16,7 +17,6 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
-import { HolidayFormDrawerComponent } from './holiday-form-drawer.component';
 
 
 @Component({
@@ -133,7 +133,7 @@ import { HolidayFormDrawerComponent } from './holiday-form-drawer.component';
 
   `
 })
-export class HolidayComponent extends AppBase implements OnInit, AfterViewInit {
+export class HolidayComponent implements OnInit, AfterViewInit {
 
   private service = inject(HolidayService);
   private appAlarmService = inject(AppAlarmService);

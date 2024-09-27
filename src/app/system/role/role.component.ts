@@ -1,8 +1,7 @@
-import { CommonModule } from '@angular/common';
-
 import { AfterViewInit, Component, inject, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AppBase } from 'src/app/core/app/app-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
 
 import { RoleGridComponent } from './role-grid.component';
@@ -10,8 +9,6 @@ import { RoleFormDrawerComponent } from './role-form-drawer.component';
 import { RoleService } from './role.service';
 import { Role } from './role.model';
 
-import { ButtonTemplate, NzButtonsComponent } from 'src/app/shared-component/nz-buttons/nz-buttons.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -19,7 +16,9 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
+import { ButtonTemplate, NzButtonsComponent } from 'src/app/shared-component/nz-buttons/nz-buttons.component';
 import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
+
 
 @Component({
   selector: 'app-authority',
@@ -135,7 +134,7 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
 }
   `
 })
-export class RoleComponent extends AppBase implements AfterViewInit {
+export class RoleComponent implements AfterViewInit {
 
   private service = inject(RoleService);
 

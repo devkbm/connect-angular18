@@ -1,8 +1,7 @@
 import { Component, OnInit, inject, viewChild } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AppBase } from 'src/app/core/app/app-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
 
 import { UserProfileComponent } from '../../app-layout/user-profile/user-profile.component';
@@ -160,7 +159,7 @@ import { NzButtonExcelUploadComponent } from "src/app/shared-component/nz-button
 }
   `
 })
-export class UserComponent extends AppBase implements OnInit {
+export class UserComponent implements OnInit {
 
   grid = viewChild.required(UserGridComponent);
 

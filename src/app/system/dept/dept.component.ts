@@ -1,18 +1,17 @@
 import { AfterViewInit, Component, OnInit, viewChild } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
-
-import { AppBase } from 'src/app/core/app/app-base';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { DeptTreeComponent } from './dept-tree.component';
 import { DeptFormComponent } from './dept-form.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CheckableDeptTreeComponent } from './checkable-dept-tree.component';
+
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
-import { CheckableDeptTreeComponent } from './checkable-dept-tree.component';
 
 @Component({
   selector: 'app-dept',
@@ -156,11 +155,10 @@ import { CheckableDeptTreeComponent } from './checkable-dept-tree.component';
 
   `
 })
-export class DeptComponent extends AppBase implements OnInit, AfterViewInit {
+export class DeptComponent implements OnInit, AfterViewInit {
 
   tree = viewChild.required(DeptTreeComponent);
   form = viewChild.required(DeptFormComponent);
-
 
   queryValue = '';
 

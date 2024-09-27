@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, viewChild } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
-import { AppBase } from 'src/app/core/app/app-base';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { HrmCodeTypeGridComponent } from './hrm-code-type-grid.component';
 import { HrmCodeGridComponent } from './hrm-code-grid.component';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -9,7 +10,9 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { HrmCode } from './hrm-code.model';
 import { HrmCodeTypeService } from './hrm-code-type.service';
 import { HrmType } from './hrm-type.model';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HrmTypeCodeFormComponent } from './hrm-code-form.component';
+import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
+
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
@@ -19,8 +22,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
-import { HrmTypeCodeFormComponent } from './hrm-code-form.component';
-import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
+
 
 @Component({
   selector: 'app-hrm-code',
@@ -175,7 +177,7 @@ import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
 
   `
 })
-export class HrmCodeComponent extends AppBase implements OnInit {
+export class HrmCodeComponent implements OnInit {
 
   private appAlarmService = inject(AppAlarmService);
   private hrmCodeService = inject(HrmCodeService);

@@ -1,7 +1,6 @@
 import { Component, OnInit, inject, AfterViewInit, viewChild } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
-import { AppBase } from 'src/app/core/app/app-base';
 import { ResponseList } from 'src/app/core/model/response-list';
 
 import { CommonCodeFormComponent } from './common-code-form.component';
@@ -127,7 +126,7 @@ import { CommonCodeGridComponent } from './common-code-grid.component';
 
   `
 })
-export class CommonCodeComponent extends AppBase implements OnInit, AfterViewInit {
+export class CommonCodeComponent implements OnInit, AfterViewInit {
 
   tree = viewChild.required(CommonCodeTreeComponent);
   form = viewChild.required(CommonCodeFormComponent);

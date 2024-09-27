@@ -1,12 +1,14 @@
-import { AfterContentInit, AfterViewInit, Component, ContentChild, OnInit, viewChild } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
-
-import { AppBase } from 'src/app/core/app/app-base';
+import { Component, OnInit, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TermGridComponent } from './term-grid.component';
 import { DataDomainGridComponent } from './data-domain-grid.component';
 import { WordGridComponent } from './word-grid.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DataDomainFormComponent } from './data-domain-form.component';
+import { TermFormComponent } from './term-form.component';
+import { WordFormComponent } from './word-form.component';
+
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
@@ -17,9 +19,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
-import { DataDomainFormComponent } from './data-domain-form.component';
-import { TermFormComponent } from './term-form.component';
-import { WordFormComponent } from './word-form.component';
 
 @Component({
   selector: 'app-term',
@@ -223,7 +222,7 @@ import { WordFormComponent } from './word-form.component';
 }
   `
 })
-export class TermComponent extends AppBase implements OnInit {
+export class TermComponent implements OnInit {
 
   termGrid = viewChild.required(TermGridComponent);
   wordGrid = viewChild.required(WordGridComponent);

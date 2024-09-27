@@ -1,7 +1,6 @@
 import { Component, OnInit, inject, viewChild } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
-import { AppBase } from 'src/app/core/app/app-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
 
 import { WebResourceGridComponent } from './web-resource-grid.component';
@@ -116,7 +115,7 @@ import { WebResourceFormDrawerComponent } from './web-resource-form-drawer.compo
 }
   `
 })
-export class WebResourceComponent extends AppBase  implements OnInit {
+export class WebResourceComponent implements OnInit {
 
   private service = inject(WebResourceService);
 

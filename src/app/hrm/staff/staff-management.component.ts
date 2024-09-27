@@ -1,9 +1,7 @@
-import { CommonModule, Location } from '@angular/common';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-
 import { Component, OnInit, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AppBase } from 'src/app/core/app/app-base';
 import { StaffRegistFormComponent } from './staff-regist-form.component';
 import { StaffGridComponent } from './staff-grid.component';
 import { StaffAppointmentRecordGridComponent } from './staff-appointment-record/staff-appointment-record-grid.component';
@@ -15,14 +13,6 @@ import { StaffAppointmentRecord } from './staff-appointment-record/staff-appoint
 import { StaffSchoolCareer } from './staff-school-career/staff-school-career.model';
 import { StaffSchoolCareerGridComponent } from './staff-school-career/staff-school-career-grid.component';
 import { StaffCurrentAppointmentDescriptionComponent } from './staff-current-appointment-description.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { NewStaffFormComponent } from './new-staff-form/new-staff-form.component';
 import { StaffAppointmentRecordFormComponent } from './staff-appointment-record/staff-appointment-record-form.component';
 import { StaffCardListComponent } from './staff-card/staff-card-list.component';
@@ -33,6 +23,16 @@ import { StaffDutyResponsibilityListComponent } from './staff-duty-responsibilit
 import { StaffFamilyFormComponent } from './staff-family/staff-family-form.component';
 import { StaffLicenseFormComponent } from './staff-license/staff-license-form.component';
 import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-school-career-form.component';
+
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
+
 
 @Component({
   selector: 'app-staff-management',
@@ -49,7 +49,6 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
     NzGridModule,
     NzButtonModule,
     NzIconModule,
-
     NzPageHeaderCustomComponent,
 
     StaffAppointmentRecordGridComponent,
@@ -349,7 +348,7 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
 }
   `
 })
-export class StaffManagementComponent extends AppBase implements OnInit {
+export class StaffManagementComponent implements OnInit {
 
   gridStaff = viewChild.required(StaffGridComponent);
   formStaff = viewChild.required(StaffRegistFormComponent);
@@ -380,7 +379,6 @@ export class StaffManagementComponent extends AppBase implements OnInit {
   }
 
   constructor() {
-    super();
   }
 
   ngOnInit() {

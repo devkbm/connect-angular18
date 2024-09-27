@@ -1,8 +1,6 @@
-import { Component, OnInit, viewChild } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { AppBase } from 'src/app/core/app/app-base';
 
 import { MenuGroupGridComponent } from './menu-group-grid.component';
 import { MenuGridComponent } from './menu-grid.component';
@@ -218,7 +216,7 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
 }
   `
 })
-export class MenuComponent extends AppBase {
+export class MenuComponent {
 
   gridMenuGroup = viewChild.required(MenuGroupGridComponent);
   gridMenu = viewChild.required(MenuGridComponent);

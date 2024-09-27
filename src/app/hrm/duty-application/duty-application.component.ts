@@ -1,8 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { AppBase } from 'src/app/core/app/app-base';
 
 import { DutyApplicationFormComponent } from './duty-application-form.component';
 import { DutyApplicationGridComponent } from './duty-application-grid.component';
@@ -69,10 +67,9 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
   `
 })
-export class DutyApplicationComponent extends AppBase implements OnInit, AfterViewInit {
+export class DutyApplicationComponent implements OnInit, AfterViewInit {
 
   constructor() {
-    super();
   }
 
   ngOnInit() {

@@ -2,8 +2,6 @@ import { Component, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AppBase } from 'src/app/core/app/app-base';
-
 import { BizCodeTypeGridComponent } from './biz-code-type-grid.component';
 import { BizCodeGridComponent } from './biz-code-grid.component';
 import { BizCodeTypeFormDrawerComponent } from "./biz-code-type-form-drawer.component";
@@ -167,7 +165,7 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
 }
   `
 })
-export class BizCodeComponent extends AppBase {
+export class BizCodeComponent {
 
   gridCodeType = viewChild.required(BizCodeTypeGridComponent);
   gridCode = viewChild.required(BizCodeGridComponent);
