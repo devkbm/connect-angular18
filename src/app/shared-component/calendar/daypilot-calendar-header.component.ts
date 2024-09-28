@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 
 @Component({
   selector: 'app-daypilot-calendar-header',
@@ -15,23 +15,23 @@ import { Component, input, output } from '@angular/core';
     </div>
 
     <div class="title">
-      @if (this.selectedMode === 'Day') {
+      @if (this.selectedMode() === 'Day') {
         {{titleStartDate() | date : 'YYYY-MM-dd' }}
       }
 
-      @if (this.selectedMode === 'Week') {
+      @if (this.selectedMode() === 'Week') {
         {{titleStartDate() | date : 'YYYY-MM-dd' }} ~ {{titleEndDate() | date : 'YYYY-MM-dd' }}
       }
 
-      @if (this.selectedMode === 'Month') {
+      @if (this.selectedMode() === 'Month') {
         {{titleStartDate() | date : 'YYYY-MM' }}
       }
     </div>
 
     <div class="view-buttons">
-      <button (click)="viewDay()" [class]="this.selectedMode == 'Day' ? 'selected' : ''">Day</button>
-      <button (click)="viewWeek()" [class]="this.selectedMode == 'Week' ? 'selected' : ''">Week</button>
-      <button (click)="viewMonth()" [class]="this.selectedMode == 'Month' ? 'selected' : ''">Month</button>
+      <button (click)="viewDay()" [class]="this.selectedMode() === 'Day' ? 'selected' : ''">Day</button>
+      <button (click)="viewWeek()" [class]="this.selectedMode() === 'Week' ? 'selected' : ''">Week</button>
+      <button (click)="viewMonth()" [class]="this.selectedMode() === 'Month' ? 'selected' : ''">Month</button>
     </div>
   </div>
   `,
@@ -108,12 +108,10 @@ import { Component, input, output } from '@angular/core';
 })
 export class DaypilotCalendarHeaderComponent  {
 
-  selectedMode: "Day" | "Week" | "Month" = "Month";
+  selectedMode = signal<"Day" | "Week" | "Month">("Month");
 
   titleStartDate = input<Date>(new Date());
   titleEndDate = input<Date>(new Date());
-
-  selectedModeChanged = output<"Day" | "Week" | "Month">();
 
   previousButtonClicked = output<any>();
   todayButtonClicked = output<any>();
@@ -122,18 +120,15 @@ export class DaypilotCalendarHeaderComponent  {
   constructor() { }
 
   viewDay() {
-    this.selectedMode = "Day";
-    this.selectedModeChanged.emit(this.selectedMode);
+    this.selectedMode.set("Day");
   }
 
   viewWeek() {
-    this.selectedMode = "Week";
-    this.selectedModeChanged.emit(this.selectedMode);
+    this.selectedMode.set("Week");
   }
 
   viewMonth() {
-    this.selectedMode = "Month";
-    this.selectedModeChanged.emit(this.selectedMode);
+    this.selectedMode.set("Month");
   }
 
   navigatePrevious(event: MouseEvent): void {

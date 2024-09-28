@@ -27,17 +27,17 @@ export interface NewDateSelectedArgs {
   ],
   template: `
 
-    <app-daypilot-calendar-header
-      [titleStartDate]="calendar.start.toDate()"
-      [titleEndDate]="calendar.end.toDate()"
+    <app-daypilot-calendar-header #header
+      [titleStartDate]="calendar.mode() === 'Week' ? calendar.displayStart.toDate() : calendar.selectedDate().toDate()"
+      [titleEndDate]="calendar.displayEnd.toDate()"
       (previousButtonClicked)="calendar.navigatePrevious($event)"
       (todayButtonClicked)="calendar.navigateToday($event)"
-      (nextButtonClicked)="calendar.navigateNext($event)"
-      (selectedModeChanged)="calendar.modeChange($event)">
+      (nextButtonClicked)="calendar.navigateNext($event)">
     </app-daypilot-calendar-header>
 
     <div class="calendar-div">
       <app-daypilot-calendar #calendar
+        [mode]="header.selectedMode()"
         [events]="eventData"
         (eventClicked)="eventClicked($event)"
         (rangeChanged)="rangeChanged($event)"
@@ -79,8 +79,8 @@ export class WorkCalendarViewComponent implements AfterViewInit {
     //this.from = this.datePipe.transform(this.calendar.start.toDateLocal(),'yyyyMMdd') ?? '';
     //this.to = this.datePipe.transform(this.calendar.end.toDateLocal(),'yyyyMMdd') ?? '';
 
-    this.from = formatDate(this.calendar().start.toDateLocal(),'YYYYMMdd','ko-kr') ?? '';
-    this.to = formatDate(this.calendar().end.toDateLocal(),'YYYYMMdd','ko-kr') ?? '';
+    this.from = formatDate(this.calendar().displayStart.toDateLocal(),'YYYYMMdd','ko-kr') ?? '';
+    this.to = formatDate(this.calendar().displayEnd.toDateLocal(),'YYYYMMdd','ko-kr') ?? '';
   }
 
   rangeChanged(e: any): void {
@@ -134,16 +134,17 @@ export class WorkCalendarViewComponent implements AfterViewInit {
   }
 
   onDateClick(params: any): void {
+    console.log(params);
     const eventArgs: NewDateSelectedArgs = {workCalendarId: this.fkWorkCalendar, start: params.start, end: params.end};
     this.newDateSelected.emit(eventArgs);
   }
 
   calendarModeChanged(params: ModeChangedArgs): void {
-    this.mode = params;
-    this.modeChanged.emit(this.mode);
+    //this.mode = params;
+    //this.modeChanged.emit(this.mode);
   }
 
   calendarSetDate(date: DayPilot.Date) {
-    this.calendar().rangeChangedEvent(date);
+    this.calendar().displayRangeChangedEvent(date);
   }
 }
