@@ -115,6 +115,7 @@ export class NzInputDateTimeComponent implements ControlValueAccessor {
 
     if (this._value !== null) {
       this.onChange(formatDate(this._value,'YYYY-MM-ddTHH:mm:ss.SSS','ko-kr'));
+      //this.onChange(this._value);
     }
   }
 

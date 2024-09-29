@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { formatDate } from '@angular/common';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
@@ -12,6 +13,7 @@ import { WorkCalendarService } from '../calendar/work-calendar.service';
 import { WorkCalendar } from '../calendar/work-calendar.model';
 
 import * as dateFns from "date-fns";
+
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -138,8 +140,8 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
   override fg = inject(FormBuilder).group({
     id              : new FormControl<string | null>({value: null, disabled: true}, { validators: [Validators.required] }),
     text            : new FormControl<string | null>(null, { validators: [Validators.required] }),
-    start           : new FormControl<string | null>(null),
-    end             : new FormControl<string | null>(null),
+    start           : new FormControl<string | Date | null>(null),
+    end             : new FormControl<string | Date | null>(null),
     allDay          : new FormControl<boolean | null>(null),
     workCalendarId  : new FormControl<number | null>(null, { validators: [Validators.required] })
   });
@@ -172,8 +174,12 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
     params.end.setMilliseconds(0);
 
     this.fg.controls.workCalendarId.setValue(Number.parseInt(params.workCalendarId.toString(),10));
-    this.fg.controls.start.setValue(dateFns.format(params.start, "yyyy-MM-dd HH:mm:ss"));
-    this.fg.controls.end.setValue(dateFns.format(params.end, "yyyy-MM-dd HH:mm:ss"));
+
+    //this.fg.controls.start.setValue(dateFns.format(params.start, "yyyy-MM-dd HH:mm:ss"));
+    //this.fg.controls.end.setValue(dateFns.format(params.end, "yyyy-MM-dd HH:mm:ss"));
+
+    this.fg.controls.start.setValue(formatDate(params.start,'YYYY-MM-ddTHH:mm:ss.SSS','ko-kr'));
+  this.fg.controls.end.setValue(formatDate(params.end,'YYYY-MM-ddTHH:mm:ss.SSS','ko-kr'));
   }
 
   modifyForm(formData: WorkCalendarEvent): void {
