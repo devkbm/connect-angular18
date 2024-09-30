@@ -56,7 +56,7 @@ export class DaypilotCalendarComponent implements AfterViewInit {
   week = viewChild.required<DayPilotCalendarComponent>('week');
   month = viewChild.required<DayPilotMonthComponent>('month');
 
-  mode = input<'Day' | 'Week' | 'Month' | 'None'>('Month');
+  mode = model<'Day' | 'Week' | 'Month' | 'None'>('Month');
   //@Input() events: DayPilot.EventData[] = [];
 
   events = input<DayPilot.EventData[]>([]);

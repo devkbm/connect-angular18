@@ -52,7 +52,7 @@ export class NzInputDateTimeComponent implements ControlValueAccessor {
   timeElement = viewChild.required(NzTimePickerComponent);
 
   @Input() itemId: string = '';
-  @Input() required: boolean = false;
+  @Input() required: boolean | string = false;
   @Input() disabled: boolean = false;
   @Input() placeholder: string = '';
   @Input() readonly: boolean = false;

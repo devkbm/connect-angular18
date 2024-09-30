@@ -134,8 +134,17 @@ export class WorkCalendarViewComponent implements AfterViewInit {
   }
 
   onDateClick(params: any): void {
-    console.log(params);
-    const eventArgs: NewDateSelectedArgs = {workCalendarId: this.fkWorkCalendar, start: params.start, end: params.end};
+    let endDate: Date = params.end;
+    console.log(this.calendar().mode());
+    if (this.calendar().mode() === 'Month') {
+      endDate = new Date(params.end);
+      endDate.setHours(23);
+      endDate.setMinutes(59);
+      endDate.setSeconds(59);
+      endDate.setMilliseconds(999);
+    }
+    console.log(endDate);
+    const eventArgs: NewDateSelectedArgs = {workCalendarId: this.fkWorkCalendar, start: params.start, end: endDate};
     this.newDateSelected.emit(eventArgs);
   }
 

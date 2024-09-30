@@ -174,6 +174,7 @@ export class WorkCalendarComponent implements OnInit {
     const from: Date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), 0);
     const to: Date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours() + 1, 0);
     this.newScheduleArgs = {workCalendarId: this.drawer.workGroup.initLoadId, start: from, end: to};
+    console.log(this.newScheduleArgs);
     this.drawer.schedule.initLoadId = -1;
   }
 

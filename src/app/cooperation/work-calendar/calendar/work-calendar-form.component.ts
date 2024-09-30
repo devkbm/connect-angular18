@@ -120,9 +120,11 @@ export class WorkCalendarFormComponent extends FormBase implements OnInit, After
     this.getAllMember();
 
     effect(() => {
+      /*
       if ( this.initLoadId() > 0 ) {
         this.get(this.initLoadId());
       }
+      */
     })
   }
 

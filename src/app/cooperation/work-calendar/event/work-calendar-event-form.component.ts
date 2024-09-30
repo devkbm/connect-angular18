@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, input, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
@@ -21,6 +21,9 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzInputDateTimeComponent, TimeFormat } from 'src/app/shared-component/nz-input-datetime/nz-input-datetime.component';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 export interface NewFormValue {
   workCalendarId: number;
@@ -38,6 +41,9 @@ export interface NewFormValue {
     NzFormModule,
     NzInputModule,
     NzCheckboxModule,
+    NzDatePickerModule,
+    NzSwitchModule,
+    NzIconModule,
     NzInputDateTimeComponent,
     NzFormItemCustomComponent,
     NzInputSelectComponent
@@ -91,21 +97,46 @@ export interface NewFormValue {
         </div>
         -->
         <div nz-col nzSpan="10">
-          <app-nz-input-datetime
-            formControlName="start" itemId="start" [timeFormat]="timeFormat"
-            [required]="true" [nzErrorTip]="errorTpl">시작일
-          </app-nz-input-datetime>
+          <nz-form-item-custom for="start" label="시작일" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              @if (isAllDay()) {
+                <nz-date-picker nzId="start" formControlName="start" required></nz-date-picker>
+              } @else {
+                <app-nz-input-datetime
+                  formControlName="start" itemId="start" required
+                  [timeFormat]="timeFormat" [nzErrorTip]="errorTpl">
+                </app-nz-input-datetime>
+              }
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
+
         <div nz-col nzSpan="10">
-          <app-nz-input-datetime
-            formControlName="end" itemId="end"
-            [required]="true" [nzErrorTip]="errorTpl">종료일
-          </app-nz-input-datetime>
+          <nz-form-item-custom for="end" label="종료일" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              @if (isAllDay()) {
+                <nz-date-picker nzId="end" formControlName="end" required></nz-date-picker>
+              } @else {
+                <app-nz-input-datetime
+                  formControlName="end" itemId="end" required
+                  [timeFormat]="timeFormat" [nzErrorTip]="errorTpl">
+                </app-nz-input-datetime>
+              }
+            </nz-form-control>
+          </nz-form-item-custom>
         </div>
+
         <div nz-col nzSpan="4">
           <nz-form-item-custom for="useYn" label="종일">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <label nz-checkbox nzId="useYn" formControlName="useYn"></label>
+              <!--<label nz-checkbox nzId="allDay" formControlName="allDay" (ngModelChange)="allDayCheck($event)"></label>-->
+              <nz-switch nzId="allDay" formControlName="allDay" (ngModelChange)="allDayCheck($event)"
+                    [nzCheckedChildren]="checkedTemplate"
+                    [nzUnCheckedChildren]="unCheckedTemplate">
+                  <ng-template #checkedTemplate><span nz-icon nzType="check"></span></ng-template>
+                  <ng-template #unCheckedTemplate><span nz-icon nzType="close"></span></ng-template>
+              </nz-switch>
+
             </nz-form-control>
           </nz-form-item-custom>
         </div>
@@ -146,6 +177,31 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
     workCalendarId  : new FormControl<number | null>(null, { validators: [Validators.required] })
   });
 
+  isAllDay = signal<boolean>(false);
+
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.isAllDay()) {
+        let start = new Date(this.fg.controls.start.value!) as Date;
+        console.log(start);
+        start.setHours(0);
+        start.setMinutes(0);
+        start.setSeconds(0);
+        start.setMilliseconds(0);
+        this.fg.controls.start.setValue(formatDate(start,'YYYY-MM-ddTHH:mm:ss.SSS','ko-kr'));
+
+        let end = new Date(this.fg.controls.end.value!) as Date;
+        end.setHours(23);
+        end.setMinutes(59);
+        end.setSeconds(59);
+        end.setMilliseconds(999);
+        this.fg.controls.end.setValue(formatDate(end,'YYYY-MM-ddTHH:mm:ss.SSS','ko-kr'));
+      }
+    })
+  }
+
   ngOnInit(): void {
     this.getMyWorkGroupList();
 
@@ -175,11 +231,8 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
 
     this.fg.controls.workCalendarId.setValue(Number.parseInt(params.workCalendarId.toString(),10));
 
-    //this.fg.controls.start.setValue(dateFns.format(params.start, "yyyy-MM-dd HH:mm:ss"));
-    //this.fg.controls.end.setValue(dateFns.format(params.end, "yyyy-MM-dd HH:mm:ss"));
-
     this.fg.controls.start.setValue(formatDate(params.start,'YYYY-MM-ddTHH:mm:ss.SSS','ko-kr'));
-  this.fg.controls.end.setValue(formatDate(params.end,'YYYY-MM-ddTHH:mm:ss.SSS','ko-kr'));
+    this.fg.controls.end.setValue(formatDate(params.end,'YYYY-MM-ddTHH:mm:ss.SSS','ko-kr'));
   }
 
   modifyForm(formData: WorkCalendarEvent): void {
@@ -242,5 +295,9 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
             //this.appAlarmService.changeMessage(model.message);
           }
         );
+  }
+
+  allDayCheck(check: boolean) {
+    this.isAllDay.set(check);
   }
 }
