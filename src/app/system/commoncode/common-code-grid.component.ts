@@ -10,6 +10,7 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { CommonCodeService } from './common-code.service';
 import { CommonCode } from './common-code.model';
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({
   selector: 'app-common-code-grid',
@@ -19,7 +20,7 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
     <ag-grid-angular
       [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="'single'"
+      [rowSelection]="rowSelection"
       [rowData]="commonCodeList"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
@@ -37,6 +38,12 @@ export class CommonCodeGridComponent extends AggridFunction implements OnInit {
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   private commonCodeService = inject(CommonCodeService);
   private appAlarmService = inject(AppAlarmService);

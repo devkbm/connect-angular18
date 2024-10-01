@@ -10,6 +10,7 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { TermService } from './term.service';
 import { Term } from './term.model';
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 
 @Component({
@@ -22,7 +23,7 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
     <ag-grid-angular
       [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="'single'"
+      [rowSelection]="rowSelection"
       [rowData]="termList"
       [columnDefs]="columnDefs"
       [getRowId]="getRowId"
@@ -40,6 +41,12 @@ export class TermGridComponent extends AggridFunction implements OnInit {
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();;
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   private termService = inject(TermService);
   private appAlarmService = inject(AppAlarmService);

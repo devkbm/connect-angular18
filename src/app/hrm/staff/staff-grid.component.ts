@@ -8,6 +8,7 @@ import { AggridFunction } from 'src/app/core/grid/aggrid-function';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { StaffService } from './staff.service';
 import { Staff } from './staff.model';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({
   selector: 'app-staff-grid',
@@ -19,7 +20,7 @@ import { Staff } from './staff.model';
    <ag-grid-angular
       [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="'single'"
+      [rowSelection]="rowSelection"
       [rowData]="list"
       [columnDefs]="columnDefs"
       [getRowId]="getRowId"
@@ -38,6 +39,12 @@ export class StaffGridComponent extends AggridFunction implements OnInit {
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   private service = inject(StaffService);
   private appAlarmService = inject(AppAlarmService);

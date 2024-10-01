@@ -10,6 +10,7 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { WebResourceService } from './web-resource.service';
 import { WebResource } from './web-resource.model';
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({
   selector: 'app-web-resource-grid',
@@ -18,18 +19,18 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
     CommonModule, AgGridModule
   ],
   template: `
-      <ag-grid-angular
-        [ngStyle]="style"
-        class="ag-theme-balham-dark"
-        [rowSelection]="'single'"
-        [rowData]="_list"
-        [columnDefs]="columnDefs"
-        [defaultColDef]="defaultColDef"
-        [getRowId]="getRowId"
-        (gridReady)="onGridReady($event)"
-        (rowClicked)="rowClickedEvent($event)"
-        (rowDoubleClicked)="rowDbClicked($event)">
-      </ag-grid-angular>
+    <ag-grid-angular
+      [ngStyle]="style"
+      class="ag-theme-balham-dark"
+      [rowSelection]="rowSelection"
+      [rowData]="_list"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [getRowId]="getRowId"
+      (gridReady)="onGridReady($event)"
+      (rowClicked)="rowClickedEvent($event)"
+      (rowDoubleClicked)="rowDbClicked($event)">
+    </ag-grid-angular>
   `,
   styles: [`
     nz-spin {
@@ -58,6 +59,12 @@ export class WebResourceGridComponent extends AggridFunction {
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   private service = inject(WebResourceService);
   private appAlarmService = inject(AppAlarmService);

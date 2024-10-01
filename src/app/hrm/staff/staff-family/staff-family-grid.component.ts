@@ -8,6 +8,7 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { StaffFamily } from './staff-family.model';
 import { StaffFamilyService } from './staff-family.service';
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({
   selector: 'app-staff-family-grid',
@@ -19,7 +20,7 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
    <ag-grid-angular
       [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="'single'"
+      [rowSelection]="rowSelection"
       [rowData]="_list"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
@@ -40,6 +41,12 @@ export class StaffFamilyGridComponent extends AggridFunction implements OnInit, 
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   private appAlarmService = inject(AppAlarmService);
   private service = inject(StaffFamilyService);

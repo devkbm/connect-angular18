@@ -10,17 +10,18 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { BizCode } from './biz-code.model';
 import { BizCodeService } from './biz-code.service';
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 
 @Component({
-  standalone: true,
   selector: 'app-biz-code-grid',
+  standalone: true,
   imports: [ CommonModule, AgGridModule ],
   template: `
     <ag-grid-angular
       [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="'single'"
+      [rowSelection]="rowSelection"
       [rowData]="_list"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
@@ -39,6 +40,12 @@ export class BizCodeGridComponent extends AggridFunction implements OnInit {
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   private service = inject(BizCodeService);
   private appAlarmService = inject(AppAlarmService);

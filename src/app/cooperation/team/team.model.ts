@@ -8,3 +8,9 @@ export interface TeamJoinableUserModel {
   userId: string;
   userName: string;
 }
+
+export interface Team {
+  teamId: number;
+  teamName: string;
+  memberList: string[];
+}

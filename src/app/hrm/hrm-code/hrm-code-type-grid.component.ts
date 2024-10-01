@@ -7,6 +7,7 @@ import { AggridFunction } from 'src/app/core/grid/aggrid-function';
 import { HrmType } from './hrm-type.model';
 
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({
   standalone: true,
@@ -16,7 +17,7 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
     <ag-grid-angular
         [ngStyle]="style"
         class="ag-theme-balham-dark"
-        [rowSelection]="'single'"
+        [rowSelection]="rowSelection"
         [rowData]="list"
         [columnDefs]="columnDefs"
         [defaultColDef]="defaultColDef"
@@ -34,6 +35,12 @@ export class HrmCodeTypeGridComponent extends AggridFunction implements OnInit {
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   ngOnInit() {
     this.columnDefs = [

@@ -9,6 +9,7 @@ import { StaffAppointmentRecordService } from './staff-appointment-record.servic
 
 import { StaffAppointmentRecord } from './staff-appointment-record.model';
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 
 @Component({
@@ -21,7 +22,7 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
     <ag-grid-angular
       [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="'single'"
+      [rowSelection]="rowSelection"
       [rowData]="_list"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
@@ -41,6 +42,12 @@ export class StaffAppointmentRecordGridComponent extends AggridFunction implemen
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   private appAlarmService = inject(AppAlarmService);
   private service = inject(StaffAppointmentRecordService);

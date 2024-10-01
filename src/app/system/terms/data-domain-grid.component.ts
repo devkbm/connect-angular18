@@ -10,6 +10,7 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { DataDomainService } from './data-domain.service';
 import { DataDomain } from './data-domain.model';
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({
   selector: 'app-data-domain-grid',
@@ -21,7 +22,7 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
    <ag-grid-angular
       [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="'single'"
+      [rowSelection]="rowSelection"
       [rowData]="list"
       [columnDefs]="columnDefs"
       [getRowId]="getRowId"
@@ -40,6 +41,12 @@ export class DataDomainGridComponent extends AggridFunction implements OnInit {
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   private service = inject(DataDomainService);
   private appAlarmService = inject(AppAlarmService);

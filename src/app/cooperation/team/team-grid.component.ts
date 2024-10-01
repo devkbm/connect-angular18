@@ -7,6 +7,7 @@ import { AggridFunction } from 'src/app/core/grid/aggrid-function';
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
 
 import { TeamModel } from './team.model';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({
   standalone: true,
@@ -16,7 +17,7 @@ import { TeamModel } from './team.model';
    <ag-grid-angular
         [ngStyle]="style"
         class="ag-theme-balham-dark"
-        [rowSelection]="'single'"
+        [rowSelection]="rowSelection"
         [rowData]="list"
         [columnDefs]="columnDefs"
         [defaultColDef]="defaultColDef"
@@ -34,6 +35,12 @@ export class TeamGridComponent extends AggridFunction implements OnInit {
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   ngOnInit() {
     this.columnDefs = [

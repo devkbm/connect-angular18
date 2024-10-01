@@ -10,6 +10,7 @@ import { ResponseList } from 'src/app/core/model/response-list';
 
 import { Company } from './company.model';
 import { CompanyGridService } from './company-grid.service';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 
 @Component({
@@ -23,7 +24,7 @@ import { CompanyGridService } from './company-grid.service';
     <ag-grid-angular
       [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="'single'"
+      [rowSelection]="rowSelection"
       [rowData]="_list"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
@@ -42,6 +43,12 @@ export class CompanyGridComponent extends AggridFunction implements OnInit {
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   private service = inject(CompanyGridService);
   private appAlarmService = inject(AppAlarmService);

@@ -7,6 +7,7 @@ import { HrmCode } from './hrm-code.model';
 
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
 import { CheckboxRendererComponent } from 'src/app/core/grid/renderer/checkbox-renderer.component';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({
   selector: 'app-hrm-code-grid',
@@ -16,7 +17,7 @@ import { CheckboxRendererComponent } from 'src/app/core/grid/renderer/checkbox-r
     <ag-grid-angular
         [ngStyle]="style"
         class="ag-theme-balham-dark"
-        [rowSelection]="'single'"
+        [rowSelection]="rowSelection"
         [rowData]="list"
         [columnDefs]="columnDefs"
         [defaultColDef]="defaultColDef"
@@ -36,6 +37,12 @@ export class HrmCodeGridComponent extends AggridFunction implements OnInit {
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   ngOnInit() {
     this.columnDefs = [

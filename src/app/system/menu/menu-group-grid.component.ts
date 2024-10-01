@@ -10,6 +10,7 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { MenuService } from './menu.service';
 import { MenuGroup } from './menu-group.model';
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 
 @Component({
@@ -22,7 +23,7 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
     <ag-grid-angular
       [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="'single'"
+      [rowSelection]="rowSelection"
       [rowData]="menuGroupList"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
@@ -40,6 +41,12 @@ export class MenuGroupGridComponent extends AggridFunction implements OnInit {
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   private menuService = inject(MenuService);
   private appAlarmService = inject(AppAlarmService);

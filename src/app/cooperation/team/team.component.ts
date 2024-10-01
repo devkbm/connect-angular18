@@ -4,9 +4,9 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
 
 import { TeamGridComponent } from './team-grid.component';
-import { TeamModel } from './team.model';
+import { Team, TeamModel } from './team.model';
 import { TeamService } from './team.service';
-import { Team } from '../communication/model/team';
+
 import { CommonModule } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';

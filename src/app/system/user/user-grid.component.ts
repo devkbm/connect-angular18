@@ -11,6 +11,7 @@ import { UserService } from './user.service';
 import { User } from './user.model';
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
 import { CheckboxRendererComponent } from 'src/app/core/grid/renderer/checkbox-renderer.component';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 
 @Component({
@@ -23,7 +24,7 @@ import { CheckboxRendererComponent } from 'src/app/core/grid/renderer/checkbox-r
     <ag-grid-angular
       [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="'single'"
+      [rowSelection]="rowSelection"
       [rowData]="userList"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
@@ -41,6 +42,12 @@ export class UserGridComponent extends AggridFunction implements OnInit {
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
+  };
 
   private userService = inject(UserService);
   private appAlarmService = inject(AppAlarmService);

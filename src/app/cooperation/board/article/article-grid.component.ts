@@ -23,7 +23,7 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
     <ag-grid-angular
       [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="'single'"
+      [rowSelection]="rowSelection"
       [rowData]="articleList"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
@@ -44,8 +44,10 @@ export class ArticleGridComponent extends AggridFunction implements OnInit {
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
 
-  rowSelection = {
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
     mode: "singleRow",
+    checkboxes: false,
+    enableClickSelection: true
   };
 
   private appAlarmService = inject(AppAlarmService);

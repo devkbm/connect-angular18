@@ -8,6 +8,7 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 
 import { WorkCalendarService } from './work-calendar.service';
 import { WorkCalendar } from './work-calendar.model';
+import { RowSelectionOptions } from 'ag-grid-community';
 
 
 @Component({
@@ -20,7 +21,7 @@ import { WorkCalendar } from './work-calendar.model';
     <ag-grid-angular
       [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="'multiple'"
+      [rowSelection]="rowSelection"
       [rowData]="workGroupList"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
@@ -39,6 +40,12 @@ export class MyWorkCalendarGridComponent extends AggridFunction implements OnIni
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
 
+  rowSelection: RowSelectionOptions | "single" | "multiple" = {
+    mode: "multiRow",
+    checkboxes: true,
+    enableClickSelection: true
+  };
+
   private appAlarmService = inject(AppAlarmService);
   private workGroupService = inject(WorkCalendarService);
 
@@ -49,7 +56,7 @@ export class MyWorkCalendarGridComponent extends AggridFunction implements OnIni
     };
 
     this.columnDefs = [
-      {
+      /*{
           headerName: 'No',
           valueGetter: 'node.rowIndex + 1',
           width: 40,
@@ -58,7 +65,7 @@ export class MyWorkCalendarGridComponent extends AggridFunction implements OnIni
           headerCheckboxSelection: true,
           headerCheckboxSelectionFilteredOnly: true,
           checkboxSelection: true
-      },
+      },*/
       {
           headerName: 'Id',
           field: 'id',
