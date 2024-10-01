@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -122,10 +122,9 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
 
   databaseList: HtmlSelectOption[] = [];
 
-  //domainName = viewChild.required<NzInputTextComponent>('domainName');
-
   private service = inject(DataDomainService);
   private appAlarmService = inject(AppAlarmService);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
     domainId      : new FormControl<string | null>(null, { validators: Validators.required }),
@@ -149,11 +148,11 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
   }
 
   ngAfterViewInit(): void {
-    this.focus();
+    this.focusInput();
   }
 
-  focus() {
-//    this.domainName().focus();
+  focusInput() {
+    this.renderer.selectRootElement('#domainId').focus();
   }
 
   newForm() {
@@ -163,6 +162,8 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
     this.fg.controls.domainName.enable();
 
     this.fg.controls.domainName.setValue('MYSQL');
+
+    this.focusInput();
   }
 
   modifyForm(formData: DataDomain) {

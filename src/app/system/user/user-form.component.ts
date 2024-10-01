@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -8,6 +8,7 @@ import { FormType, FormBase } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
+import { GlobalProperty } from 'src/app/core/global-property';
 
 import { UserService } from './user.service';
 import { User } from './user.model';
@@ -15,7 +16,6 @@ import { Role } from '../role/role.model';
 import { existingUserValidator } from './user-duplication-validator.directive';
 import { DeptHierarchy } from '../dept/dept-hierarchy.model';
 import { DeptService } from '../dept/dept.service';
-import { GlobalProperty } from 'src/app/core/global-property';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -196,6 +196,7 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
   private service = inject(UserService);
   private deptService = inject(DeptService);
   private appAlarmService = inject(AppAlarmService);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
     userId: new FormControl<string | null>(null, {
@@ -226,11 +227,15 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   ngAfterViewInit(): void {
-    //this.staffNoField().focus();
+    this.focusInput();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     //console.log(changes);
+  }
+
+  focusInput() {
+    this.renderer.selectRootElement('#staffNo').focus();
   }
 
   newForm(): void {
@@ -252,6 +257,8 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
       this.fg.controls.userId.setValue(x);
       this.fg.controls.userId.markAsTouched();
     });
+
+    this.focusInput();
   }
 
   modifyForm(formData: User): void {

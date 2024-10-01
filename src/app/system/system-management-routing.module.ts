@@ -14,6 +14,7 @@ import { DeptComponent } from '../system/dept/dept.component';
 import { HolidayComponent } from '../system/holiday/holiday.component';
 import { BizCodeComponent } from '../system/biz-code/biz-code.component';
 import { MenuRoleComponent } from './menu-role/menu-role.component';
+import { CompanyComponent } from './company/company.component';
 
 
 export const routes: Routes = [
@@ -21,6 +22,7 @@ export const routes: Routes = [
     path: '', component: AppLayoutComponent, //canActivateChild: [AuthGuardService],
     children: [
       /* 공통 시스템 */
+      {path: 'company',       component: CompanyComponent},
       {path: 'user',          component: UserComponent, data: {breadcrumb: 'user'}},
       {path: 'role',          component: RoleComponent},
       {path: 'menu',          component: MenuComponent},
@@ -31,6 +33,7 @@ export const routes: Routes = [
       {path: 'term',          component: TermComponent},
       {path: 'holiday',       component: HolidayComponent},
       {path: 'bizcode',       component: BizCodeComponent}
+
     ]
   }
 ];

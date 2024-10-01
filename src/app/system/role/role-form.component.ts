@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormControl, Validators } from '@angular/forms';
 
@@ -185,6 +185,7 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
 
   private service = inject(RoleService);
   private appAlarmService = inject(AppAlarmService);
+  private renderer = inject(Renderer2);
 
   private menuService = inject(MenuService);
   menuGroupList: any;
@@ -222,6 +223,10 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
     */
   }
 
+  focusInput() {
+    this.renderer.selectRootElement('#roleCode').focus();
+  }
+
   newForm(): void {
     this.formType = FormType.NEW;
 
@@ -229,6 +234,8 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
     this.fg.controls.roleCode.setAsyncValidators(existingRoleValidator(this.service));
 
     this.fg.controls.roleCode.enable();
+
+    this.focusInput();
   }
 
   modifyForm(formData: Role): void {

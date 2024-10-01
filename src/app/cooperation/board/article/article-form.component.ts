@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, inject, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, inject, viewChild } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -157,8 +157,8 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
   ckEditor = viewChild.required<CKEditorComponent>('ckEditor');
 
   private boardService= inject(ArticleService);
-
   private activatedRoute = inject(ActivatedRoute);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
     boardId         : new FormControl<string | null>(null, { validators: [Validators.required] }),
@@ -205,12 +205,11 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
   }
 
   ngAfterViewInit(): void {
-    this.controlFocus();
+    this.focusInput();
   }
 
-  controlFocus() {
-    const control = this.formElement().nativeElement['title'];
-    control.focus();
+  focusInput() {
+    this.renderer.selectRootElement('#title').focus();
   }
 
   newForm(boardId: any): void {
@@ -221,6 +220,8 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
     this.textData = null;
     // console.log(this.ckEditor.editorInstance);
     //this.ckEditor.writeValue(null);
+
+    this.focusInput();
   }
 
   modifyForm(formData: Article): void {

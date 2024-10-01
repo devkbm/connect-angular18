@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, inject, input, effect } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, input, effect, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -101,11 +101,10 @@ export class WorkCalendarFormComponent extends FormBase implements OnInit, After
   color: any;
   preset_colors = ['#fff', '#000', '#2889e9', '#e920e9', '#fff500', 'rgb(236,64,64)'];
 
-  //workCalendarName = viewChild.required<NzInputTextComponent>('workCalendarName');
-
   override initLoadId = input<number>(-1);
 
   private workGroupService = inject(WorkCalendarService);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
     workCalendarId    : new FormControl<number | null>({value: null, disabled: true}, { validators: [Validators.required] }),
@@ -135,6 +134,10 @@ export class WorkCalendarFormComponent extends FormBase implements OnInit, After
 
   ngAfterViewInit(): void {
     //this.workCalendarName().focus();
+  }
+
+  focusInput() {
+    this.renderer.selectRootElement('#workCalendarName').focus();
   }
 
   newForm(): void {

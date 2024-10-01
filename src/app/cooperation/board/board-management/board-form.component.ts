@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, OnChanges, OnInit, SimpleChanges, inject, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnChanges, OnInit, Renderer2, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
@@ -173,13 +173,12 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
 })
 export class BoardFormComponent extends FormBase implements OnInit, OnChanges, AfterViewInit {
 
-  formElement = viewChild.required<ElementRef>('form');
-
   parentBoardItems: BoardHierarchy[] = [];
 
   boardTypeList: any;
 
   private service = inject(BoardManagementService);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
     boardId         : new FormControl<string | null>(null),
@@ -201,7 +200,7 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
   }
 
   ngAfterViewInit(): void {
-    this.controlFocus();
+    this.focusInput();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -211,6 +210,10 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
     }
   }
 
+  focusInput() {
+    this.renderer.selectRootElement('#boardName').focus();
+  }
+
   newForm(): void {
     this.formType = FormType.NEW;
 
@@ -218,12 +221,7 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
     this.fg.controls.boardId.enable();
     this.fg.controls.boardType.setValue('BOARD');
 
-    this.controlFocus();
-  }
-
-  controlFocus() {
-    const control = this.formElement().nativeElement['boardName'];
-    control.focus();
+    this.focusInput();
   }
 
   modifyForm(formData: BoardManagement): void {

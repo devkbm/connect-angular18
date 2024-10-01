@@ -7,7 +7,7 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { AggridFunction } from 'src/app/core/grid/aggrid-function';
 import { ResponseList } from 'src/app/core/model/response-list';
 
-import { FirstDataRenderedEvent, GridSizeChangedEvent, RowClickedEvent, RowDoubleClickedEvent, SelectionChangedEvent } from 'ag-grid-community';
+import { FirstDataRenderedEvent, GridSizeChangedEvent, RowClickedEvent, RowDoubleClickedEvent, RowSelectionOptions, SelectionChangedEvent } from 'ag-grid-community';
 
 import { ArticleService } from './article.service';
 import { Article } from './article.model';
@@ -43,6 +43,10 @@ export class ArticleGridComponent extends AggridFunction implements OnInit {
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
   editButtonClicked = output<any>();
+
+  rowSelection = {
+    mode: "singleRow",
+  };
 
   private appAlarmService = inject(AppAlarmService);
   private boardService = inject(ArticleService);

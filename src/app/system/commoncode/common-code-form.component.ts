@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, Renderer2, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -239,6 +239,7 @@ export class CommonCodeFormComponent extends FormBase implements OnInit {
 
   private commonCodeService = inject(CommonCodeService);
   private appAlarmService = inject(AppAlarmService);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
     systemTypeCode          : new FormControl<string | null>(null),
@@ -260,6 +261,10 @@ export class CommonCodeFormComponent extends FormBase implements OnInit {
     this.getSystemTypeCode();
   }
 
+  focusInput() {
+    this.renderer.selectRootElement('#code').focus();
+  }
+
   newForm(systemTypeCode: string, parentId: any): void {
     this.formType = FormType.NEW;
     this.fg.reset();
@@ -273,6 +278,8 @@ export class CommonCodeFormComponent extends FormBase implements OnInit {
     this.fg.controls.lowLevelCodeLength.setValue(0);
     this.fg.controls.fromDate.setValue(new Date());
     this.fg.controls.toDate.setValue(new Date(9999, 11, 31));
+
+    this.focusInput();
   }
 
   modifyForm(formData: CommonCode): void {

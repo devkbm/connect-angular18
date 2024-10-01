@@ -13,7 +13,12 @@ import { ResponseList } from '../core/model/response-list';
 @Component({
   selector: 'app-side-menu',
   standalone: true,
-  imports: [ CommonModule, RouterModule, NzMenuModule, NzIconModule ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    NzMenuModule,
+    NzIconModule
+  ],
   template: `
       <div class="logo">LOGO</div>
 
@@ -29,7 +34,7 @@ import { ResponseList } from '../core/model/response-list';
                 (click)="moveToUrl(menu.url)"
               >
             <!-- [nzSelected]="menu.selected" -->
-                <a routerLinkActive="active" [routerLink]="menu.url"></a>
+                <!--<a routerLinkActive="active" [routerLink]="menu.url"></a>-->
                 @if (menu.icon) {
                   <span nz-icon [nzType]="menu.icon"></span>
                 }

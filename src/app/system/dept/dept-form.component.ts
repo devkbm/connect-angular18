@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, viewChild, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -236,6 +236,7 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
 
   private service = inject(DeptService);
   private appAlarmService = inject(AppAlarmService);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
     parentDeptCode          : new FormControl<string | null>(null),
@@ -264,6 +265,10 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
     //this.deptCode().focus();
   }
 
+  focusInput() {
+    this.renderer.selectRootElement('#deptCode').focus();
+  }
+
   newForm(): void {
     this.formType = FormType.NEW;
 
@@ -285,7 +290,7 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
     });
     */
 
-    //this.deptCode().focus();
+    this.focusInput();
   }
 
   modifyForm(formData: Dept): void {

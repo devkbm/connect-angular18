@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -157,6 +157,7 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
 
   private menuService = inject(MenuService);
   private appAlarmService = inject(AppAlarmService);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
       menuGroupCode       : new FormControl<string | null>(null, { validators: Validators.required }),
@@ -189,6 +190,10 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
     // throw new Error('Method not implemented.');
   }
 
+  focusInput() {
+    this.renderer.selectRootElement('#menuCode').focus();
+  }
+
   newForm(): void {
     this.formType = FormType.NEW;
 
@@ -197,7 +202,7 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
     this.fg.controls.menuGroupCode.setValue(this.menuGroupId);
     //this.fg.controls.menuCode.disable();
 
-    //this.menuCode().focus();
+    this.focusInput();
   }
 
   modifyForm(formData: Menu): void {

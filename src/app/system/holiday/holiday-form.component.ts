@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2 } from '@angular/core';
 import { CommonModule, formatDate } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -85,6 +85,7 @@ export class HolidayFormComponent extends FormBase implements OnInit, AfterViewI
 
   private service = inject(HolidayService);
   private appAlarmService = inject(AppAlarmService);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
     date          : new FormControl<Date | null>(null, { validators: Validators.required }),
@@ -103,11 +104,17 @@ export class HolidayFormComponent extends FormBase implements OnInit, AfterViewI
   ngAfterViewInit(): void {
   }
 
+  focusInput() {
+    this.renderer.selectRootElement('#holidayName').focus();
+  }
+
   newForm(date: Date): void {
     this.formType = FormType.NEW;
     this.fg.reset();
 
     this.fg.controls.date.setValue(date);
+
+    this.focusInput();
   }
 
   modifyForm(formData: Holiday): void {

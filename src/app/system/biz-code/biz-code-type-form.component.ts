@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2 } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -151,6 +151,7 @@ export class BizCodeTypeFormComponent extends FormBase implements OnInit, AfterV
 
   private service = inject(BizCodeTypeService);
   private appAlarmService = inject(AppAlarmService);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
     typeId    : new FormControl<string | null>(null, { validators: [Validators.required] }),
@@ -170,6 +171,10 @@ export class BizCodeTypeFormComponent extends FormBase implements OnInit, AfterV
     } else {
       this.newForm();
     }
+  }
+
+  focusInput() {
+    this.renderer.selectRootElement('#typeId').focus();
   }
 
   newForm(): void {

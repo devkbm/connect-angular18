@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -101,10 +101,9 @@ import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item
 })
 export class WordFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  //logicalName = viewChild.required<NzInputTextComponent>('logicalName');
-
   private service = inject(WordService);
   private appAlarmService = inject(AppAlarmService);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
     logicalName     : new FormControl<string | null>(null, { validators: Validators.required }),
@@ -122,14 +121,14 @@ export class WordFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   ngAfterViewInit(): void {
-    this.focus();
+    this.focusInput();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
   }
 
-  focus() {
-    //this.logicalName().focus();
+  focusInput() {
+    this.renderer.selectRootElement('#code').focus();
   }
 
   newForm() {
@@ -137,6 +136,8 @@ export class WordFormComponent extends FormBase implements OnInit, AfterViewInit
 
     this.fg.controls.logicalName.enable();
     this.fg.controls.physicalName.enable();
+
+    this.focusInput();
   }
 
   modifyForm(formData: Word) {

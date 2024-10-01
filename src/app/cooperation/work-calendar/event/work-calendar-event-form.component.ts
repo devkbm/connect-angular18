@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, input, signal, effect } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, input, signal, effect, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
@@ -167,6 +167,7 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
 
   private service = inject(WorkCalendarEventService);
   private workGroupService = inject(WorkCalendarService);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
     id              : new FormControl<string | null>({value: null, disabled: true}, { validators: [Validators.required] }),
@@ -217,7 +218,11 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
   }
 
   ngAfterViewInit(): void {
-    //this.text().focus();
+
+  }
+
+  focusInput() {
+    this.renderer.selectRootElement('#text').focus();
   }
 
   newForm(params: NewFormValue): void {
@@ -233,6 +238,8 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
 
     this.fg.controls.start.setValue(formatDate(params.start,'YYYY-MM-ddTHH:mm:ss.SSS','ko-kr'));
     this.fg.controls.end.setValue(formatDate(params.end,'YYYY-MM-ddTHH:mm:ss.SSS','ko-kr'));
+
+    this.focusInput();
   }
 
   modifyForm(formData: WorkCalendarEvent): void {

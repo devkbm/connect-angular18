@@ -41,9 +41,11 @@ import { ModeChangedArgs } from 'src/app/shared-component/calendar/daypilot-cale
       <span nz-icon nzType="form" nzTheme="outline"></span>신규 CALENDAR
     </button>
 
+    <!--
     <button nz-button (click)="newSchedule()">
       <span nz-icon nzType="form" nzTheme="outline"></span>신규 일정
     </button>
+    -->
 
     <div class="grid-wrapper">
       <app-daypilot-calendar-navigator class="navi"
@@ -174,25 +176,26 @@ export class WorkCalendarComponent implements OnInit {
     const from: Date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), 0);
     const to: Date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours() + 1, 0);
     this.newScheduleArgs = {workCalendarId: this.drawer.workGroup.initLoadId, start: from, end: to};
-    console.log(this.newScheduleArgs);
+
     this.drawer.schedule.initLoadId = -1;
   }
 
   newScheduleByDateSelect(param: NewDateSelectedArgs) {
-    console.log('newScheduleByDateSelect: start');
     if (param.workCalendarId === -1) {
       alert('CALENDAR를 선택해주세요.');
       return;
     }
 
-    console.log(param);
+    //this.navigator().date = new DayPilot.Date(param.start, true);
 
-    this.navigator().date = new DayPilot.Date(param.start, true);
-    this.newScheduleArgs = {workCalendarId: this.drawer.workGroup.initLoadId, start: param.start, end: param.end};
+    // daypilot 날짜 선택시 종료일 + 1일로 설정되어서 강제로 전일자로 수정
+    const to: Date = param.end;
+    to.setDate(to.getDate() -1);
+
+    this.newScheduleArgs = {workCalendarId: this.drawer.workGroup.initLoadId, start: param.start, end: to};
     this.drawer.schedule.initLoadId = -1;
 
     this.openScheduleDrawer();
-    console.log('newScheduleByDateSelect: end');
   }
 
   editSchedule(id: any) {

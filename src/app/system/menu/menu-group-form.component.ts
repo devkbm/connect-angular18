@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, viewChild, Renderer2 } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -90,6 +90,7 @@ export class MenuGroupFormComponent extends FormBase implements OnInit, AfterVie
 
   private menuService = inject(MenuService);
   private appAlarmService = inject(AppAlarmService);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
     /*
@@ -115,12 +116,16 @@ export class MenuGroupFormComponent extends FormBase implements OnInit, AfterVie
     }
   }
 
+  focusInput() {
+    this.renderer.selectRootElement('#menuGroupCode').focus();
+  }
+
   newForm(): void {
     this.formType = FormType.NEW;
     this.fg.reset();
 
     this.fg.controls.menuGroupCode.enable();
-    //this.menuGroupCode().focus();
+    this.focusInput();
   }
 
   modifyForm(formData: MenuGroup): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, viewChild, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -107,12 +107,11 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
 })
 export class WebResourceFormComponent extends FormBase implements OnInit, AfterViewInit {
 
-  //resourceCode = viewChild.required<NzInputTextComponent>('resourceCode');
-
   resourceTypeList: ResouceTypeEnum[] = [];
 
   private service = inject(WebResourceService);
   private appAlarmService = inject(AppAlarmService);
+  private renderer = inject(Renderer2);
 
   override fg = inject(FormBuilder).group({
     resourceId   : new FormControl<string | null>(null, {
@@ -137,7 +136,11 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
   }
 
   ngAfterViewInit(): void {
-    //this.resourceCode().focus();
+    this.focusInput();
+  }
+
+  focusInput() {
+    this.renderer.selectRootElement('#resourceId').focus();
   }
 
   newForm(): void {
@@ -145,6 +148,7 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
 
     this.fg.reset();
     this.fg.controls.resourceId.enable();
+    this.focusInput();
   }
 
   modifyForm(formData: WebResource): void {
