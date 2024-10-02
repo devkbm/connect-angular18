@@ -1,9 +1,12 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { NzUploadChangeParam, NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
-import { saveAs } from 'file-saver';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, inject, input, model, effect } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { GlobalProperty } from 'src/app/core/global-property';
 import { UserService } from './user.service';
-import { CommonModule } from '@angular/common';
+
+import { saveAs } from 'file-saver';
+
+import { NzUploadChangeParam, NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
@@ -13,7 +16,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   selector: 'app-user-image-upload',
   standalone: true,
   imports: [
-    CommonModule, NzButtonModule, NzUploadModule, NzAvatarModule, NzIconModule, NzSpaceModule
+    CommonModule,
+    NzButtonModule,
+    NzUploadModule,
+    NzAvatarModule,
+    NzIconModule,
+    NzSpaceModule
   ],
   template: `
   <div class="container">
@@ -93,10 +101,17 @@ export class UserImageUploadComponent implements OnInit, OnChanges {
 
   imageSrc: string = GlobalProperty.serverUrl + '/api/system/user/image'; //'/static/';
 
+  /*
   @Input() imageWidth: string = '150px';
   @Input() imageHeight: string = '200px';
   @Input() pictureFileId: any;
   @Input() userId: string = '';
+  */
+  imageWidth = input<string>('150px');
+  imageHeight = input<string>('200px');
+
+  userId = input.required<string>();
+  pictureFileId = model<any>();
 
   /*{
       uid: -1,
@@ -108,12 +123,28 @@ export class UserImageUploadComponent implements OnInit, OnChanges {
 
   private userService = inject(UserService);
 
+  constructor() {
+    effect(() => {
+      if (this.userId()) {
+        this.upload.data = {companyCode: sessionStorage.getItem('companyCode'),  userId: this.userId()};
+      }
+
+      if (this.pictureFileId()) {
+        this.getImageSrc();
+      }
+    });
+  }
+
+
   ngOnChanges(changes: SimpleChanges): void {
+    /*
     if (changes['userId'].currentValue && changes['userId'].currentValue !== null && changes['userId'].currentValue !== undefined) {
       // console.log(changes['userId'].currentValue);
       this.upload.data = {companyCode: sessionStorage.getItem('companyCode'),  userId: changes['userId'].currentValue};
     }
+      */
   }
+
 
   ngOnInit(): void {
   }
@@ -132,27 +163,27 @@ export class UserImageUploadComponent implements OnInit, OnChanges {
   fileUploadChange(param: NzUploadChangeParam): void {
     if (param.type === 'success') {
       const serverFilePath = param.file.response.data;
-      this.pictureFileId = this.findFileName(serverFilePath);
+      this.pictureFileId.set(this.findFileName(serverFilePath));
     }
   }
 
   downloadImage(): void {
     this.userService
-        .downloadUserImage(this.userId)
+        .downloadUserImage(this.userId())
         .subscribe(
           (model: Blob) => {
             const blob = new Blob([model], { type: 'application/octet-stream' });
-            saveAs(blob, this.userId + ".jpg");
+            saveAs(blob, this.userId() + ".jpg");
           }
         );
   }
 
   getImageSrc() {
-    if (!this.pictureFileId) return '';
+    if (!this.pictureFileId()) return '';
 
     let urlParams = new URLSearchParams();
     urlParams.set("companyCode", sessionStorage.getItem("companyCode")!);
-    urlParams.set("userId", this.userId);
+    urlParams.set("userId", this.userId());
 
     //return this.imageSrc + this.pictureFileId;
     return this.imageSrc + '?' + urlParams;
@@ -167,7 +198,7 @@ export class UserImageUploadComponent implements OnInit, OnChanges {
 
   onclick() {
     //location.href=this.imageSrc + this.imageBase64;
-    saveAs(this.imageSrc + this.pictureFileId, 'image.jpg');
+    saveAs(this.imageSrc + this.pictureFileId(), 'image.jpg');
   }
 
 }
