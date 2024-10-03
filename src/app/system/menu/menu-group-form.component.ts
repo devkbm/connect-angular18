@@ -149,11 +149,7 @@ export class MenuGroupFormComponent extends FormBase implements OnInit, AfterVie
         .getMenuGroup(menuGroupId)
         .subscribe(
           (model: ResponseObject<MenuGroup>) => {
-            if ( model.data ) {
-              this.modifyForm(model.data);
-            } else {
-              this.newForm();
-            }
+            model.data ? this.modifyForm(model.data) : this.newForm()
             this.appAlarmService.changeMessage(model.message);
           }
         );

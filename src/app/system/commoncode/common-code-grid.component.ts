@@ -103,12 +103,8 @@ export class CommonCodeGridComponent extends AggridFunction implements OnInit {
         .getCodeList(params)
         .subscribe(
           (model: ResponseList<CommonCode>) => {
-              if (model.data) {
-                this.commonCodeList = model.data;
-              } else {
-                this.commonCodeList = [];
-              }
-              this.appAlarmService.changeMessage(model.message);
+            this.commonCodeList = model.data;
+            this.appAlarmService.changeMessage(model.message);
           }
         );
   }

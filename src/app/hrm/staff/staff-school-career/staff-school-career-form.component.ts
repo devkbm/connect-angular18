@@ -273,11 +273,7 @@ export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, 
         .get(staffId, seq)
         .subscribe(
           (model: ResponseObject<StaffSchoolCareer>) => {
-            if (model.data) {
-              this.modifyForm(model.data);
-            } else {
-              this.newForm();
-            }
+            model.data ? this.modifyForm(model.data) : this.newForm();
             this.appAlarmService.changeMessage(model.message);
           }
         );

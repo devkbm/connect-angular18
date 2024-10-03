@@ -254,11 +254,7 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
         .getRole(id)
         .subscribe(
           (model: ResponseObject<Role>) => {
-            if (model.data) {
-              this.modifyForm(model.data);
-            } else {
-              this.newForm();
-            }
+            model.data ? this.modifyForm(model.data) : this.newForm()
             this.appAlarmService.changeMessage(model.message);
           }
         );

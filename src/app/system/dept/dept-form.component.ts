@@ -355,11 +355,7 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
         .getDeptHierarchyList()
         .subscribe(
           (model: ResponseList<DeptHierarchy>) => {
-            if ( model.data ) {
-              this.deptHierarchy = model.data;
-            } else {
-              this.deptHierarchy = [];
-            }
+            model.data ? this.deptHierarchy = model.data : this.deptHierarchy = [];
           }
         );
   }

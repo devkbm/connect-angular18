@@ -174,11 +174,7 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
         .get(id)
         .subscribe(
           (model: ResponseObject<WebResource>) => {
-            if (model.data) {
-              this.modifyForm(model.data);
-            } else {
-              this.newForm();
-            }
+            model.data ? this.modifyForm(model.data) : this.newForm();
             this.appAlarmService.changeMessage(model.message);
           }
         );
@@ -216,9 +212,7 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
         .getWebResourceTypeList()
         .subscribe(
         (model: ResponseList<ResouceTypeEnum>) => {
-          if ( model.data ) {
-            this.resourceTypeList = model.data;
-          }
+          this.resourceTypeList = model.data;
           this.appAlarmService.changeMessage(model.message);
         }
       );

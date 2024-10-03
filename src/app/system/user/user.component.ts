@@ -71,10 +71,9 @@ import { NzButtonExcelUploadComponent } from "src/app/shared-component/nz-button
     <div nz-col [nzSpan]="12" style="text-align: right;">
       <!--<app-nz-buttons [buttons]="buttons"></app-nz-buttons>-->
 
-      <app-nz-button-excel-upload [urn]="'/api/system/user-excel'"></app-nz-button-excel-upload>
-      <button nz-button (click)="test()">
-        <span nz-icon nzType="search"></span>구글 로그인
-      </button>
+      <app-nz-button-excel-upload [urn]="'/api/system/user-excel'">
+      </app-nz-button-excel-upload>
+
       <button nz-button (click)="getUserList()">
         <span nz-icon nzType="search"></span>조회
       </button>
@@ -163,13 +162,8 @@ export class UserComponent implements OnInit {
 
   grid = viewChild.required(UserGridComponent);
 
-  buttons: ButtonTemplate[] = [{
-    text: '구글 로그인',
-    nzType: 'search',
-    click: (e: MouseEvent) => {
-      this.test();
-    }
-  },{
+  buttons: ButtonTemplate[] = [
+  {
     text: '조회',
     nzType: 'search',
     click: (e: MouseEvent) => {
@@ -224,7 +218,6 @@ export class UserComponent implements OnInit {
   }
 
   editForm(item: User) {
-    console.log(item.userId);
     this.drawer.user.initLoadId = item.userId;
     this.drawer.user.visible = true;
   }
@@ -237,7 +230,6 @@ export class UserComponent implements OnInit {
 
     this.drawer.user.visible = false;
 
-    console.log(this.grid);
     this.grid().getUserList(params);
   }
 
@@ -256,8 +248,5 @@ export class UserComponent implements OnInit {
     this.drawer.user.initLoadId = params.userId;
   }
 
-  test() {
-    window.location.href = 'http://localhost:8090/oauth2/authorization/google';
-  }
 }
 

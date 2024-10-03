@@ -169,11 +169,7 @@ export class BizCodeFormComponent extends FormBase implements AfterViewInit {
         .get(typeId, code)
         .subscribe(
           (model: ResponseObject<BizCode>) => {
-            if (model.data) {
-              this.modifyForm(model.data);
-            } else {
-              this.newForm('');
-            }
+            model.data ? this.modifyForm(model.data) : this.newForm(typeId)
             this.appAlarmService.changeMessage(model.message);
           }
         );

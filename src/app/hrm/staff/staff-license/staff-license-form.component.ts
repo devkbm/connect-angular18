@@ -223,11 +223,7 @@ export class StaffLicenseFormComponent extends FormBase implements OnInit, After
         .get(staffId, seq)
         .subscribe(
           (model: ResponseObject<StaffLicense>) => {
-            if (model.data) {
-              this.modifyForm(model.data);
-            } else {
-              this.newForm();
-            }
+            model.data ? this.modifyForm(model.data) : this.newForm();
             this.appAlarmService.changeMessage(model.message);
           }
         );

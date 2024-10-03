@@ -157,14 +157,10 @@ export class CompanyFormComponent extends FormBase {
     this.service
         .get(id)
         .subscribe(
-            (model: ResponseObject<Company>) => {
-              if ( model.data ) {
-                this.modifyForm(model.data);
-              } else {
-                this.newForm();
-              }
-              this.appAlarmService.changeMessage(model.message);
-            }
+          (model: ResponseObject<Company>) => {
+            model.data ? this.modifyForm(model.data) : this.newForm()
+            this.appAlarmService.changeMessage(model.message);
+          }
         );
   }
 

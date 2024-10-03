@@ -285,11 +285,7 @@ export class BoardFormComponent extends FormBase implements OnInit, AfterViewIni
         .getBoardHierarchy()
         .subscribe(
           (model: ResponseList<BoardHierarchy>) => {
-            if ( model.data ) {
-              this.parentBoardItems = model.data;
-            } else {
-              this.parentBoardItems = [];
-            }
+            this.parentBoardItems = model.data;
             //this.appAlarmService.changeMessage(model.message);
             // title 노드 텍스트
             // key   데이터 키
@@ -304,11 +300,7 @@ export class BoardFormComponent extends FormBase implements OnInit, AfterViewIni
         .getBoardTypeList()
         .subscribe(
           (model: ResponseObject<any>) => {
-            if (model.data) {
-              this.boardTypeList = model.data;
-            } else {
-              this.boardTypeList = [];
-            }
+            this.boardTypeList = model.data;
           }
         );
   }

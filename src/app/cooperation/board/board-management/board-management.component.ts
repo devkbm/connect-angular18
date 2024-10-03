@@ -16,7 +16,7 @@ import { BoardTreeComponent } from '../board-hierarcy/board-tree.component';
     CommonModule,
     NzButtonModule,
     NzIconModule,
-     NzGridModule,
+    NzGridModule,
     BoardTreeComponent,
     BoardFormComponent
   ],

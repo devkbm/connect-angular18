@@ -274,11 +274,7 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
         .getMenuHierarchy(menuGroupId)
         .subscribe(
           (model: ResponseList<MenuHierarchy>) => {
-            if ( model.data ) {
-              this.menuHiererachy = model.data;
-            } else {
-              this.menuHiererachy = [];
-            }
+            this.menuHiererachy = model.data;
           }
         );
   }
@@ -288,11 +284,7 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
         .getMenuGroupList()
         .subscribe(
           (model: ResponseList<MenuGroup>) => {
-            if (model.data) {
-              this.menuGroupList = model.data;
-            } else {
-              this.menuGroupList = [];
-            }
+            this.menuGroupList = model.data;
           }
         );
   }
@@ -302,11 +294,7 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
         .getMenuTypeList()
         .subscribe(
           (model: ResponseList<any>) => {
-            if (model.data) {
-              this.menuTypeList = model.data;
-            } else {
-              this.menuTypeList = [];
-            }
+            this.menuTypeList = model.data;
           }
         );
   }

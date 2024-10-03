@@ -9,8 +9,8 @@ import { CommonCodeService } from './common-code.service';
 
 
 @Component({
-  standalone: true,
   selector: 'app-common-code-tree',
+  standalone: true,
   imports: [ CommonModule, NzTreeModule ],
   template: `
     {{searchValue}}
@@ -47,11 +47,7 @@ export class CommonCodeTreeComponent implements OnInit {
         .getCodeHierarchy(params)
         .subscribe(
           (model: ResponseList<CommonCodeHierarchy>) => {
-            if ( model.data ) {
-              this.nodeItems = model.data;
-            } else {
-              this.nodeItems = [];
-            }
+            model.data ? this.nodeItems = model.data : this.nodeItems = [];
           }
         );
   }

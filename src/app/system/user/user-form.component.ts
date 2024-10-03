@@ -276,22 +276,13 @@ export class UserFormComponent extends FormBase implements OnInit {
         .getUser(userId)
         .subscribe(
           (model: ResponseObject<User>) => {
-            if (model.data) {
-              if (model.data.userId == null) {
-                this.newForm();
-              } else {
-                this.modifyForm(model.data);
-              }
+            model.data ? this.modifyForm(model.data) : this.newForm();
 
-              if (model.data.imageBase64 != null) {
-                //this.imageBase64 = 'data:image/jpg;base64,' + model.data.imageBase64;
-                this.imageBase64 = model.data.imageBase64;
-              } else {
-                this.imageBase64 = '';
-              }
-
+            if (model.data?.imageBase64 != null) {
+              //this.imageBase64 = 'data:image/jpg;base64,' + model.data.imageBase64;
+              this.imageBase64 = model.data.imageBase64;
             } else {
-              this.fg.reset();
+              this.imageBase64 = '';
             }
 
             this.appAlarmService.changeMessage(model.message);
@@ -331,9 +322,7 @@ export class UserFormComponent extends FormBase implements OnInit {
         .getAuthorityList()
         .subscribe(
           (model: ResponseList<Role>) => {
-            if (model.data) {
-              this.authList = model.data;
-            }
+            this.authList = model.data;
           }
         );
   }
@@ -343,11 +332,7 @@ export class UserFormComponent extends FormBase implements OnInit {
         .getDeptHierarchyList()
         .subscribe(
           (model: ResponseList<DeptHierarchy>) => {
-            if (model.data) {
-              this.deptHierarchy = model.data;
-            } else {
-              this.deptHierarchy = [];
-            }
+            this.deptHierarchy = model.data;
           }
         );
   }

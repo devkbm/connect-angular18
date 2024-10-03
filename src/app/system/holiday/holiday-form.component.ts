@@ -150,11 +150,7 @@ export class HolidayFormComponent extends FormBase implements OnInit, AfterViewI
         .getHoliday(id)
         .subscribe(
             (model: ResponseObject<Holiday>) => {
-              if ( model.data ) {
-                this.modifyForm(model.data);
-              } else {
-                this.newForm(date);
-              }
+              model.data ? this.modifyForm(model.data) : this.newForm(date);
               this.appAlarmService.changeMessage(model.message);
             }
         );

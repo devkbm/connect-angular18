@@ -93,11 +93,7 @@ export class HolidayGridComponent extends AggridFunction implements OnInit {
         .getHolidayList(fromDate, toDate)
         .subscribe(
           (model: ResponseList<Holiday>) => {
-            if (model.data) {
-              this.gridList = model.data;
-            } else {
-              this.gridList = [];
-            }
+            this.gridList = model.data;
             this.appAlarmService.changeMessage(model.message);
           }
         );

@@ -91,12 +91,8 @@ export class CompanyGridComponent extends AggridFunction implements OnInit {
         .getList()
         .subscribe(
           (model: ResponseList<Company>) => {
-              if (model.data) {
-                  this._list = model.data;
-              } else {
-                  this._list = [];
-              }
-              this.appAlarmService.changeMessage(model.message);
+            this._list = model.data;
+            this.appAlarmService.changeMessage(model.message);
           }
         );
   }

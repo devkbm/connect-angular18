@@ -236,11 +236,7 @@ export class StaffFamilyFormComponent extends FormBase implements OnInit, AfterV
         .get(staffId, seq)
         .subscribe(
           (model: ResponseObject<StaffFamily>) => {
-            if (model.data) {
-              this.modifyForm(model.data);
-            } else {
-              this.newForm();
-            }
+            model.data ? this.modifyForm(model.data) : this.newForm()
             this.appAlarmService.changeMessage(model.message);
           }
         );

@@ -51,11 +51,7 @@ export class DeptTreeComponent implements OnInit {
         .getDeptHierarchyList()
         .subscribe(
             (model: ResponseList<DeptHierarchy>) => {
-                if ( model.data ) {
-                this.nodeItems = model.data;
-                } else {
-                this.nodeItems = [];
-                }
+              model.data ? this.nodeItems = model.data : this.nodeItems = [];
             }
         );
   }

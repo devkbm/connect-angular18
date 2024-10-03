@@ -100,11 +100,7 @@ export class MenuGridComponent extends AggridFunction implements OnInit {
         .getMenuList(params)
         .subscribe(
           (model: ResponseList<Menu>) => {
-            if (model.data) {
-              this.menuList = model.data;
-            } else {
-              this.menuList = [];
-            }
+            this.menuList = model.data;
             this.appAlarmService.changeMessage(model.message);
           }
         );

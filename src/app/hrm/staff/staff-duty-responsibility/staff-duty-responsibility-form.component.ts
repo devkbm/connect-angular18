@@ -233,11 +233,7 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
         .get(staffId, seq)
         .subscribe(
           (model: ResponseObject<StaffDutyResponsibility>) => {
-            if (model.data) {
-              this.modifyForm(model.data);
-            } else {
-              this.newForm();
-            }
+            model.data ? this.modifyForm(model.data) : this.newForm()
             this.appAlarmService.changeMessage(model.message);
           }
         );
@@ -282,9 +278,7 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
         .getList(params)
         .subscribe(
           (model: ResponseList<HrmCode>) => {
-            if ( model.data ) {
-              this.dutyResponsibilityCodeList = model.data;
-            }
+            this.dutyResponsibilityCodeList = model.data;
             this.appAlarmService.changeMessage(model.message);
           }
       );

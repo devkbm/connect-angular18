@@ -208,11 +208,7 @@ export class BizCodeTypeFormComponent extends FormBase implements OnInit, AfterV
         .get(id)
         .subscribe(
           (model: ResponseObject<BizCodeType>) => {
-            if (model.data) {
-              this.modifyForm(model.data);
-            } else {
-              this.newForm();
-            }
+            model.data ? this.modifyForm(model.data) : this.newForm()
             this.appAlarmService.changeMessage(model.message);
           }
         );
@@ -250,11 +246,7 @@ export class BizCodeTypeFormComponent extends FormBase implements OnInit, AfterV
         .getSystemList()
         .subscribe(
           (model: ResponseList<SelectControlModel>) => {
-            if (model.data) {
-              this.bizTypeList = model.data;
-            } else {
-              this.bizTypeList = [];
-            }
+            model.data ? this.bizTypeList = model.data : this.bizTypeList = [];
           }
         );
   }

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 
-import { Component, OnInit, Output, EventEmitter, inject, output } from '@angular/core';
+import { Component, OnInit, inject, output } from '@angular/core';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { AggridFunction } from 'src/app/core/grid/aggrid-function';
@@ -86,11 +86,7 @@ export class BizCodeTypeGridComponent extends AggridFunction implements OnInit {
         .getList()
         .subscribe(
           (model: ResponseList<BizCodeType>) => {
-            if (model.data) {
-              this._list = model.data;
-            } else {
-              this._list = [];
-            }
+            this._list = model.data;
             this.appAlarmService.changeMessage(model.message);
           }
         );
