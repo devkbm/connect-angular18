@@ -251,11 +251,7 @@ export class HrmCodeComponent implements OnInit {
         .getList(params)
         .subscribe(
           (model: ResponseList<HrmCode>) => {
-            if (model.total > 0) {
-              this.gridHrmCodeList = model.data;
-            } else {
-              this.gridHrmCodeList = [];
-            }
+            this.gridHrmCodeList = model.data;
             this.appAlarmService.changeMessage(model.message);
           }
         );
@@ -270,11 +266,7 @@ export class HrmCodeComponent implements OnInit {
         .getList(params)
         .subscribe(
           (model: ResponseList<HrmType>) => {
-            if (model.total > 0) {
-              this.gridHrmCodeTypeList = model.data;
-            } else {
-              this.gridHrmCodeTypeList = [];
-            }
+            this.gridHrmCodeTypeList = model.data;
             this.appAlarmService.changeMessage(model.message);
           }
         );

@@ -91,7 +91,7 @@ export class DataDomainGridComponent extends AggridFunction implements OnInit {
         .getList()
         .subscribe(
           (model: ResponseList<DataDomain>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.list = model.data;
             } else {
               this.list = [];

@@ -184,7 +184,7 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
         .get(id)
         .subscribe(
           (model: ResponseObject<DataDomain>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               this.modifyForm(model.data);
             } else {
               this.newForm();

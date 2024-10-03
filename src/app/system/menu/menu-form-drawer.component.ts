@@ -23,7 +23,6 @@ import { MenuFormComponent } from './menu-form.component';
       [nzFooter]="footerTpl"
       (nzOnClose)="drawer().visible = false">
         <app-menu-form #menuForm *nzDrawerContent
-          [menuGroupId]="drawer().initLoadId.menuGroupCode"
           [initLoadId]="drawer().initLoadId"
           (formSaved)="closeDrawer($event)"
           (formDeleted)="closeDrawer($event)"

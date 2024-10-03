@@ -275,6 +275,7 @@ export class MenuComponent {
 
   menuGroupGridRowClicked(row: any): void {
     this.drawer.menuGroup.initLoadId = row.menuGroupCode;
+    this.drawer.menu.initLoadId = {menuGroupCode: row.menuGroupCode};
     this.getMenuList();
   }
   //#endregion 메뉴그룹
@@ -293,7 +294,6 @@ export class MenuComponent {
   }
 
   newMenu(): void {
-    this.drawer.menu.initLoadId = null;
     this.drawer.menu.visible = true;
   }
 

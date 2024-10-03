@@ -119,11 +119,7 @@ export class WebResourceGridComponent extends AggridFunction {
         .getList(params)
         .subscribe(
           (model: ResponseList<WebResource>) => {
-            if (model.total > 0) {
-              this._list = model.data;
-            } else {
-              this._list = [];
-            }
+            this._list = model.data;
             this.isLoading = false;
             this.appAlarmService.changeMessage(model.message);
           }

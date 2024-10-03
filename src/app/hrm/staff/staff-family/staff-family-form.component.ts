@@ -236,7 +236,7 @@ export class StaffFamilyFormComponent extends FormBase implements OnInit, AfterV
         .get(staffId, seq)
         .subscribe(
           (model: ResponseObject<StaffFamily>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.modifyForm(model.data);
             } else {
               this.newForm();
@@ -277,11 +277,7 @@ export class StaffFamilyFormComponent extends FormBase implements OnInit, AfterV
         .getList(params)
         .subscribe(
           (model: ResponseList<HrmCode>) => {
-            if ( model.total > 0 ) {
-              this.familyRelationList = model.data;
-            } else {
-              this.familyRelationList = [];
-            }
+            this.familyRelationList = model.data;
             this.appAlarmService.changeMessage(model.message);
           }
       );

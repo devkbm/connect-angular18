@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, inject, viewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -125,14 +125,20 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
     description   : new FormControl<string | null>(null)
   });
 
+  override initLoadId = input<string>('');
+
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        this.get(this.initLoadId());
+      }
+    })
+  }
+
   ngOnInit(): void {
     this.getCommonCodeList();
-
-    if (this.initLoadId) {
-      this.get(this.initLoadId);
-    } else {
-      this.newForm();
-    }
   }
 
   ngAfterViewInit(): void {
@@ -168,7 +174,7 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
         .get(id)
         .subscribe(
           (model: ResponseObject<WebResource>) => {
-            if ( model.total > 0 ) {
+            if (model.data) {
               this.modifyForm(model.data);
             } else {
               this.newForm();
@@ -210,7 +216,7 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
         .getWebResourceTypeList()
         .subscribe(
         (model: ResponseList<ResouceTypeEnum>) => {
-          if ( model.total > 0 ) {
+          if ( model.data ) {
             this.resourceTypeList = model.data;
           }
           this.appAlarmService.changeMessage(model.message);

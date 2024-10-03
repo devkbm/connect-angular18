@@ -70,7 +70,7 @@ export class NzInputTreeSelectDeptComponent implements ControlValueAccessor, OnI
         .getDeptHierarchyList()
         .subscribe(
           (model: ResponseList<NzInputTreeSelectDept>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.nodes.set(model.data);
             } else {
               this.nodes.set([]);

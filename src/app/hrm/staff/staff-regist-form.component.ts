@@ -233,7 +233,7 @@ export class StaffRegistFormComponent extends FormBase implements OnInit {
         .get(staffId)
         .subscribe(
           (model: ResponseObject<Staff>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               this.modifyForm(model.data);
               this.upload.data = { companyCode: model.data.companyCode, staffNo: model.data.staffNo };
 

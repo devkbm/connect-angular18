@@ -41,13 +41,13 @@ import { CompanyGridComponent } from './company-grid.component';
     <div nz-col [nzSpan]="12">
       <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
         <ng-template #addOnBeforeTemplate>
-          <nz-select [(ngModel)]="query.resource.key">
-            @for (option of query.resource.list; track option.value) {
+          <nz-select [(ngModel)]="query.company.key">
+            @for (option of query.company.list; track option.value) {
               <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
             }
           </nz-select>
         </ng-template>
-        <input type="text" [(ngModel)]="query.resource.value" nz-input placeholder="input search text" (keyup.enter)="getList()">
+        <input type="text" [(ngModel)]="query.company.value" nz-input placeholder="input search text" (keyup.enter)="getList()">
         <ng-template #suffixIconSearch>
           <span nz-icon nzType="search"></span>
         </ng-template>
@@ -70,7 +70,7 @@ import { CompanyGridComponent } from './company-grid.component';
 </div>
 
 <app-company-form-drawer
-  [drawer]="drawer.resource"
+  [drawer]="drawer.company"
   (drawerClosed)="getList()">
 </app-company-form-drawer>
   `,
@@ -105,9 +105,9 @@ export class CompanyComponent implements OnInit {
   grid = viewChild.required(CompanyGridComponent);
 
   query: {
-    resource : { key: string, value: string, list: {label: string, value: string}[] }
+    company : { key: string, value: string, list: {label: string, value: string}[] }
   } = {
-    resource : {
+    company : {
       key: 'resourceCode',
       value: '',
       list: [
@@ -144,9 +144,9 @@ export class CompanyComponent implements OnInit {
   }];
 
   drawer: {
-    resource: { visible: boolean, initLoadId: any }
+    company: { visible: boolean, initLoadId: any }
   } = {
-    resource: { visible: false, initLoadId: null }
+    company: { visible: false, initLoadId: null }
   }
 
   ngOnInit(): void {
@@ -154,23 +154,23 @@ export class CompanyComponent implements OnInit {
 
   getList(): void {
     let params: any = new Object();
-    if ( this.query.resource.value !== '') {
-      params[this.query.resource.key] = this.query.resource.value;
+    if ( this.query.company.value !== '') {
+      params[this.query.company.key] = this.query.company.value;
     }
 
-    this.drawer.resource.visible = false;
+    this.drawer.company.visible = false;
 
     this.grid().getList();
   }
 
   newResource(): void {
-    this.drawer.resource.initLoadId = null;
-    this.drawer.resource.visible = true;
+    this.drawer.company.initLoadId = null;
+    this.drawer.company.visible = true;
   }
 
   editResource(item: any): void {
-    this.drawer.resource.initLoadId = item.companyCode;
-    this.drawer.resource.visible = true;
+    this.drawer.company.initLoadId = item.companyCode;
+    this.drawer.company.visible = true;
   }
 
   delete(): void {
@@ -188,7 +188,7 @@ export class CompanyComponent implements OnInit {
   }
 
   resourceGridRowClicked(item: any): void {
-    this.drawer.resource.initLoadId = item.companyCode;
+    this.drawer.company.initLoadId = item.companyCode;
   }
 
 }

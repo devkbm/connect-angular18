@@ -158,7 +158,7 @@ export class WordFormComponent extends FormBase implements OnInit, AfterViewInit
         .get(id)
         .subscribe(
           (model: ResponseObject<Word>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               this.modifyForm(model.data);
             } else {
               this.newForm();

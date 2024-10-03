@@ -124,13 +124,8 @@ export class SideMenuComponent {
         .getUserMenuHierarchy(SessionManager.getUserId() as string, menuGroupCode)
         .subscribe(
           (model: ResponseList<MenuHierarchy>) => {
-            if ( model.total > 0 ) {
-              this.menuInfo.menuItems = model.data;
-              sessionStorage.setItem('menuList', JSON.stringify(model.data));
-            } else {
-              this.menuInfo.menuItems = [];
-              sessionStorage.setItem('menuList', '');
-            }
+            this.menuInfo.menuItems = model.data;
+            sessionStorage.setItem('menuList', JSON.stringify(model.data));
           }
         );
   }

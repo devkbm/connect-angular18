@@ -10,36 +10,6 @@ export enum FormType {
 })
 export abstract class FormBase {
 
-  defaultControlSize = {
-    /** width < 576 px */
-    xs: 24,
-    /** width >= 576 px */
-    sm: 24,
-    /** width >= 768 px */
-    md: 24,
-    /** width >= 992 px */
-    lg: 24,
-    /** width >= 1200 px */
-    xl: 24,
-    /** width >= 1600 px */
-    xxl: 24
-  }
-
-  defaultLabelSize = {
-    /** width < 576 px */
-    xs: 24,
-    /** width >= 576 px */
-    sm: 24,
-    /** width >= 768 px */
-    md: 24,
-    /** width >= 992 px */
-    lg: 24,
-    /** width >= 1200 px */
-    xl: 24,
-    /** width >= 1600 px */
-    xxl: 24
-  }
-
   formType: FormType = FormType.NEW;
   fg: FormGroup = new FormGroup({});
 

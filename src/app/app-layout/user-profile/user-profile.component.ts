@@ -70,9 +70,7 @@ export class UserProfileComponent {
         .getMyProfile()
         .subscribe(
             (model: ResponseObject<SystemUserProfile>) => {
-              if ( model.total > 0 ) {
-                this.profile = model.data;
-              }
+              this.profile = model.data;
             }
         );
   }

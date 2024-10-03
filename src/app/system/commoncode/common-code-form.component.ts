@@ -302,7 +302,7 @@ export class CommonCodeFormComponent extends FormBase implements OnInit {
         .getCode(systemTypeCode, codeId)
         .subscribe(
           (model: ResponseObject<CommonCode>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               this.modifyForm(model.data);
             }
             this.appAlarmService.changeMessage(model.message);
@@ -356,7 +356,7 @@ export class CommonCodeFormComponent extends FormBase implements OnInit {
         .getCodeHierarchy(params)
         .subscribe(
           (model: ResponseList<CommonCodeHierarchy>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               this.nodeItems = model.data;
             } else {
               this.nodeItems = new Array<CommonCodeHierarchy>(0);

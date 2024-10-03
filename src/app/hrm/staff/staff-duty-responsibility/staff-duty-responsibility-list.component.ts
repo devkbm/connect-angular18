@@ -51,11 +51,7 @@ export class StaffDutyResponsibilityListComponent implements OnInit, AfterViewIn
         .getList(staffId)
         .subscribe(
           (model: ResponseList<StaffDutyResponsibility>) => {
-            if (model.total > 0) {
-              this._list = model.data;
-            } else {
-              this._list = [];
-            }
+            this._list = model.data;
           }
         );
   }

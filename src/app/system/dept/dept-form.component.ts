@@ -53,12 +53,11 @@ import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-c
         <div nz-col nzSpan="12">
           <nz-form-item class="form-item">
             <nz-form-label
-                nzFor="parentDeptCode"
-                [nzXs]="defaultLabelSize.xs" [nzSm]="defaultLabelSize.sm">
+                nzFor="parentDeptCode">
                 상위 부서코드
             </nz-form-label>
 
-            <nz-form-control [nzXs]="defaultControlSize.xs" [nzSm]="defaultControlSize.sm" >
+            <nz-form-control>
                 <nz-tree-select
                     id="parentDeptCode"
                     [nzNodes]="deptHierarchy"
@@ -313,7 +312,7 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
         .getDept(id)
         .subscribe(
             (model: ResponseObject<Dept>) => {
-              if ( model.total > 0 ) {
+              if ( model.data ) {
                 this.modifyForm(model.data);
               } else {
                 this.getDeptHierarchy();
@@ -356,7 +355,7 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
         .getDeptHierarchyList()
         .subscribe(
           (model: ResponseList<DeptHierarchy>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               this.deptHierarchy = model.data;
             } else {
               this.deptHierarchy = [];

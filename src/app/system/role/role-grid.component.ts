@@ -123,12 +123,8 @@ export class RoleGridComponent extends AggridFunction implements OnInit {
         .getRoleList(params)
         .subscribe(
           (model: ResponseList<Role>) => {
-            if (model.total > 0) {
-              this.roleList = model.data;
-              this.sizeToFit();
-            } else {
-              this.roleList = [];
-            }
+            this.roleList = model.data;
+            this.sizeToFit();
             this.appAlarmService.changeMessage(model.message);
           }
         );

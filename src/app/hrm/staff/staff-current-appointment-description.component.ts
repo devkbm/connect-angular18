@@ -69,9 +69,7 @@ export class StaffCurrentAppointmentDescriptionComponent {
         .getCurrentAppointment(staffNo)
         .subscribe(
           (model: ResponseObject<StaffCurrentAppointment>) => {
-            if ( model.total > 0 ) {
-              this.info = model.data;
-            }
+            this.info = model.data;
           }
       );
     }

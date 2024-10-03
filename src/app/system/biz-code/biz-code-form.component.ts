@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, inject, viewChild, Renderer2 } from '@angular/core';
+import { Component, AfterViewInit, inject, Renderer2, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -120,12 +120,23 @@ export class BizCodeFormComponent extends FormBase implements AfterViewInit {
     comment     : new FormControl<string | null>(null)
   });
 
+  override initLoadId = input<{typeId: string, code: string}>();
+
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        if (this.initLoadId()?.typeId && this.initLoadId()?.code) {
+          this.get(this.initLoadId()?.typeId!, this.initLoadId()?.code!);
+        } else if (this.initLoadId()?.typeId) {
+          this.newForm(this.initLoadId()?.typeId!);
+        }
+      }
+    });
+  }
+
   ngAfterViewInit(): void {
-    if (this.initLoadId && this.initLoadId.typeId && this.initLoadId.code) {
-      this.get(this.initLoadId.typeId, this.initLoadId.code);
-    } else if (this.initLoadId && this.initLoadId.typeId) {
-      this.newForm(this.initLoadId.typeId);
-    }
   }
 
   focusInput() {
@@ -158,7 +169,7 @@ export class BizCodeFormComponent extends FormBase implements AfterViewInit {
         .get(typeId, code)
         .subscribe(
           (model: ResponseObject<BizCode>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.modifyForm(model.data);
             } else {
               this.newForm('');

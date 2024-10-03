@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, AfterViewInit, inject, viewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, viewChild, Renderer2, input, effect } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -73,7 +73,7 @@ import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-c
           <nz-form-item-custom for="description" label="비고">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <textarea nz-input id="description" formControlName="description"
-              placeholder="비고" [rows]="25">
+              placeholder="비고" [rows]="10">
               </textarea>
             </nz-form-control>
           </nz-form-item-custom>
@@ -85,8 +85,6 @@ import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-c
   styles: []
 })
 export class MenuGroupFormComponent extends FormBase implements OnInit, AfterViewInit {
-
-  //menuGroupCode = viewChild.required<NzInputTextComponent>('menuGroupCode');
 
   private menuService = inject(MenuService);
   private appAlarmService = inject(AppAlarmService);
@@ -105,15 +103,22 @@ export class MenuGroupFormComponent extends FormBase implements OnInit, AfterVie
     description     : new FormControl<string | null>(null)
   });
 
+  override initLoadId = input<string>();
+
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        this.get(this.initLoadId()!);
+      }
+    });
+  }
+
   ngOnInit() {
   }
 
   ngAfterViewInit(): void {
-    if (this.initLoadId) {
-      this.get(this.initLoadId);
-    } else {
-      this.newForm();
-    }
   }
 
   focusInput() {
@@ -144,7 +149,7 @@ export class MenuGroupFormComponent extends FormBase implements OnInit, AfterVie
         .getMenuGroup(menuGroupId)
         .subscribe(
           (model: ResponseObject<MenuGroup>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               this.modifyForm(model.data);
             } else {
               this.newForm();
@@ -178,7 +183,7 @@ export class MenuGroupFormComponent extends FormBase implements OnInit, AfterVie
         .subscribe(
           (model: ResponseObject<MenuGroup>) => {
             this.formDeleted.emit(this.fg.getRawValue());
-            this.appAlarmService.changeMessage(model.total + '건의 메뉴그룹이 삭제되었습니다.');
+            //this.appAlarmService.changeMessage(model.total + '건의 메뉴그룹이 삭제되었습니다.');
           }
         );
   }

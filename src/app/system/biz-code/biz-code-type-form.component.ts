@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Component, OnInit, AfterViewInit, inject, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -161,13 +161,24 @@ export class BizCodeTypeFormComponent extends FormBase implements OnInit, AfterV
     comment   : new FormControl<string | null>(null)
   });
 
+  override initLoadId = input<string>('');
+
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        this.get(this.initLoadId());
+      }
+    });
+  }
+
   ngOnInit(): void {
     this.getSystemList();
   }
 
   ngAfterViewInit(): void {
-    if (this.initLoadId) {
-      this.get(this.initLoadId);
+    if (this.initLoadId()) {
     } else {
       this.newForm();
     }
@@ -197,7 +208,7 @@ export class BizCodeTypeFormComponent extends FormBase implements OnInit, AfterV
         .get(id)
         .subscribe(
           (model: ResponseObject<BizCodeType>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.modifyForm(model.data);
             } else {
               this.newForm();
@@ -239,7 +250,7 @@ export class BizCodeTypeFormComponent extends FormBase implements OnInit, AfterV
         .getSystemList()
         .subscribe(
           (model: ResponseList<SelectControlModel>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.bizTypeList = model.data;
             } else {
               this.bizTypeList = [];

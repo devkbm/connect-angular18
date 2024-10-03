@@ -94,7 +94,7 @@ export class TermGridComponent extends AggridFunction implements OnInit {
         .getTermList(params)
         .subscribe(
           (model: ResponseList<Term>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.termList = model.data;
             } else {
               this.termList = [];

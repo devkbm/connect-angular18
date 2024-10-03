@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, OnChanges, OnInit, Renderer2, SimpleChanges, inject, viewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Renderer2, effect, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
@@ -171,7 +171,7 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
 
   `]
 })
-export class BoardFormComponent extends FormBase implements OnInit, OnChanges, AfterViewInit {
+export class BoardFormComponent extends FormBase implements OnInit, AfterViewInit {
 
   parentBoardItems: BoardHierarchy[] = [];
 
@@ -188,26 +188,25 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
     boardDescription: new FormControl<string | null>(null)
   });
 
+  override initLoadId = input<any>();
+
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        this.get(this.initLoadId());
+      }
+    })
+  }
+
   ngOnInit() {
     this.getboardHierarchy();
     this.getBoardTypeList();
-
-    if (this.initLoadId) {
-      this.get(this.initLoadId);
-    } else {
-      this.newForm();
-    }
   }
 
   ngAfterViewInit(): void {
     this.focusInput();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['initLoadId']?.currentValue) {
-      console.log(this.initLoadId);
-      this.get(this.initLoadId);
-    }
   }
 
   focusInput() {
@@ -286,7 +285,7 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
         .getBoardHierarchy()
         .subscribe(
           (model: ResponseList<BoardHierarchy>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               this.parentBoardItems = model.data;
             } else {
               this.parentBoardItems = [];

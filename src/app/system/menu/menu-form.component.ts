@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -140,11 +140,7 @@ import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree
   `,
   styles: []
 })
-export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
-
-  //menuCode = viewChild.required<NzInputTextComponent>('menuCode');
-
-  @Input() menuGroupId: any;
+export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit {
 
   programList: any;
   menuGroupList: any;
@@ -171,7 +167,23 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
       parentMenuCode    : new FormControl<string | null>(null),
       sequence          : new FormControl<number | null>(null),
       appUrl            : new FormControl<string | null>(null, { validators: Validators.required })
+  });
+
+  override initLoadId = input<{menuGroupCode: string, menuCode: string}>();
+
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        if (this.initLoadId()?.menuGroupCode && this.initLoadId()?.menuCode) {
+          this.get(this.initLoadId()?.menuGroupCode!, this.initLoadId()?.menuCode!);
+        } else if (this.initLoadId()?.menuGroupCode && !this.initLoadId()?.menuCode) {
+          this.newForm(this.initLoadId()?.menuGroupCode!);
+        }
+      }
     });
+  }
 
   ngOnInit() {
     this.getMenuTypeList();
@@ -179,27 +191,19 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   ngAfterViewInit(): void {
-    if (this.initLoadId) {
-      this.get(this.initLoadId.menuGroupCode, this.initLoadId.menuCode);
-    } else {
-      this.newForm();
-    }
-  }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // throw new Error('Method not implemented.');
   }
 
   focusInput() {
     this.renderer.selectRootElement('#menuCode').focus();
   }
 
-  newForm(): void {
+  newForm(menuGroupCode: string): void {
     this.formType = FormType.NEW;
 
-    this.getMenuHierarchy(this.menuGroupId);
+    this.getMenuHierarchy(menuGroupCode);
 
-    this.fg.controls.menuGroupCode.setValue(this.menuGroupId);
+    this.fg.controls.menuGroupCode.setValue(menuGroupCode);
     //this.fg.controls.menuCode.disable();
 
     this.focusInput();
@@ -224,10 +228,10 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
         .getMenu(menuGroupCode, menuCode)
         .subscribe(
           (model: ResponseObject<Menu>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               this.modifyForm(model.data);
             } else {
-              this.newForm();
+              this.newForm(menuGroupCode);
             }
             this.appAlarmService.changeMessage(model.message);
           }
@@ -270,7 +274,7 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
         .getMenuHierarchy(menuGroupId)
         .subscribe(
           (model: ResponseList<MenuHierarchy>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               this.menuHiererachy = model.data;
             } else {
               this.menuHiererachy = [];
@@ -284,7 +288,7 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
         .getMenuGroupList()
         .subscribe(
           (model: ResponseList<MenuGroup>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.menuGroupList = model.data;
             } else {
               this.menuGroupList = [];
@@ -298,7 +302,7 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
         .getMenuTypeList()
         .subscribe(
           (model: ResponseList<any>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.menuTypeList = model.data;
             } else {
               this.menuTypeList = [];

@@ -233,7 +233,7 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
         .get(staffId, seq)
         .subscribe(
           (model: ResponseObject<StaffDutyResponsibility>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.modifyForm(model.data);
             } else {
               this.newForm();
@@ -282,7 +282,7 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
         .getList(params)
         .subscribe(
           (model: ResponseList<HrmCode>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               this.dutyResponsibilityCodeList = model.data;
             }
             this.appAlarmService.changeMessage(model.message);

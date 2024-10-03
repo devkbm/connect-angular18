@@ -7,21 +7,22 @@ import { ActivatedRoute } from '@angular/router';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzFormItemCustomComponent } from "../../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
+import { NzUploadChangeParam, NzUploadComponent, NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzFormItemCustomComponent } from "src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component";
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputCkeditorComponent } from 'src/app/shared-component/nz-input-ckeditor/nz-input-ckeditor.component';
 import { NzFileUploadComponent } from 'src/app/shared-component/nz-file-upload/nz-file-upload.component';
 
+import { ResponseObject } from 'src/app/core/model/response-object';
+import { FormBase, FormType } from 'src/app/core/form/form-base';
+import { GlobalProperty } from 'src/app/core/global-property';
+// import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 //import { ChangeEvent, CKEditorComponent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import { ChangeEvent, CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 import { ArticleService } from './article.service';
-
-import { ResponseObject } from '../../../core/model/response-object';
-import { FormBase, FormType } from 'src/app/core/form/form-base';
-import { NzUploadChangeParam, NzUploadComponent, NzUploadFile } from 'ng-zorro-antd/upload';
-import { GlobalProperty } from 'src/app/core/global-property';
-// import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Article } from './article.model';
+
 
 @Component({
   selector: 'app-article-form',

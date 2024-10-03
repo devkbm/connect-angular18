@@ -104,7 +104,7 @@ export class MenuRoleTreeComponent {
         .getMenuRoleHierarchy(this.menuGroupCode(), this.roleCode())
         .subscribe(
             (model: ResponseList<MenuRoleHierarchy>) => {
-              if ( model.total > 0 ) {
+              if ( model.data ) {
                 this.nodeItems = model.data;
 
                 //this.defaultCheckedKeys = this.nodeItems.flatMap(e => [e, ...e.children || []]).map(e => e.checked ? e.key : -1).filter(val => val !== -1);

@@ -245,7 +245,7 @@ export class TermFormComponent extends FormBase implements OnInit, AfterViewInit
         .get(id)
         .subscribe(
           (model: ResponseObject<Term>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               this.modifyForm(model.data);
             } else {
               this.newForm();

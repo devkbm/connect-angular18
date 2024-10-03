@@ -150,11 +150,7 @@ export class TeamComponent implements OnInit {
         .getList(params)
         .subscribe(
           (model: ResponseList<TeamModel>) => {
-            if (model.total > 0) {
-              this.gridList = model.data;
-            } else {
-              this.gridList = [];
-            }
+            this.gridList = model.data;
             this.appAlarmService.changeMessage(model.message);
           }
         );

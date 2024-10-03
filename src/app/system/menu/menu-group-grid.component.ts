@@ -115,7 +115,7 @@ export class MenuGroupGridComponent extends AggridFunction implements OnInit {
         .getMenuGroupList(params)
         .subscribe(
           (model: ResponseList<MenuGroup>) => {
-              if (model.total > 0) {
+              if (model.data) {
                   this.menuGroupList = model.data;
               } else {
                   this.menuGroupList = [];

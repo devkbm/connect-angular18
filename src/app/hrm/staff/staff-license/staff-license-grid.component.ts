@@ -101,12 +101,8 @@ export class StaffLicenseGridComponent extends AggridFunction implements OnInit,
         .getList(staffId)
         .subscribe(
           (model: ResponseList<StaffLicense>) => {
-              if (model.total > 0) {
-                this._list = model.data;
-              } else {
-                this._list = [];
-              }
-              this.appAlarmService.changeMessage(model.message);
+            this._list = model.data;
+            this.appAlarmService.changeMessage(model.message);
           }
         );
   }

@@ -200,7 +200,7 @@ export class HrmCodeTypeFormComponent extends FormBase implements OnInit, AfterV
         .get(code)
         .subscribe(
           (model: ResponseObject<HrmType>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               console.log(model.data);
               this.modifyForm(model.data);
             } else {

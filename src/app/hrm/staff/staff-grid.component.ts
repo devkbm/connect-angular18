@@ -91,11 +91,7 @@ export class StaffGridComponent extends AggridFunction implements OnInit {
         .getStaffList(params)
         .subscribe(
           (model: ResponseList<Staff>) => {
-            if (model.total > 0) {
-              this.list = model.data;
-            } else {
-              this.list = [];
-            }
+            this.list = model.data;
             this.appAlarmService.changeMessage(model.message);
           }
         );

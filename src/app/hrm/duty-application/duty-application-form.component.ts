@@ -222,11 +222,7 @@ export class DutyApplicationFormComponent extends FormBase  implements OnInit {
         .get(id)
         .subscribe(
           (model: ResponseObject<DutyApplication>) => {
-            if ( model.total > 0 ) {
-              this.modifyForm(model.data);
-            } else {
-              this.newForm();
-            }
+            this.modifyForm(model.data);
             this.appAlarmService.changeMessage(model.message);
           }
       );
@@ -264,11 +260,7 @@ export class DutyApplicationFormComponent extends FormBase  implements OnInit {
         .getList(params)
         .subscribe(
           (model: ResponseList<HrmCode>) => {
-            if ( model.total > 0 ) {
-              this.dutyCodeList = model.data;
-            } else {
-              this.dutyCodeList = [];
-            }
+            this.dutyCodeList = model.data;
             this.appAlarmService.changeMessage(model.message);
           }
       );

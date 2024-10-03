@@ -273,7 +273,7 @@ export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, 
         .get(staffId, seq)
         .subscribe(
           (model: ResponseObject<StaffSchoolCareer>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.modifyForm(model.data);
             } else {
               this.newForm();
@@ -314,11 +314,7 @@ export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, 
         .getList(params)
         .subscribe(
           (model: ResponseList<HrmCode>) => {
-            if ( model.total > 0 ) {
-              this.schoolCareerTypeList = model.data;
-            } else {
-              this.schoolCareerTypeList = [];
-            }
+            this.schoolCareerTypeList = model.data;
             this.appAlarmService.changeMessage(model.message);
           }
       );
@@ -333,11 +329,7 @@ export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, 
         .getList(params)
         .subscribe(
           (model: ResponseList<HrmCode>) => {
-            if ( model.total > 0 ) {
-              this.schoolCodeList = model.data;
-            } else {
-              this.schoolCodeList = [];
-            }
+            this.schoolCodeList = model.data;
             this.appAlarmService.changeMessage(model.message);
           }
       );

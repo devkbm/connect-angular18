@@ -12,7 +12,8 @@ export class CustomHttpInterceptor implements HttpInterceptor {
     //'http://175.114.176.195:8090/api/system/user/login',
     //'http://localhost:8090/api/system/user/login'     // 로그인페이지 url
     '/api/system/user/login',                           // 로그인페이지 url
-    '/api/system/user/oauth2'                           // Oauth2 로그인
+    '/api/system/user/oauth2',                          // Oauth2 로그인
+    '/api/system/company'
   ];
 
   private tokenExtractor = inject(HttpXsrfTokenExtractor);

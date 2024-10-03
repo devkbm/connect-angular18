@@ -203,7 +203,7 @@ export class StaffContactFormComponent extends FormBase implements OnInit, After
         .get(staffId)
         .subscribe(
           (model: ResponseObject<StaffContact>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.modifyForm(model.data);
             } else {
               this.newForm();

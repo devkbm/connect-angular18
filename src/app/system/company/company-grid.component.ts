@@ -91,7 +91,7 @@ export class CompanyGridComponent extends AggridFunction implements OnInit {
         .getList()
         .subscribe(
           (model: ResponseList<Company>) => {
-              if (model.total > 0) {
+              if (model.data) {
                   this._list = model.data;
               } else {
                   this._list = [];

@@ -1,6 +1,6 @@
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
 import { CommonModule } from '@angular/common';
-import { Component, Renderer2, inject } from '@angular/core';
+import { Component, Renderer2, effect, inject, input } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -121,10 +121,16 @@ export class CompanyFormComponent extends FormBase {
     establishmentDate           : new FormControl<Date | null>(null)
   });
 
+  override initLoadId = input<string>('');
+
   constructor() {
     super();
 
-
+    effect(() => {
+      if (this.initLoadId()) {
+        this.get(this.initLoadId());
+      }
+    })
   }
 
   focusInput() {
@@ -152,7 +158,7 @@ export class CompanyFormComponent extends FormBase {
         .get(id)
         .subscribe(
             (model: ResponseObject<Company>) => {
-              if ( model.total > 0 ) {
+              if ( model.data ) {
                 this.modifyForm(model.data);
               } else {
                 this.newForm();

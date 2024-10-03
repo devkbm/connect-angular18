@@ -159,7 +159,7 @@ export class TeamFormComponent extends FormBase implements OnInit, AfterViewInit
         .get(id)
         .subscribe(
           (model: ResponseObject<TeamModel>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.modifyForm(model.data);
             } else {
               this.newForm();
@@ -201,9 +201,7 @@ export class TeamFormComponent extends FormBase implements OnInit, AfterViewInit
         .getAllUserList()
         .subscribe(
           (model: ResponseList<TeamJoinableUserModel>) => {
-            if (model.total > 0) {
-              this.members = model.data;
-            }
+            this.members = model.data;
           }
         )
   }

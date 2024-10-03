@@ -50,9 +50,8 @@ export class BoardTreeComponent {
         .getBoardHierarchy()
         .subscribe(
           (model: ResponseList<BoardHierarchy>) => {
-              if ( model.total > 0 ) {
+              if ( model.data ) {
                 this.items = model.data;
-                console.log(this.items[0].key);
                 this.selectedKeys = [this.items[0].key];
                 this.itemSelected.emit(this.items[0]);
               } else {

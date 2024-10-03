@@ -33,11 +33,7 @@ export class StaffCardListComponent implements OnInit {
         .getList()
         .subscribe(
           (model: ResponseList<StaffCardModel>) => {
-            if (model.total > 0) {
-              this._list = model.data;
-            } else {
-              this._list = [];
-            }
+            this._list = model.data;
           }
         );
   }

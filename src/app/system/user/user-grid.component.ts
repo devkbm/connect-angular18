@@ -140,12 +140,8 @@ export class UserGridComponent extends AggridFunction implements OnInit {
         .getUserList(params)
         .subscribe(
           (model: ResponseList<User>) => {
-              if (model.total > 0) {
-                  this.userList = model.data;
-              } else {
-                  this.userList = [];
-              }
-              this.appAlarmService.changeMessage(model.message);
+            this.userList = model.data;
+            this.appAlarmService.changeMessage(model.message);
           }
       );
   }

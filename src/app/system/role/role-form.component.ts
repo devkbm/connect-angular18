@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormControl, Validators } from '@angular/forms';
 
@@ -179,7 +179,7 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
 
   `]
 })
-export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
+export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit {
 
   //roleCode = viewChild.required<NzInputTextComponent>('roleCode');
 
@@ -201,26 +201,24 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
     menuGroupCode : new FormControl<string | null>(null)
   });
 
+  override initLoadId = input<string>();
+
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        this.get(this.initLoadId()!);
+      }
+    })
+  }
+
   ngOnInit() {
     this.getMenuGroupList();
-
-    if (this.initLoadId) {
-      this.get(this.initLoadId);
-    } else {
-      this.newForm();
-    }
   }
 
   ngAfterViewInit(): void {
     //this.roleCode().focus();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    /*
-    if (changes['initLoadId']) {
-      this.getAuthority(changes['initLoadId'].currentValue);
-    }
-    */
   }
 
   focusInput() {
@@ -256,7 +254,7 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
         .getRole(id)
         .subscribe(
           (model: ResponseObject<Role>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.modifyForm(model.data);
             } else {
               this.newForm();
@@ -298,11 +296,7 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
         .getMenuGroupList()
         .subscribe(
           (model: ResponseList<MenuGroup>) => {
-            if (model.total > 0) {
-              this.menuGroupList = model.data;
-            } else {
-              this.menuGroupList = [];
-            }
+            this.menuGroupList = model.data;
           }
         );
   }

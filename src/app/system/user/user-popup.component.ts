@@ -62,10 +62,10 @@ export class UserPopupComponent implements OnInit {
           .getMyProfile()
           .subscribe(
               (model: ResponseObject<SystemUserProfile>) => {
-                  if ( model.total > 0 ) {
-                      this.profile = model.data;
-                  }
-                  //this.appAlarmService.changeMessage(model.message);
+                if ( model.data ) {
+                  this.profile = model.data;
+                }
+                //this.appAlarmService.changeMessage(model.message);
               }
       );
     }

@@ -428,7 +428,7 @@ export class StaffAppointmentRecordFormComponent extends FormBase implements OnI
         .get(staffId, id)
         .subscribe(
           (model: ResponseObject<StaffAppointmentRecord>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               console.log(model.data);
               this.modifyForm(model.data);
             } else {
@@ -471,7 +471,7 @@ export class StaffAppointmentRecordFormComponent extends FormBase implements OnI
         .getList(params)
         .subscribe(
           (model: ResponseList<HrmCode>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               this[propertyName] = model.data;
             } else {
               //list = [];
@@ -492,7 +492,7 @@ export class StaffAppointmentRecordFormComponent extends FormBase implements OnI
         .getMapList(params)
         .subscribe(
           (model: ResponseMap<HrmCode>) => {
-            if ( model.total > 0 ) {
+            if ( model.data ) {
               let data: any = model.data;
 
               for (const obj of objs) {

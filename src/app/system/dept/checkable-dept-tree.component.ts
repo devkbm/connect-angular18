@@ -48,7 +48,7 @@ export class CheckableDeptTreeComponent {
             .getDeptHierarchyList()
             .subscribe(
                 (model: ResponseList<DeptHierarchy>) => {
-                    if ( model.total > 0 ) {
+                    if ( model.data) {
                     this.nodeItems = model.data;
                     } else {
                     this.nodeItems = [];

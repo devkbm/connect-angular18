@@ -110,12 +110,8 @@ export class StaffAppointmentRecordGridComponent extends AggridFunction implemen
         .getList(staffNo)
         .subscribe(
           (model: ResponseList<StaffAppointmentRecord>) => {
-              if (model.total > 0) {
-                this._list = model.data;
-              } else {
-                this._list = [];
-              }
-              this.appAlarmService.changeMessage(model.message);
+            this._list = model.data;
+            this.appAlarmService.changeMessage(model.message);
           }
         );
   }

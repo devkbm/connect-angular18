@@ -96,7 +96,7 @@ export class DutyApplicationGridComponent extends AggridFunction implements OnIn
         .getList(params)
         .subscribe(
           (model: ResponseList<DutyApplication>) => {
-            if (model?.total > 0) {
+            if (model.data) {
               this._list = model.data;
             } else {
               this._list = [];

@@ -118,12 +118,7 @@ export class ArticleGridComponent extends AggridFunction implements OnInit {
         .getArticleList(fkBoard)
         .subscribe(
           (model: ResponseList<Article>) => {
-            if (model.total > 0) {
-              this.articleList = model.data;
-              // this.sizeToFit();
-            } else {
-              this.articleList = [];
-            }
+            this.articleList = model.data;
             this.appAlarmService.changeMessage(model.message);
           }
         );

@@ -56,12 +56,8 @@ export class MyWorkCalendarListComponent implements OnInit {
         .getMyWorkGroupList()
         .subscribe(
           (model: ResponseList<WorkCalendar>) => {
-              if (model.total > 0) {
-                  this.workGroupList = model.data;
-              } else {
-                  this.workGroupList = [];
-              }
-              this.appAlarmService.changeMessage(model.message);
+            this.workGroupList = model.data;
+            this.appAlarmService.changeMessage(model.message);
           }
         );
   }

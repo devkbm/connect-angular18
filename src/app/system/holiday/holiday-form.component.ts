@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, inject, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect } from '@angular/core';
 import { CommonModule, formatDate } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -93,12 +93,26 @@ export class HolidayFormComponent extends FormBase implements OnInit, AfterViewI
     comment       : new FormControl<string | null>(null)
   });
 
+  override initLoadId = input<Date>();
+
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        this.get(this.initLoadId()!);
+      }
+    })
+  }
+
   ngOnInit(): void {
+    /*
     if (this.initLoadId) {
       this.get(this.initLoadId);
     } else {
       this.newForm(new Date());
     }
+      */
   }
 
   ngAfterViewInit(): void {
@@ -121,6 +135,8 @@ export class HolidayFormComponent extends FormBase implements OnInit, AfterViewI
     this.formType = FormType.MODIFY;
 
     this.fg.patchValue(formData);
+
+    this.focusInput();
   }
 
   closeForm(): void {
@@ -134,7 +150,7 @@ export class HolidayFormComponent extends FormBase implements OnInit, AfterViewI
         .getHoliday(id)
         .subscribe(
             (model: ResponseObject<Holiday>) => {
-              if ( model.total > 0 ) {
+              if ( model.data ) {
                 this.modifyForm(model.data);
               } else {
                 this.newForm(date);

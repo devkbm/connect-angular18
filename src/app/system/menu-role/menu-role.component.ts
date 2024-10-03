@@ -135,7 +135,6 @@ import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item
       nzTitle="메뉴 등록"
       (nzOnClose)="drawer.menu.visible = false">
         <app-menu-form #menuForm *nzDrawerContent
-          [menuGroupId]="drawer.menuGroup.initLoadId"
           [initLoadId]="drawer.menu.initLoadId"
           (formSaved)="getMenuList()"
           (formDeleted)="getMenuList()"
@@ -235,7 +234,7 @@ export class MenuRoleComponent {
         .getMenuGroupList()
         .subscribe(
           (model: ResponseList<MenuGroup>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.menuGroup.list = model.data;
             }
           }
@@ -247,7 +246,7 @@ export class MenuRoleComponent {
         .getAuthorityList()
         .subscribe(
           (model: ResponseList<Role>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.role.list = model.data;
             }
           }

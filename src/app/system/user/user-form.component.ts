@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, inject, viewChild, Renderer2, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -166,7 +166,7 @@ import { NzInputTreeSelectDeptComponent } from 'src/app/shared-component/nz-inpu
   `,
   styles: []
 })
-export class UserFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
+export class UserFormComponent extends FormBase implements OnInit {
 
   public authList: any;
   public deptHierarchy: DeptHierarchy[] = [];
@@ -191,8 +191,6 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
 
   imageBase64: any;
 
-  //staffNoField = viewChild.required<NzInputTextComponent>('staffNo');
-
   private service = inject(UserService);
   private deptService = inject(DeptService);
   private appAlarmService = inject(AppAlarmService);
@@ -215,23 +213,22 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
     roleList: new FormControl<string[] | null>({ value: null, disabled: false }, { validators: Validators.required })
   });
 
-  ngOnInit(): void {
-    if (this.initLoadId) {
-      this.get(this.initLoadId);
-    } else {
-      this.newForm();
-    }
+  override initLoadId = input<string>('');
 
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        this.get(this.initLoadId());
+      }
+    })
+  }
+
+
+  ngOnInit(): void {
     this.getAuthorityList();
     this.getDeptHierarchy();
-  }
-
-  ngAfterViewInit(): void {
-    this.focusInput();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    //console.log(changes);
   }
 
   focusInput() {
@@ -279,7 +276,7 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
         .getUser(userId)
         .subscribe(
           (model: ResponseObject<User>) => {
-            if (model.total > 0) {
+            if (model.data) {
               if (model.data.userId == null) {
                 this.newForm();
               } else {
@@ -334,7 +331,7 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
         .getAuthorityList()
         .subscribe(
           (model: ResponseList<Role>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.authList = model.data;
             }
           }
@@ -346,7 +343,7 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
         .getDeptHierarchyList()
         .subscribe(
           (model: ResponseList<DeptHierarchy>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this.deptHierarchy = model.data;
             } else {
               this.deptHierarchy = [];

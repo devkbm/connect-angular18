@@ -86,7 +86,7 @@ export class BizCodeTypeGridComponent extends AggridFunction implements OnInit {
         .getList()
         .subscribe(
           (model: ResponseList<BizCodeType>) => {
-            if (model.total > 0) {
+            if (model.data) {
               this._list = model.data;
             } else {
               this._list = [];
