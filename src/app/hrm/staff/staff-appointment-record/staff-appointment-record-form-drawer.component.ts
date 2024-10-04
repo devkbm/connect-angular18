@@ -1,32 +1,33 @@
 import { Component, input, output, viewChild } from '@angular/core';
 
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NewStaffFormComponent } from './new-staff-form.component';
+
+import { StaffAppointmentRecordFormComponent } from './staff-appointment-record-form.component';
 
 @Component({
-  selector: 'app-new-staff-form-drawer',
+  selector: 'app-staff-appointment-record-form-drawer',
   standalone: true,
   imports: [
     NzDrawerModule,
     NzCrudButtonGroupComponent,
-    NewStaffFormComponent
+    StaffAppointmentRecordFormComponent
   ],
   template: `
     <nz-drawer
-      nzTitle="신규직원 등록"
+      nzTitle="발령 등록"
       nzWidth="80%"
       [nzMaskClosable]="true"
       [nzVisible]="drawer().visible"
       [nzFooter]="footerTpl"
       (nzOnClose)="drawer().visible = false">
-        <app-new-staff-form *nzDrawerContent
+        <app-staff-appointment-record-form *nzDrawerContent
+          [staff]="selectedStaff()"
           [initLoadId]="drawer().initLoadId"
           (formSaved)="closeDrawer($event)"
           (formDeleted)="closeDrawer($event)"
           (formClosed)="drawer().visible = false">
-        </app-new-staff-form>
+        </app-staff-appointment-record-form>
     </nz-drawer>
 
     <ng-template #footerTpl>
@@ -43,12 +44,14 @@ import { NewStaffFormComponent } from './new-staff-form.component';
   `,
   styles: []
 })
-export class NewStaffFormDrawerComponent {
+export class StaffAppointmentRecordFormDrawerComponent {
 
   drawer = input.required<{visible: boolean, initLoadId: any}>();
   drawerClosed = output<any>();
 
-  form = viewChild.required<NewStaffFormComponent>(NewStaffFormComponent);
+  selectedStaff = input<any>();
+
+  form = viewChild.required<StaffAppointmentRecordFormComponent>(StaffAppointmentRecordFormComponent);
 
   save() {
     this.form().save();

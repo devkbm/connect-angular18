@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, OnInit, Input, inject, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -254,50 +254,10 @@ import { NzInputTreeSelectDeptComponent } from 'src/app/shared-component/nz-inpu
       </div>
 
     </form>
-
-    <div class="footer">
-      <app-nz-crud-button-group
-        (searchClick)="get(fg.getRawValue().staffNo!, fg.getRawValue().seq!)"
-        (closeClick)="closeForm()"
-        (saveClick)="save()"
-        (deleteClick)="remove(fg.getRawValue().staffNo!, fg.getRawValue().seq!)">
-      </app-nz-crud-button-group>
-    </div>
-
   `,
-  styles: [`
-    [nz-button] {
-      margin-right: 8px;
-    }
-
-    .form-item {
-      margin-top: 0px;
-      margin-bottom: 5px;
-    }
-
-    .btn-group {
-      padding: 6px;
-      /*background: #fbfbfb;*/
-      border: 1px solid #d9d9d9;
-      border-radius: 6px;
-    }
-
-    .footer {
-      position: absolute;
-      bottom: 10px;
-      width: 100%;
-      border-top: 1px solid rgb(232, 232, 232);
-      padding: 10px 16px;
-      text-align: right;
-      left: 0px;
-      /*background: #fff;*/
-    }
-
-  `]
+  styles: []
 })
 export class StaffAppointmentRecordFormComponent extends FormBase implements OnInit {
-
-  @Input() staff?: {companyCode: string, staffNo: string, staffName: string};
 
   bizTypeList = [{code:'code', name:'name'},{code:'code2', name:'name2'}];
 
@@ -366,6 +326,21 @@ export class StaffAppointmentRecordFormComponent extends FormBase implements OnI
       dutyResponsibilityCode  : new FormControl<string | null>(null)
   });
 
+  override initLoadId = input<{staffId: string, seq: string}>();
+  staff = input<{companyCode: string, staffNo: string, staffName: string}>();
+
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        this.get(this.initLoadId()?.staffId!, this.initLoadId()?.seq!);
+      } else {
+        this.newForm();
+      }
+    })
+  }
+
   ngOnInit(): void {
     //this.getHrmTypeDetailCodeList('HR0000', "appointmentTypeList");
     //this.getHrmTypeDetailCodeList('HR0001', "groupJobCodeList");
@@ -387,11 +362,13 @@ export class StaffAppointmentRecordFormComponent extends FormBase implements OnI
       {typeId: 'HR0007', propertyName: "dutyResponsibilityCodeList"}
     ]);
 
+    /*
     if (this.initLoadId) {
       this.get(this.initLoadId.staffId, this.initLoadId.seq);
     } else {
       this.newForm();
     }
+      */
   }
 
   newForm(): void {
@@ -402,8 +379,8 @@ export class StaffAppointmentRecordFormComponent extends FormBase implements OnI
 
     if (this.staff) {
       //this.fg.controls.staffId.setValue(this.staff?.staffId);
-      this.fg.controls.staffNo.setValue(this.staff?.staffNo);
-      this.fg.controls.staffName.setValue(this.staff?.staffName);
+      this.fg.controls.staffNo.setValue(this.staff()?.staffNo!);
+      this.fg.controls.staffName.setValue(this.staff()?.staffName!);
     }
 
   }

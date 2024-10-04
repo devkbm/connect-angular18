@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -120,50 +120,10 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
 
       </div>
     </form>
-
-    <div class="footer">
-      <app-nz-crud-button-group
-        (searchClick)="get(fg.controls.staffNo.value!, fg.controls.seq.value!)"
-        (closeClick)="closeForm()"
-        (saveClick)="save()"
-        (deleteClick)="true">
-      </app-nz-crud-button-group>
-    </div>
-
   `,
-  styles: [`
-    [nz-button] {
-      margin-right: 8px;
-    }
-
-    .form-item {
-      margin-top: 0px;
-      margin-bottom: 5px;
-    }
-
-    .btn-group {
-      padding: 6px;
-      /*background: #fbfbfb;*/
-      border: 1px solid #d9d9d9;
-      border-radius: 6px;
-    }
-
-    .footer {
-      position: absolute;
-      bottom: 50px;
-      width: 100%;
-      border-top: 1px solid rgb(232, 232, 232);
-      padding: 10px 16px;
-      text-align: right;
-      left: 0px;
-      /*background: #fff;*/
-    }
-
-  `]
+  styles: []
 })
 export class StaffDutyResponsibilityFormComponent extends FormBase implements OnInit, AfterViewInit {
-
-  @Input() staff?: {companyCode: string, staffNo: string, staffName: string};
 
   /**
    * 직책코드 - HR0007
@@ -185,8 +145,19 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
       isPayApply              : new FormControl<boolean | null>(null)
     });
 
+  override initLoadId = input<{staffId: string, seq: string}>();
+  staff = input<{companyCode: string, staffNo: string, staffName: string}>();
+
   constructor() {
     super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        this.get(this.initLoadId()?.staffId!, this.initLoadId()?.seq!);
+      } else {
+        this.newForm();
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -194,11 +165,13 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
   }
 
   ngAfterViewInit(): void {
+    /*
     if (this.initLoadId && this.initLoadId.staffId && this.initLoadId.seq) {
       this.get(this.initLoadId.staffId, this.initLoadId.seq);
     } else {
       this.newForm();
     }
+      */
   }
 
 
@@ -209,8 +182,8 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
     this.fg.controls.staffName.disable();
 
     if (this.staff) {
-      this.fg.controls.staffNo.setValue(this.staff?.staffNo);
-      this.fg.controls.staffName.setValue(this.staff?.staffName);
+      this.fg.controls.staffNo.setValue(this.staff()?.staffNo!);
+      this.fg.controls.staffName.setValue(this.staff()?.staffName!);
     }
   }
 

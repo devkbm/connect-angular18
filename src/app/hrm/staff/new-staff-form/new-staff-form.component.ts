@@ -11,9 +11,8 @@ import { StaffService } from '../staff.service';
 import { NewStaff } from './new-staff-form.model';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputRregnoComponent } from 'src/app/shared-component/nz-input-rregno/nz-input-rregno.component';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputRregnoComponent } from 'src/app/shared-component/nz-input-rregno/nz-input-rregno.component';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 
 @Component({
@@ -26,8 +25,7 @@ import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item
     NzFormModule,
     NzInputModule,
     NzFormItemCustomComponent,
-    NzInputRregnoComponent,
-    NzCrudButtonGroupComponent
+    NzInputRregnoComponent
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -77,28 +75,8 @@ import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item
       </div>
 
     </form>
-
-    <div class="footer">
-      <app-nz-crud-button-group
-        [isSavePopupConfirm]="false"
-        [deleteVisible]="false"
-        (closeClick)="closeForm()"
-        (saveClick)="save()">
-      </app-nz-crud-button-group>
-    </div>
   `,
-  styles: [`
-    .footer {
-      position: absolute;
-      left: 0px;
-      bottom: 0px;
-      width: 100%;
-      padding: 10px 16px;
-      border-top: 1px solid rgb(232, 232, 232);
-      text-align: right;
-      /*background-color: black;*/
-    }
-  `]
+  styles: []
 })
 export class NewStaffFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject, effect, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -19,6 +19,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 
 @Component({
@@ -31,6 +32,7 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
     NzFormModule,
     NzInputModule,
     NzInputNumberModule,
+    NzDatePickerModule,
     NzFormItemCustomComponent,
     NzInputSelectComponent,
     NzCrudButtonGroupComponent
@@ -148,7 +150,7 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
 
     </form>
 
-
+<!--
     <div class="footer">
       <app-nz-crud-button-group
         [isSavePopupConfirm]="false"
@@ -158,41 +160,11 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
         (deleteClick)="remove(fg.controls.staffNo.value!, fg.controls.seq.value!)">
       </app-nz-crud-button-group>
     </div>
-
+      -->
   `,
-  styles: [`
-    [nz-button] {
-      margin-right: 8px;
-    }
-
-    .form-item {
-      margin-top: 0px;
-      margin-bottom: 5px;
-    }
-
-    .btn-group {
-      padding: 6px;
-      /*background: #fbfbfb;*/
-      border: 1px solid #d9d9d9;
-      border-radius: 6px;
-    }
-
-    .footer {
-      position: absolute;
-      bottom: 10px;
-      width: 100%;
-      border-top: 1px solid rgb(232, 232, 232);
-      padding: 10px 16px;
-      text-align: right;
-      left: 0px;
-      /*background: #fff;*/
-    }
-
-  `]
+  styles: []
 })
 export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
-
-  @Input() staff?: {companyCode: string, staffNo: string, staffName: string};
 
   /**
    * 학력 - HR0009
@@ -222,15 +194,33 @@ export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, 
     comment             : new FormControl<string | null>(null)
   });
 
+  //@Input() staff?: {companyCode: string, staffNo: string, staffName: string};
+  override initLoadId = input<{staffId: string, seq: string}>();
+  staff = input<{companyCode: string, staffNo: string, staffName: string}>();
+
+  constructor()  {
+    super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        this.get(this.initLoadId()?.staffId!, this.initLoadId()?.seq!);
+      } else {
+        this.newForm();
+      }
+    })
+  }
+
   ngOnInit() {
     this.getSchoolCareerTypeList();
     this.getSchoolCodeList();
 
+    /*
     if (this.initLoadId) {
       this.get(this.initLoadId.staffId, this.initLoadId.seq);
     } else {
       this.newForm();
     }
+      */
   }
 
   ngAfterViewInit(): void {
@@ -243,8 +233,8 @@ export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, 
     this.formType = FormType.NEW;
 
     if (this.staff) {
-      this.fg.controls.staffNo.setValue(this.staff?.staffNo);
-      this.fg.controls.staffName.setValue(this.staff?.staffName);
+      this.fg.controls.staffNo.setValue(this.staff()?.staffNo!);
+      this.fg.controls.staffName.setValue(this.staff()?.staffName!);
     }
   }
 
@@ -253,8 +243,8 @@ export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, 
     this.formType = FormType.MODIFY;
 
     if (this.staff) {
-      this.fg.controls.staffNo.setValue(this.staff?.staffNo);
-      this.fg.controls.staffName.setValue(this.staff?.staffName);
+      this.fg.controls.staffNo.setValue(this.staff()?.staffNo!);
+      this.fg.controls.staffName.setValue(this.staff()?.staffName!);
     }
 
     //this.fg.get('database')?.disable();
@@ -290,9 +280,9 @@ export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, 
         );
   }
 
-  remove(staffId: string, seq: string): void {
+  remove(): void {
     this.service
-        .delete(staffId, seq)
+        .delete(this.fg.controls.staffNo.value!, this.fg.controls.seq.value!)
         .subscribe(
           (model: ResponseObject<StaffSchoolCareer>) => {
             this.formDeleted.emit(this.fg.getRawValue());

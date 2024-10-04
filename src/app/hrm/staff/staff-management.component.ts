@@ -32,6 +32,12 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
+import { NewStaffFormDrawerComponent } from './new-staff-form/new-staff-form-drawer.component';
+import { StaffAppointmentRecordFormDrawerComponent } from './staff-appointment-record/staff-appointment-record-form-drawer.component';
+import { StaffDutyResponsibilityFormDrawerComponent } from './staff-duty-responsibility/staff-duty-responsibility-form-drawer.component';
+import { StaffFamilyFormDrawerComponent } from './staff-family/staff-family-form-drawer.component';
+import { StaffLicenseFormDrawerComponent } from './staff-license/staff-license-form-drawer.component';
+import { StaffSchoolCareerFormDrawerComponent } from './staff-school-career/staff-school-career-form-drawer.component';
 
 
 @Component({
@@ -51,23 +57,36 @@ import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-he
     NzIconModule,
     NzPageHeaderCustomComponent,
 
-    StaffAppointmentRecordGridComponent,
-    StaffFamilyGridComponent,
-    StaffLicenseGridComponent,
-    StaffSchoolCareerGridComponent,
-    NewStaffFormComponent,
     StaffAppointmentRecordFormComponent,
+    StaffAppointmentRecordFormDrawerComponent,
+    StaffAppointmentRecordGridComponent,
+
+    StaffFamilyFormComponent,
+    StaffFamilyFormDrawerComponent,
+    StaffFamilyGridComponent,
+
+    NewStaffFormComponent,
+    NewStaffFormDrawerComponent,
+
     StaffContactFormComponent,
     StaffDutyResponsibilityFormComponent,
-    StaffFamilyFormComponent,
+    StaffDutyResponsibilityFormDrawerComponent,
+    StaffDutyResponsibilityListComponent,
+
     StaffLicenseFormComponent,
+    StaffLicenseFormDrawerComponent,
+    StaffLicenseGridComponent,
+
     StaffSchoolCareerFormComponent,
+    StaffSchoolCareerFormDrawerComponent,
+    StaffSchoolCareerGridComponent,
+
     StaffRegistFormComponent,
     StaffGridComponent,
     StaffCurrentAppointmentDescriptionComponent,
     StaffCardComponent,
     StaffCardListComponent,
-    StaffDutyResponsibilityListComponent
+
   ],
   template: `
 <nz-page-header-custom title="직원정보관리" subtitle="This is a subtitle"></nz-page-header-custom>
@@ -201,24 +220,12 @@ import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-he
 
 </div>
 
+<app-new-staff-form-drawer
+  [drawer]="drawer.newStaff"
+  (drawerClosed)="selectGridStaff()">
+</app-new-staff-form-drawer>
 
-<nz-drawer
-  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-  [nzMaskClosable]="true"
-  nzWidth="80%"
-  [nzVisible]="drawer.newStaff.visible"
-  nzTitle="직원 등록"
-  (nzOnClose)="drawer.newStaff.visible = false">
-    <!-- (formSaved)="getForm(newStaff.selectedRowId)" -->
-    <app-new-staff-form *nzDrawerContent
-      [initLoadId]="drawer.newStaff.initLoadId"
-      (formSaved)="selectGridStaff()"
-      (formDeleted)="selectGridStaff()"
-      (formClosed)="drawer.newStaff.visible = false">
-    </app-new-staff-form>
-</nz-drawer>
-
-
+<!--
 <nz-drawer
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
@@ -234,7 +241,15 @@ import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-he
       (formClosed)="drawer.appointment.visible = false">
     </app-staff-appointment-record-form>
 </nz-drawer>
+-->
 
+<app-staff-appointment-record-form-drawer
+  [drawer]="drawer.appointment"
+  [selectedStaff]="selectedStaff"
+  (drawerClosed)="selectGridAppointment()">
+</app-staff-appointment-record-form-drawer>
+
+<!--
 <nz-drawer
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
@@ -242,15 +257,18 @@ import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-he
   [nzVisible]="drawer.dutyResponsibility.visible"
   nzTitle="직책 등록"
   (nzOnClose)="drawer.dutyResponsibility.visible = false">
-  <!--(formSaved)="selectGridAppointment()"
-      (formDeleted)="selectGridAppointment()"-->
     <app-staff-duty-responsibility-form *nzDrawerContent
       [staff]="selectedStaff"
       [initLoadId]="drawer.dutyResponsibility.initLoadId"
       (formClosed)="drawer.dutyResponsibility.visible = false">
     </app-staff-duty-responsibility-form>
 </nz-drawer>
-
+    -->
+<!-- (drawerClosed)="selectGridAppointment()" -->
+<app-staff-duty-responsibility-form-drawer
+  [drawer]="drawer.dutyResponsibility"
+  [selectedStaff]="selectedStaff">
+</app-staff-duty-responsibility-form-drawer>
 
 <nz-drawer
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
@@ -268,6 +286,7 @@ import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-he
     </app-staff-contact-form>
 </nz-drawer>
 
+<!--
 <nz-drawer
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
@@ -283,7 +302,14 @@ import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-he
       (formClosed)="drawer.family.visible = false">
     </app-staff-family-form>
 </nz-drawer>
+-->
+<app-staff-family-form-drawer
+  [drawer]="drawer.family"
+  [selectedStaff]="selectedStaff"
+  (drawerClosed)="selectGridFaimly()">
+</app-staff-family-form-drawer>
 
+<!--
 <nz-drawer
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
@@ -299,7 +325,14 @@ import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-he
       (formClosed)="drawer.schoolCareer.visible = false">
     </app-staff-school-career-form>
 </nz-drawer>
+    -->
+<app-staff-school-career-form-drawer
+  [drawer]="drawer.schoolCareer"
+  [selectedStaff]="selectedStaff"
+  (drawerClosed)="selectGridSchoolCareer()">
+</app-staff-school-career-form-drawer>
 
+<!--
 <nz-drawer
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
@@ -315,7 +348,13 @@ import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-he
       (formClosed)="drawer.license.visible = false">
     </app-staff-license-form>
 </nz-drawer>
+    -->
+<app-staff-license-form-drawer
+  [drawer]="drawer.license"
+  [selectedStaff]="selectedStaff"
+  (drawerClosed)="selectGridLicense()">
 
+</app-staff-license-form-drawer>
   `,
   styles: `
 .app-grid {
