@@ -10,8 +10,6 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { HrmCode } from './hrm-code.model';
 import { HrmCodeTypeService } from './hrm-code-type.service';
 import { HrmType } from './hrm-type.model';
-import { HrmTypeCodeFormComponent } from './hrm-code-form.component';
-import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -22,6 +20,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
+import { HrmCodeTypeFormDrawerComponent } from './hrm-code-type-form-drawer.component';
+import { HrmCodeFormDrawerComponent } from './hrm-code-form-drawer.component';
 
 
 @Component({
@@ -31,7 +31,6 @@ import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-he
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    /* NG-ZORRO */
     NzGridModule,
     NzButtonModule,
     NzIconModule,
@@ -40,12 +39,11 @@ import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-he
     NzSelectModule,
     NzPageHeaderModule,
     NzInputModule,
-
     NzPageHeaderCustomComponent,
-    HrmCodeGridComponent,
     HrmCodeTypeGridComponent,
-    HrmTypeCodeFormComponent,
-    HrmCodeTypeFormComponent
+    HrmCodeTypeFormDrawerComponent,
+    HrmCodeGridComponent,
+    HrmCodeFormDrawerComponent
   ],
   template: `
 <nz-page-header-custom title="인사시스템 코드 정보" subtitle="인사시스템 구분 코드 정보 관리"></nz-page-header-custom>
@@ -87,37 +85,15 @@ import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-he
     </app-hrm-code-grid>
 </div>
 
+<app-hrm-code-type-form-drawer
+  [drawer]="drawer.codeType"
+  (drawerClosed)="getGridHrmCodeType()">
+</app-hrm-code-type-form-drawer>
 
-<nz-drawer
-    [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-    [nzMaskClosable]="true"
-    [nzWidth]="800"
-    [nzVisible]="drawer.codeType.visible"
-    nzTitle="코드분류 등록"
-    (nzOnClose)="drawer.codeType.visible = false">
-    <app-hrm-code-type-form #formHrmType *nzDrawerContent
-      [initLoadId]="drawer.codeType.initLoadId"
-      (formSaved)="getGridHrmCodeType()"
-      (formDeleted)="getGridHrmCodeType()"
-      (formClosed)="drawer.codeType.visible = false">
-    </app-hrm-code-type-form>
-</nz-drawer>
-
-<nz-drawer
-    [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-    [nzMaskClosable]="true"
-    [nzWidth]="800"
-    [nzVisible]="drawer.code.visible"
-    nzTitle="코드 등록"
-    (nzOnClose)="drawer.code.visible = false">
-
-    <app-hrm-code-form #formHrmTypeCode *nzDrawerContent
-      [initLoadId]="drawer.code.initLoadId"
-      (formSaved)="getGridHrmCode()"
-      (formDeleted)="getGridHrmCode()"
-      (formClosed)="drawer.code.visible = false">
-    </app-hrm-code-form>
-</nz-drawer>
+<app-hrm-code-form-drawer
+  [drawer]="drawer.code"
+  (drawerClosed)="getGridHrmCode()">
+</app-hrm-code-form-drawer>
   `,
   styles: `
 .btn-group {

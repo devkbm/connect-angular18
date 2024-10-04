@@ -1,32 +1,32 @@
 import { Component, input, output, viewChild } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-
-import { BizCodeFormComponent } from "./biz-code-form.component";
-import { NzCrudButtonGroupComponent } from "src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component";
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
 
 @Component({
-  selector: 'app-biz-code-form-drawer',
+  selector: 'app-hrm-code-type-form-drawer',
   standalone: true,
   imports: [
     NzDrawerModule,
     NzCrudButtonGroupComponent,
-    BizCodeFormComponent
-],
+    HrmCodeTypeFormComponent
+  ],
   template: `
     <nz-drawer
-      nzTitle="업무코드 등록"
-      nzWidth="80%"
+      [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
       [nzMaskClosable]="true"
+      nzWidth="80%"
       [nzVisible]="drawer().visible"
+      nzTitle="코드분류 등록"
       [nzFooter]="footerTpl"
       (nzOnClose)="drawer().visible = false">
-      <app-biz-code-form *nzDrawerContent
+      <app-hrm-code-type-form *nzDrawerContent
           [initLoadId]="drawer().initLoadId"
           (formSaved)="closeDrawer($event)"
           (formDeleted)="closeDrawer($event)"
           (formClosed)="drawer().visible = false">
-      </app-biz-code-form>
+      </app-hrm-code-type-form>
     </nz-drawer>
 
   <ng-template #footerTpl>
@@ -43,12 +43,12 @@ import { NzCrudButtonGroupComponent } from "src/app/shared-component/nz-crud-but
   `,
   styles: []
 })
-export class BizCodeFormDrawerComponent {
+export class HrmCodeTypeFormDrawerComponent {
 
   drawer = input.required<{visible: boolean, initLoadId: any}>();
   drawerClosed = output<any>();
 
-  form = viewChild.required<BizCodeFormComponent>(BizCodeFormComponent);
+  form = viewChild.required<HrmCodeTypeFormComponent>(HrmCodeTypeFormComponent);
 
   save() {
     this.form().save();

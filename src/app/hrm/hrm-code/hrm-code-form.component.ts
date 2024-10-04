@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -17,6 +17,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 
 @Component({
@@ -29,6 +30,7 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
     NzFormModule,
     NzInputModule,
     NzInputNumberModule,
+    NzCheckboxModule,
     NzDividerModule,
     NzFormItemCustomComponent,
     NzCrudButtonGroupComponent
@@ -165,46 +167,8 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
       </div>
 
     </form>
-
-    <div class="footer">
-      <app-nz-crud-button-group
-        [isSavePopupConfirm]="false"
-        (searchClick)="get(this.fg.controls.typeId.value!, this.fg.controls.code.value!)"
-        (closeClick)="closeForm()"
-        (saveClick)="save()"
-        (deleteClick)="remove()">
-      </app-nz-crud-button-group>
-    </div>
   `,
-  styles: [`
-    [nz-button] {
-      margin-right: 8px;
-    }
-
-    .form-item {
-      margin-top: 0px;
-      margin-bottom: 5px;
-    }
-
-    .btn-group {
-      padding: 6px;
-      /*background: #fbfbfb;*/
-      border: 1px solid #d9d9d9;
-      border-radius: 6px;
-    }
-
-    .footer {
-      position: absolute;
-      bottom: 0px;
-      width: 100%;
-      border-top: 1px solid rgb(232, 232, 232);
-      padding: 10px 16px;
-      text-align: right;
-      left: 0px;
-      background: black;
-    }
-
-  `]
+  styles: []
 })
 export class HrmTypeCodeFormComponent extends FormBase implements OnInit, AfterViewInit {
 
@@ -229,16 +193,27 @@ export class HrmTypeCodeFormComponent extends FormBase implements OnInit, AfterV
     the5AddInfo   : new FormControl<string | null>(null)
   });
 
+  override initLoadId = input<{typeId: string, code: string}>();
+
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        if (this.initLoadId()?.typeId && this.initLoadId()?.code) {
+          this.get(this.initLoadId()?.typeId!, this.initLoadId()?.code!);
+        } else if (this.initLoadId()?.typeId) {
+          this.newForm(this.initLoadId()?.typeId!);
+        }
+      }
+    });
+  }
+
   ngOnInit() {
 
   }
 
   ngAfterViewInit(): void {
-    if (this.initLoadId && this.initLoadId.typeId && this.initLoadId.code) {
-      this.get(this.initLoadId.typeId, this.initLoadId.code);
-    } else if (this.initLoadId && this.initLoadId.typeId){
-      this.newForm(this.initLoadId.typeId);
-    }
   }
 
   newForm(typeId: string): void {

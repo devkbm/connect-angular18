@@ -1,18 +1,16 @@
 import { Component, input, output, viewChild } from '@angular/core';
-
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-
-import { BizCodeFormComponent } from "./biz-code-form.component";
-import { NzCrudButtonGroupComponent } from "src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component";
+import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { HrmTypeCodeFormComponent } from './hrm-code-form.component';
 
 @Component({
-  selector: 'app-biz-code-form-drawer',
+  selector: 'app-hrm-code-form-drawer',
   standalone: true,
   imports: [
     NzDrawerModule,
     NzCrudButtonGroupComponent,
-    BizCodeFormComponent
-],
+    HrmTypeCodeFormComponent
+  ],
   template: `
     <nz-drawer
       nzTitle="업무코드 등록"
@@ -21,12 +19,12 @@ import { NzCrudButtonGroupComponent } from "src/app/shared-component/nz-crud-but
       [nzVisible]="drawer().visible"
       [nzFooter]="footerTpl"
       (nzOnClose)="drawer().visible = false">
-      <app-biz-code-form *nzDrawerContent
+      <app-hrm-code-form *nzDrawerContent
           [initLoadId]="drawer().initLoadId"
           (formSaved)="closeDrawer($event)"
           (formDeleted)="closeDrawer($event)"
           (formClosed)="drawer().visible = false">
-      </app-biz-code-form>
+      </app-hrm-code-form>
     </nz-drawer>
 
   <ng-template #footerTpl>
@@ -43,12 +41,12 @@ import { NzCrudButtonGroupComponent } from "src/app/shared-component/nz-crud-but
   `,
   styles: []
 })
-export class BizCodeFormDrawerComponent {
+export class HrmCodeFormDrawerComponent {
 
   drawer = input.required<{visible: boolean, initLoadId: any}>();
   drawerClosed = output<any>();
 
-  form = viewChild.required<BizCodeFormComponent>(BizCodeFormComponent);
+  form = viewChild.required<HrmTypeCodeFormComponent>(HrmTypeCodeFormComponent);
 
   save() {
     this.form().save();
@@ -63,5 +61,4 @@ export class BizCodeFormDrawerComponent {
 
     this.drawerClosed.emit(params);
   }
-
 }

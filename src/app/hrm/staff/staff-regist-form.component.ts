@@ -23,6 +23,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
 import { NzInputRadioGroupComponent } from 'src/app/shared-component/nz-input-radio-group/nz-input-radio-group.component';
 import { NzInputRregnoComponent } from 'src/app/shared-component/nz-input-rregno/nz-input-rregno.component';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @Component({
   selector: 'app-staff-regist-form',
@@ -35,6 +36,7 @@ import { NzInputRregnoComponent } from 'src/app/shared-component/nz-input-rregno
     NzButtonModule,
     NzIconModule,
     NzInputModule,
+    NzDatePickerModule,
     NzAvatarModule,
     NzUploadModule,
     NzDividerModule,

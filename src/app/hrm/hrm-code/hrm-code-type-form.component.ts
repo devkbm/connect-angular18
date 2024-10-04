@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -90,52 +90,10 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
       </div>
 
     </form>
-
-    <div class="footer">
-      <app-nz-crud-button-group
-        [isSavePopupConfirm]="false"
-        (searchClick)="get(fg.controls.typeId.value!)"
-        (closeClick)="closeForm()"
-        (saveClick)="save()"
-        (deleteClick)="remove()">
-      </app-nz-crud-button-group>
-    </div>
-
-
   `,
-  styles: [`
-    [nz-button] {
-      margin-right: 8px;
-    }
-
-    .form-item {
-      margin-top: 0px;
-      margin-bottom: 5px;
-    }
-
-    .btn-group {
-      padding: 6px;
-      /*background: #fbfbfb;*/
-      border: 1px solid #d9d9d9;
-      border-radius: 6px;
-    }
-
-    .footer {
-      position: absolute;
-      bottom: 0px;
-      width: 100%;
-      border-top: 1px solid rgb(232, 232, 232);
-      padding: 10px 16px;
-      text-align: right;
-      left: 0px;
-      /*background: #fff;*/
-    }
-
-  `]
+  styles: []
 })
 export class HrmCodeTypeFormComponent extends FormBase implements OnInit, AfterViewInit {
-
-  //typeId = viewChild.required<NzInputTextComponent>('typeId');
 
   private fb = inject(FormBuilder);
   private service = inject(HrmCodeTypeService);
@@ -159,16 +117,24 @@ export class HrmCodeTypeFormComponent extends FormBase implements OnInit, AfterV
     */
   });
 
-  ngOnInit() {
+  override initLoadId = input<string>();
 
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.initLoadId()) {
+        this.get(this.initLoadId()!);
+      } else {
+        this.newForm();
+      }
+    })
+  }
+
+  ngOnInit() {
   }
 
   ngAfterViewInit(): void {
-    if (this.initLoadId) {
-      this.get(this.initLoadId);
-    } else {
-      this.newForm();
-    }
   }
 
   newForm(): void {
