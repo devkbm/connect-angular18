@@ -38,6 +38,7 @@ import { StaffDutyResponsibilityFormDrawerComponent } from './staff-duty-respons
 import { StaffFamilyFormDrawerComponent } from './staff-family/staff-family-form-drawer.component';
 import { StaffLicenseFormDrawerComponent } from './staff-license/staff-license-form-drawer.component';
 import { StaffSchoolCareerFormDrawerComponent } from './staff-school-career/staff-school-career-form-drawer.component';
+import { StaffContactFormDrawerComponent } from './staff-contact/staff-contact-form-drawer.component';
 
 
 @Component({
@@ -86,7 +87,7 @@ import { StaffSchoolCareerFormDrawerComponent } from './staff-school-career/staf
     StaffCurrentAppointmentDescriptionComponent,
     StaffCardComponent,
     StaffCardListComponent,
-
+    StaffContactFormDrawerComponent,
   ],
   template: `
 <nz-page-header-custom title="직원정보관리" subtitle="This is a subtitle"></nz-page-header-custom>
@@ -225,130 +226,36 @@ import { StaffSchoolCareerFormDrawerComponent } from './staff-school-career/staf
   (drawerClosed)="selectGridStaff()">
 </app-new-staff-form-drawer>
 
-<!--
-<nz-drawer
-  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-  [nzMaskClosable]="true"
-  nzWidth="80%"
-  [nzVisible]="drawer.appointment.visible"
-  nzTitle="발령 등록"
-  (nzOnClose)="drawer.appointment.visible = false">
-    <app-staff-appointment-record-form *nzDrawerContent
-      [staff]="selectedStaff"
-      [initLoadId]="drawer.appointment.initLoadId"
-      (formSaved)="selectGridAppointment()"
-      (formDeleted)="selectGridAppointment()"
-      (formClosed)="drawer.appointment.visible = false">
-    </app-staff-appointment-record-form>
-</nz-drawer>
--->
-
 <app-staff-appointment-record-form-drawer
   [drawer]="drawer.appointment"
   [selectedStaff]="selectedStaff"
   (drawerClosed)="selectGridAppointment()">
 </app-staff-appointment-record-form-drawer>
 
-<!--
-<nz-drawer
-  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-  [nzMaskClosable]="true"
-  nzWidth="80%"
-  [nzVisible]="drawer.dutyResponsibility.visible"
-  nzTitle="직책 등록"
-  (nzOnClose)="drawer.dutyResponsibility.visible = false">
-    <app-staff-duty-responsibility-form *nzDrawerContent
-      [staff]="selectedStaff"
-      [initLoadId]="drawer.dutyResponsibility.initLoadId"
-      (formClosed)="drawer.dutyResponsibility.visible = false">
-    </app-staff-duty-responsibility-form>
-</nz-drawer>
-    -->
 <!-- (drawerClosed)="selectGridAppointment()" -->
 <app-staff-duty-responsibility-form-drawer
   [drawer]="drawer.dutyResponsibility"
   [selectedStaff]="selectedStaff">
 </app-staff-duty-responsibility-form-drawer>
 
-<nz-drawer
-  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-  [nzMaskClosable]="true"
-  nzWidth="80%"
-  [nzVisible]="drawer.contact.visible"
-  nzTitle="연락처 등록"
-  (nzOnClose)="drawer.contact.visible = false">
-    <app-staff-contact-form *nzDrawerContent
-      [initLoadId]="drawer.contact.initLoadId"
-      [staff]="selectedStaff"
-      (formSaved)="selectGridAppointment()"
-      (formDeleted)="selectGridAppointment()"
-      (formClosed)="drawer.contact.visible = false">
-    </app-staff-contact-form>
-</nz-drawer>
+<app-staff-duty-responsibility-form-drawer
+  [drawer]="drawer.contact"
+  [selectedStaff]="selectedStaff"
+  (drawerClosed)="selectGridAppointment()">
+</app-staff-duty-responsibility-form-drawer>
 
-<!--
-<nz-drawer
-  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-  [nzMaskClosable]="true"
-  nzWidth="80%"
-  [nzVisible]="drawer.family.visible"
-  nzTitle="가족 등록"
-  (nzOnClose)="drawer.family.visible = false">
-    <app-staff-family-form *nzDrawerContent
-      [initLoadId]="drawer.family.initLoadId"
-      [staff]="selectedStaff"
-      (formSaved)="selectGridFaimly()"
-      (formDeleted)="selectGridFaimly()"
-      (formClosed)="drawer.family.visible = false">
-    </app-staff-family-form>
-</nz-drawer>
--->
 <app-staff-family-form-drawer
   [drawer]="drawer.family"
   [selectedStaff]="selectedStaff"
   (drawerClosed)="selectGridFaimly()">
 </app-staff-family-form-drawer>
 
-<!--
-<nz-drawer
-  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-  [nzMaskClosable]="true"
-  nzWidth="80%"
-  [nzVisible]="drawer.schoolCareer.visible"
-  nzTitle="학력 등록"
-  (nzOnClose)="drawer.schoolCareer.visible = false">
-    <app-staff-school-career-form *nzDrawerContent
-      [initLoadId]="drawer.schoolCareer.initLoadId"
-      [staff]="selectedStaff"
-      (formSaved)="selectGridSchoolCareer()"
-      (formDeleted)="selectGridSchoolCareer()"
-      (formClosed)="drawer.schoolCareer.visible = false">
-    </app-staff-school-career-form>
-</nz-drawer>
-    -->
 <app-staff-school-career-form-drawer
   [drawer]="drawer.schoolCareer"
   [selectedStaff]="selectedStaff"
   (drawerClosed)="selectGridSchoolCareer()">
 </app-staff-school-career-form-drawer>
 
-<!--
-<nz-drawer
-  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
-  [nzMaskClosable]="true"
-  nzWidth="80%"
-  [nzVisible]="drawer.license.visible"
-  nzTitle="자격면허 등록"
-  (nzOnClose)="drawer.license.visible = false">
-    <app-staff-license-form *nzDrawerContent
-      [initLoadId]="drawer.license.initLoadId"
-      [staff]="selectedStaff"
-      (formSaved)="selectGridLicense()"
-      (formDeleted)="selectGridLicense()"
-      (formClosed)="drawer.license.visible = false">
-    </app-staff-license-form>
-</nz-drawer>
-    -->
 <app-staff-license-form-drawer
   [drawer]="drawer.license"
   [selectedStaff]="selectedStaff"

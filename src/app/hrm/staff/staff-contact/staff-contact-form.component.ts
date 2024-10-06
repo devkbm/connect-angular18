@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -128,8 +128,6 @@ import { NzListRoadAddressComponent } from 'src/app/shared-component/nz-list-roa
 })
 export class StaffContactFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  @Input() staff?: {companyCode: string, staffNo: string, staffName: string};
-
   private service = inject(StaffContactService);
   private appAlarmService = inject(AppAlarmService);
 
@@ -145,10 +143,29 @@ export class StaffContactFormComponent extends FormBase implements OnInit, After
     mobileNumber      : new FormControl<string | null>(null)
   });
 
+  //@Input() staff?: {companyCode: string, staffNo: string, staffName: string};
+  override initLoadId = input<{staffId: string, seq: string}>();
+  staff = input<{companyCode: string, staffNo: string, staffName: string}>();
+
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.staff()) {
+        this.get(this.staff()?.staffNo!);
+      } else {
+        this.newForm();
+      }
+    })
+  }
+
+
   ngOnChanges(changes: SimpleChanges): void {
+    /*
     if (changes['staff'].currentValue) {
       this.get(changes['staff'].currentValue.staffNo);
     }
+      */
   }
 
   ngOnInit() {
@@ -173,8 +190,8 @@ export class StaffContactFormComponent extends FormBase implements OnInit, After
 
     if (this.staff) {
       //this.fg.controls.staffId.setValue(this.staff?.staffId);
-      this.fg.controls.staffNo.setValue(this.staff?.staffNo);
-      this.fg.controls.staffName.setValue(this.staff?.staffName);
+      this.fg.controls.staffNo.setValue(this.staff()?.staffNo!);
+      this.fg.controls.staffName.setValue(this.staff()?.staffName!);
     }
   }
 
@@ -187,8 +204,8 @@ export class StaffContactFormComponent extends FormBase implements OnInit, After
 
     if (this.staff) {
       //this.fg.controls.staffId.setValue(this.staff?.staffId);
-      this.fg.controls.staffNo.setValue(this.staff?.staffNo);
-      this.fg.controls.staffName.setValue(this.staff?.staffName);
+      this.fg.controls.staffNo.setValue(this.staff()?.staffNo!);
+      this.fg.controls.staffName.setValue(this.staff()?.staffName!);
     }
 
     this.fg.patchValue(formData);
