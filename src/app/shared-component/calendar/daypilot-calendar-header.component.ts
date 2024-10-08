@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output, signal } from '@angular/core';
+import { Component, input, model, output, signal } from '@angular/core';
 
 @Component({
   selector: 'app-daypilot-calendar-header',
@@ -108,7 +108,7 @@ import { Component, input, output, signal } from '@angular/core';
 })
 export class DaypilotCalendarHeaderComponent  {
 
-  selectedMode = signal<"Day" | "Week" | "Month">("Month");
+  selectedMode = model<"Day" | "Week" | "Month">("Month");
 
   titleStartDate = input<Date>(new Date());
   titleEndDate = input<Date>(new Date());

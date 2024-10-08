@@ -87,19 +87,11 @@ export interface TabArticle {
 <nz-tabset [(nzSelectedIndex)]="tabIndex" nzType="editable-card" nzHideAdd (nzClose)="closeTab($event)">
   <nz-tab [nzTitle]="tabTitle">
     <div id="grid-wrapper" class="grid">
-<!--
-      <app-article-grid id="articleGrid" #articleGrid
-        (rowClicked)="selectArticle($event)"
-        (rowDoubleClicked)="showAriticle()"
-        (editButtonClicked)="editArticleByButton($event)">
-      </app-article-grid>
--->
-
       <app-article-list
         [boardId]="drawer.board.initLoadId"
         (articleEditClicked)="popupEditArticle($event)"
-        (articleViewClicked)="showArticle($event)"
-      />
+        (articleViewClicked)="showArticle($event)">
+      </app-article-list>
     </div>
   </nz-tab>
   @for (tab of tabs; track tab.articleId) {

@@ -12,9 +12,6 @@ import { WorkCalendarEventService } from './work-calendar-event.service';
 import { WorkCalendarService } from '../calendar/work-calendar.service';
 import { WorkCalendar } from '../calendar/work-calendar.model';
 
-import * as dateFns from "date-fns";
-
-
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';

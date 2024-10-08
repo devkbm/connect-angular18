@@ -17,6 +17,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
+import { HolidayCalendarComponent } from "./holiday-calendar.component";
 
 
 @Component({
@@ -34,8 +35,9 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
     NzPageHeaderCustomComponent,
     NzSearchAreaComponent,
     HolidayGridComponent,
-    HolidayFormDrawerComponent
-  ],
+    HolidayFormDrawerComponent,
+    HolidayCalendarComponent
+],
   template: `
 <div class="page-header">
   <nz-page-header-custom title="공휴일 등록" subtitle="This is a subtitle"></nz-page-header-custom>
@@ -76,6 +78,9 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
       (editButtonClicked)="edit($event)"
       (rowDoubleClicked)="edit($event)">
   </app-holiday-grid>
+  <app-holiday-calendar>
+
+  </app-holiday-calendar>
 </div>
 
 <app-holiday-form-drawer

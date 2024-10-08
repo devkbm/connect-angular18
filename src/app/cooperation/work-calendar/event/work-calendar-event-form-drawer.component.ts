@@ -1,10 +1,10 @@
 import { Component, input, output, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NewFormValue, WorkCalendarEventFormComponent } from './work-calendar-event-form.component';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-work-calendar-event-form-drawer',
@@ -51,6 +51,7 @@ import { CommonModule } from '@angular/common';
 export class WorkCalendarEventFormDrawerComponent {
 
   newFormValue = input<NewFormValue>();
+
   drawer = input.required<{visible: boolean, initLoadId: any}>();
   drawerClosed = output<any>();
 

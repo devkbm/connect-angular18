@@ -1,13 +1,20 @@
-import { Component, Signal, computed, input, output, signal } from '@angular/core';
+import { Component, Signal, computed, input, output } from '@angular/core';
+
 import { ArticleList } from './article-list.model';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { GlobalProperty } from 'src/app/core/global-property';
+
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
     selector: 'app-article-list-row',
     standalone: true,
+    imports: [
+      NzAvatarModule,
+      NzButtonModule,
+      NzIconModule
+    ],
     template: `
     <div>
       <nz-avatar class="avatar" nzShape="square" [nzSize]='24' [nzSrc]="imageSrc()"/>
@@ -45,14 +52,20 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
       color: LightSlateGray;
       text-decoration: underline;
     }
-    `,
-    imports: [ NzAvatarModule, NzButtonModule, NzIconModule ]
+    `
 })
 export class ArticleListRowComponent {
 
   article = input<ArticleList>();
 
-  imageSrc: Signal<string> = computed(() => GlobalProperty.serverUrl + '/api/system/fileimage/' + this.article()?.writerImage );
+  imageSrc = computed(() => {
+    if (this.article()?.writerImage) {
+      return GlobalProperty.serverUrl + '/api/system/fileimage/' + this.article()?.writerImage;
+    } else {
+      console.log('asdf');
+      return undefined;
+    }
+  });
 
   viewClicked = output<ArticleList>();
   editClicked = output<ArticleList>();

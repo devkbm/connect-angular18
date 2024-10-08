@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ArticleService } from './article.service';
 import { NzListModule } from 'ng-zorro-antd/list';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ArticleListRowComponent } from './article-list-row.component';
 import { ArticleList } from './article-list.model';
@@ -16,7 +16,11 @@ import { ResponseSpringslice } from 'src/app/core/model/response-springslice';
   selector: 'app-article-list',
   standalone: true,
   imports: [
-    CommonModule, NzListModule, NzButtonModule, InfiniteScrollModule, ArticleListRowComponent
+    CommonModule,
+    NzListModule,
+    NzButtonModule,
+    InfiniteScrollDirective,
+    ArticleListRowComponent
   ],
   template: `
     <div
@@ -85,7 +89,9 @@ export class ArticleListComponent {
 
   constructor() {
     effect(() => {
-      this.getArticleList(this.boardId());
+      if (this.boardId()) {
+        this.getArticleList(this.boardId());
+      }
     })
 
   }

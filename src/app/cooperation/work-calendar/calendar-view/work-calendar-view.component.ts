@@ -26,7 +26,6 @@ export interface NewDateSelectedArgs {
     DaypilotCalendarHeaderComponent
   ],
   template: `
-
     <app-daypilot-calendar-header #header
       [titleStartDate]="calendar.mode() === 'Week' ? calendar.displayStart.toDate() : calendar.selectedDate().toDate()"
       [titleEndDate]="calendar.displayEnd.toDate()"

@@ -46,7 +46,9 @@ export class ArticleViewComponent {
 
   constructor() {
     effect(() => {
-      this.get(this.id());
+      if (this.id()) {
+        this.get(this.id());
+      }
     })
   }
 
