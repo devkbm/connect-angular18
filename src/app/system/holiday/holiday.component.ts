@@ -71,16 +71,19 @@ import { HolidayCalendarComponent } from "./holiday-calendar.component";
   <h3 class="grid-title">공휴일 목록</h3>
 </div>
 
-<div class="page-content">
+<div class="page-content grid-wrapper">
+
+  <app-holiday-calendar>
+  </app-holiday-calendar>
+
+  <!--
   <app-holiday-grid
       #holidayGrid
       (rowClicked)="holidayGridRowClicked($event)"
       (editButtonClicked)="edit($event)"
       (rowDoubleClicked)="edit($event)">
   </app-holiday-grid>
-  <app-holiday-calendar>
-
-  </app-holiday-calendar>
+-->
 </div>
 
 <app-holiday-form-drawer
@@ -132,8 +135,9 @@ import { HolidayCalendarComponent } from "./holiday-calendar.component";
               );
 }
 
-[nz-button] {
-  margin: auto;
+.grid-wrapper {
+  //display: grid;
+  //grid-template-columns: 1fr 1fr;
 }
 
   `

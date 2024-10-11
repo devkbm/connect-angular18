@@ -13,6 +13,9 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
     NzCalendarModule
   ],
   template: `
+  <!--
+   [nzDateFullCell]="dateCellTpl"
+  -->
   <nz-calendar
     [nzDateCell]="dateCellTpl"
     [(ngModel)]="selectedDate"
@@ -25,6 +28,7 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
     <!-- Another method for cell definition -->
     <div *nzDateCell>Foo</div>
   </nz-calendar>
+
   <!-- Passing TemplateRef -->
   <ng-template #dateCellTpl let-date>
     @for (d of dates; track $index) {
@@ -44,6 +48,6 @@ export class HolidayCalendarComponent {
   selectedDate: Date = new Date();
   mode: 'month' | 'year' = 'month';
 
-  dates: Date[] = [new Date('2024-10-08 02:00:00')];
+  dates: Date[] = [new Date('2024-10-08 00:00:00')];
 
 }
