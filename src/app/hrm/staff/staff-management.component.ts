@@ -331,7 +331,6 @@ export class StaffManagementComponent implements OnInit {
   }
 
   staffGridRowClicked(params: any) {
-    console.log(params);
     this.selectedStaff = {companyCode: params.companyCode, staffNo: params.staffNo, staffName: params.name};
     this.formStaff().get(params.staffNo);
   }

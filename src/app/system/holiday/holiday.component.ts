@@ -79,7 +79,8 @@ import { DaypilotCalendarNavigatorComponent } from "../../shared-component/calen
   </app-holiday-calendar>
 -->
   <app-daypilot-calendar-navigator
-    [events]="holidayGrid.filteredList()">
+    [events]="holidayGrid.filteredList()"
+    (selectChanged)="navigatorSelectChanged($event)">
   </app-daypilot-calendar-navigator>
   <!--{{holidayGrid.filteredList() | json}}-->
   <app-holiday-grid
@@ -142,7 +143,7 @@ import { DaypilotCalendarNavigatorComponent } from "../../shared-component/calen
 
 .grid-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 200px 1fr;
 }
 
   `
@@ -231,6 +232,13 @@ export class HolidayComponent implements OnInit, AfterViewInit {
 
   edit(item: any): void {
     this.drawer.holiday.initLoadId = item.date;
+    this.openDrawer();
+  }
+
+  navigatorSelectChanged(params: any) {
+    //console.log(params);
+    //console.log(params.start.value as Date);
+    this.drawer.holiday.initLoadId = params.start.value as Date;
     this.openDrawer();
   }
 }
