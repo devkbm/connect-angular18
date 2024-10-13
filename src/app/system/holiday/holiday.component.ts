@@ -18,6 +18,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
 import { HolidayCalendarComponent } from "./holiday-calendar.component";
+import { DaypilotCalendarNavigatorComponent } from "../../shared-component/calendar/daypilot-calendar-navigator.component";
 
 
 @Component({
@@ -36,7 +37,8 @@ import { HolidayCalendarComponent } from "./holiday-calendar.component";
     NzSearchAreaComponent,
     HolidayGridComponent,
     HolidayFormDrawerComponent,
-    HolidayCalendarComponent
+    HolidayCalendarComponent,
+    DaypilotCalendarNavigatorComponent
 ],
   template: `
 <div class="page-header">
@@ -72,18 +74,21 @@ import { HolidayCalendarComponent } from "./holiday-calendar.component";
 </div>
 
 <div class="page-content grid-wrapper">
-
+<!--
   <app-holiday-calendar>
   </app-holiday-calendar>
-
-  <!--
+-->
+  <app-daypilot-calendar-navigator
+    [events]="holidayGrid.filteredList()">
+  </app-daypilot-calendar-navigator>
+  <!--{{holidayGrid.filteredList() | json}}-->
   <app-holiday-grid
       #holidayGrid
       (rowClicked)="holidayGridRowClicked($event)"
       (editButtonClicked)="edit($event)"
       (rowDoubleClicked)="edit($event)">
   </app-holiday-grid>
--->
+
 </div>
 
 <app-holiday-form-drawer
@@ -136,8 +141,8 @@ import { HolidayCalendarComponent } from "./holiday-calendar.component";
 }
 
 .grid-wrapper {
-  //display: grid;
-  //grid-template-columns: 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
   `

@@ -1,9 +1,9 @@
-import { Component, OnInit, inject, output } from '@angular/core';
+import { Component, OnInit, computed, inject, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AgGridModule } from 'ag-grid-angular';
 
-import { Holiday } from './holiday.model';
+import { DateInfo, Holiday } from './holiday.model';
 
 import { AggridFunction } from 'src/app/core/grid/aggrid-function';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -23,7 +23,7 @@ import { RowSelectionOptions } from 'ag-grid-community';
       [ngStyle]="style"
       class="ag-theme-balham-dark"
       [rowSelection]="rowSelection"
-      [rowData]="gridList"
+      [rowData]="gridList()"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
       [getRowId]="getRowId"
@@ -45,7 +45,17 @@ export class HolidayGridComponent extends AggridFunction implements OnInit {
     enableClickSelection: true
   };
 
-  gridList: Holiday[] = [];
+  //gridList: Holiday[] = [];
+  gridList = signal<DateInfo[]>([]);
+  filteredList = computed(() => {
+    let dateList: Date[] = this.gridList().filter((e) => { return (e.holiday?.holidayName ?? '') !== ''} )
+                                          .map((e) => e.date!);
+    let obj : any[] = [];
+    dateList.forEach((element, index) => {
+      obj.push({start: element, end: element});
+    });
+    return obj;
+  });
 
   private appAlarmService = inject(AppAlarmService);
   private holidayService = inject(HolidayService);
@@ -92,8 +102,8 @@ export class HolidayGridComponent extends AggridFunction implements OnInit {
     this.holidayService
         .getHolidayList(fromDate, toDate)
         .subscribe(
-          (model: ResponseList<Holiday>) => {
-            this.gridList = model.data;
+          (model: ResponseList<DateInfo>) => {
+            this.gridList.set(model.data);
             this.appAlarmService.changeMessage(model.message);
           }
         );

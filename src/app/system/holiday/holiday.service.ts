@@ -1,4 +1,4 @@
-import { Holiday } from './holiday.model';
+import { DateInfo, Holiday } from './holiday.model';
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
@@ -17,7 +17,7 @@ export class HolidayService extends DataService {
     super('/api/system');
   }
 
-  getHolidayList(fromDate: any, toDate: any): Observable<ResponseList<Holiday>> {
+  getHolidayList(fromDate: any, toDate: any): Observable<ResponseList<DateInfo>> {
     const url = `${this.API_URL}/holiday`;
     const params = {fromDate: fromDate, toDate: toDate};
 
@@ -27,8 +27,8 @@ export class HolidayService extends DataService {
         params: params
      };
 
-    return this.http.get<ResponseList<Holiday>>(url, options).pipe(
-      catchError(this.handleError<ResponseList<Holiday>>('getHolidayList', undefined))
+    return this.http.get<ResponseList<DateInfo>>(url, options).pipe(
+      catchError(this.handleError<ResponseList<DateInfo>>('getHolidayList', undefined))
     );
   }
 
