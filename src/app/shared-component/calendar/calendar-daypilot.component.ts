@@ -5,7 +5,7 @@ import {
   DayPilotModule,
   DayPilotMonthComponent
 } from "@daypilot/daypilot-lite-angular";
-import { DaypilotCalendarHeaderComponent } from "./daypilot-calendar-header.component";
+import { CalendarDaypilotHeaderComponent } from "./calendar-daypilot-header.component";
 
 export interface ModeChangedArgs {
   readonly mode: "Day" | "Week" | "Month" | "None";
@@ -13,10 +13,10 @@ export interface ModeChangedArgs {
 }
 
 @Component({
-  selector: 'app-daypilot-calendar',
+  selector: 'app-calendar-daypilot',
   standalone: true,
   imports: [
-    DaypilotCalendarHeaderComponent,
+    CalendarDaypilotHeaderComponent,
     DayPilotModule
   ],
   template: `
@@ -50,7 +50,7 @@ export interface ModeChangedArgs {
     }
   `
 })
-export class DaypilotCalendarComponent implements AfterViewInit {
+export class CalendarDaypilotComponent implements AfterViewInit {
 
   day = viewChild.required<DayPilotCalendarComponent>('day');
   week = viewChild.required<DayPilotCalendarComponent>('week');

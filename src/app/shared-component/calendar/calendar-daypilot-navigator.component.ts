@@ -17,7 +17,7 @@ interface NavigatorRangeChangedArgs {
 }
 
 @Component({
-  selector: 'app-daypilot-calendar-navigator',
+  selector: 'app-calendar-daypilot-navigator',
   standalone: true,
   imports: [
     DayPilotModule
@@ -32,7 +32,7 @@ interface NavigatorRangeChangedArgs {
   styles: `
   `
 })
-export class DaypilotCalendarNavigatorComponent {
+export class CalendarDaypilotNavigatorComponent {
 
   nav = viewChild.required<DayPilotNavigatorComponent>('navigator');
 

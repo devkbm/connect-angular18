@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, input, model, output, signal } from '@angular/core';
 
 @Component({
-  selector: 'app-daypilot-calendar-header',
+  selector: 'app-calendar-daypilot-header',
   standalone: true,
   imports: [ CommonModule ],
   template: `
@@ -106,7 +106,7 @@ import { Component, input, model, output, signal } from '@angular/core';
   }
   `
 })
-export class DaypilotCalendarHeaderComponent  {
+export class CalendarDaypilotHeaderComponent  {
 
   selectedMode = model<"Day" | "Week" | "Month">("Month");
 

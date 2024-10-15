@@ -18,7 +18,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
 import { HolidayCalendarComponent } from "./holiday-calendar.component";
-import { DaypilotCalendarNavigatorComponent } from "../../shared-component/calendar/daypilot-calendar-navigator.component";
+import { CalendarDaypilotNavigatorComponent } from "../../shared-component/calendar/calendar-daypilot-navigator.component";
 
 
 @Component({
@@ -38,7 +38,7 @@ import { DaypilotCalendarNavigatorComponent } from "../../shared-component/calen
     HolidayGridComponent,
     HolidayFormDrawerComponent,
     HolidayCalendarComponent,
-    DaypilotCalendarNavigatorComponent
+    CalendarDaypilotNavigatorComponent
 ],
   template: `
 <div class="page-header">
@@ -78,10 +78,10 @@ import { DaypilotCalendarNavigatorComponent } from "../../shared-component/calen
   <app-holiday-calendar>
   </app-holiday-calendar>
 -->
-  <app-daypilot-calendar-navigator
+  <app-calendar-daypilot-navigator
     [events]="holidayGrid.filteredList()"
     (selectChanged)="navigatorSelectChanged($event)">
-  </app-daypilot-calendar-navigator>
+  </app-calendar-daypilot-navigator>
   <!--{{holidayGrid.filteredList() | json}}-->
   <app-holiday-grid
       #holidayGrid

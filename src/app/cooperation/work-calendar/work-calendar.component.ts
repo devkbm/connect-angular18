@@ -14,8 +14,8 @@ import { WorkCalendarFormComponent } from './calendar/work-calendar-form.compone
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { DaypilotCalendarNavigatorComponent } from 'src/app/shared-component/calendar/daypilot-calendar-navigator.component';
-import { ModeChangedArgs } from 'src/app/shared-component/calendar/daypilot-calendar.component';
+import { CalendarDaypilotNavigatorComponent } from 'src/app/shared-component/calendar/calendar-daypilot-navigator.component';
+import { ModeChangedArgs } from 'src/app/shared-component/calendar/calendar-daypilot.component';
 
 @Component({
   selector: 'app-work-calendar',
@@ -28,7 +28,7 @@ import { ModeChangedArgs } from 'src/app/shared-component/calendar/daypilot-cale
     MyWorkCalendarGridComponent,
     WorkCalendarFormComponent,
     WorkCalendarViewComponent,
-    DaypilotCalendarNavigatorComponent,
+    CalendarDaypilotNavigatorComponent,
     WorkCalendarEventFormDrawerComponent,
     WorkCalendarFormDrawerComponent
   ],
@@ -48,10 +48,10 @@ import { ModeChangedArgs } from 'src/app/shared-component/calendar/daypilot-cale
     -->
 
     <div class="grid-wrapper">
-      <app-daypilot-calendar-navigator class="navi"
+      <app-calendar-daypilot-navigator class="navi"
         [events]="this.eventData"
         (selectChanged)="navigatorSelectChanged($event)">
-      </app-daypilot-calendar-navigator>
+      </app-calendar-daypilot-navigator>
 
       <app-my-work-calendar-grid class="title"
           (rowClicked)="workGroupSelect($event)"
@@ -108,7 +108,7 @@ export class WorkCalendarComponent implements OnInit {
   workCalendar = viewChild.required(WorkCalendarViewComponent);
   workScheduleForm = viewChild.required(WorkCalendarEventFormComponent);
   workGroupForm = viewChild.required(WorkCalendarFormComponent);
-  navigator = viewChild.required(DaypilotCalendarNavigatorComponent);
+  navigator = viewChild.required(CalendarDaypilotNavigatorComponent);
 
   mode: "Day" | "Week" | "Month" | "None" = 'Month';
 

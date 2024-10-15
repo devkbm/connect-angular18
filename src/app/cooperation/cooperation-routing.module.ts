@@ -5,23 +5,15 @@ import { AppLayoutComponent } from '../app-layout/app-layout.component';
 
 import { AuthGuardService } from '../core/service/auth-guard.service';
 
-import { BoardManagementComponent } from './board/board-management/board-management.component';
-import { TeamComponent } from './team/team.component';
-import { BoardComponent } from './board/board.component';
-import { TodosComponent } from './todo/todos.component';
-import { WorkCalendarComponent } from './work-calendar/work-calendar.component';
-
-
 export const routes: Routes = [
   {
     path: '', component: AppLayoutComponent/*, canActivateChild: [AuthGuardService]*/,
     children: [
-      /* 협업시스템 */
-      {path: 'team',          component: TeamComponent},
-      {path: 'board',         component: BoardComponent},
-      {path: 'boardm',        component: BoardManagementComponent},
-      {path: 'todo',          component: TodosComponent},
-      {path: 'workcalendar',  component: WorkCalendarComponent},
+      {path: 'team',          loadComponent: () => import('./team/team.component').then(mod => mod.TeamComponent)},
+      {path: 'board',         loadComponent: () => import('./board/board.component').then(mod => mod.BoardComponent)},
+      {path: 'boardm',        loadComponent: () => import('./board/board-management/board-management.component').then(mod => mod.BoardManagementComponent)},
+      {path: 'todo',          loadComponent: () => import('./todo/todos.component').then(mod => mod.TodosComponent)},
+      {path: 'workcalendar',  loadComponent: () => import('./work-calendar/work-calendar.component').then(mod => mod.WorkCalendarComponent)}
     ]
   }
 ];

@@ -8,8 +8,8 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { WorkCalendarEventService } from '../event/work-calendar-event.service';
 import { WorkCalendarEvent } from '../event/work-calendar-event.model';
 
-import { DaypilotCalendarHeaderComponent } from "src/app/shared-component/calendar/daypilot-calendar-header.component";
-import { DaypilotCalendarComponent, ModeChangedArgs } from 'src/app/shared-component/calendar/daypilot-calendar.component';
+import { CalendarDaypilotHeaderComponent } from "src/app/shared-component/calendar/calendar-daypilot-header.component";
+import { CalendarDaypilotComponent, ModeChangedArgs } from 'src/app/shared-component/calendar/calendar-daypilot.component';
 
 export interface NewDateSelectedArgs {
   workCalendarId: number;
@@ -22,27 +22,27 @@ export interface NewDateSelectedArgs {
   standalone: true,
   imports: [
     CommonModule,
-    DaypilotCalendarComponent,
-    DaypilotCalendarHeaderComponent
+    CalendarDaypilotComponent,
+    CalendarDaypilotHeaderComponent
   ],
   template: `
-    <app-daypilot-calendar-header #header
+    <app-calendar-daypilot-header #header
       [titleStartDate]="calendar.mode() === 'Week' ? calendar.displayStart.toDate() : calendar.selectedDate().toDate()"
       [titleEndDate]="calendar.displayEnd.toDate()"
       (previousButtonClicked)="calendar.navigatePrevious($event)"
       (todayButtonClicked)="calendar.navigateToday($event)"
       (nextButtonClicked)="calendar.navigateNext($event)">
-    </app-daypilot-calendar-header>
+    </app-calendar-daypilot-header>
 
     <div class="calendar-div">
-      <app-daypilot-calendar #calendar
+      <app-calendar-daypilot #calendar
         [mode]="header.selectedMode()"
         [events]="eventData"
         (eventClicked)="eventClicked($event)"
         (rangeChanged)="rangeChanged($event)"
         (datesSelected)="onDateClick($event)"
         (modeChanged)="calendarModeChanged($event)">
-      </app-daypilot-calendar>
+      </app-calendar-daypilot>
     </div>
   `,
   styles: [`
@@ -57,7 +57,7 @@ export interface NewDateSelectedArgs {
 })
 export class WorkCalendarViewComponent implements AfterViewInit {
 
-  calendar = viewChild.required(DaypilotCalendarComponent);
+  calendar = viewChild.required(CalendarDaypilotComponent);
 
   @Input() fkWorkCalendar: number = 0;
 
