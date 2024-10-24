@@ -33,10 +33,17 @@ import { ResponseList } from '../core/model/response-list';
                 [nzDisabled]="menu.disabled"
                 (click)="moveToUrl(menu.url)"
               >
-            <!-- [nzSelected]="menu.selected" -->
+                <!-- [nzSelected]="menu.selected" -->
                 <!--<a routerLinkActive="active" [routerLink]="menu.url"></a>-->
                 @if (menu.icon) {
                   <span nz-icon [nzType]="menu.icon"></span>
+                }
+                @if (menu.image) {
+                  <img
+                    width="20px"
+                    height="20px"
+                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                  />
                 }
                 <span>{{ menu.title }}</span>
               </li>
