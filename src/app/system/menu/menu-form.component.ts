@@ -79,7 +79,7 @@ import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree
 
       <!-- 2 Row -->
       <div nz-row nzGutter="8">
-        <div nz-col nzSpan="8">
+        <div nz-col nzSpan="6">
           <nz-form-item-custom for="menuCode" label="메뉴코드" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <input nz-input id="menuCode" formControlName="menuCode" required
@@ -89,7 +89,7 @@ import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree
           </nz-form-item-custom>
         </div>
 
-        <div nz-col nzSpan="8">
+        <div nz-col nzSpan="6">
           <nz-form-item-custom for="menuName" label="메뉴명" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <input nz-input id="menuName" formControlName="menuName" required
@@ -97,11 +97,8 @@ import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree
             </nz-form-control>
           </nz-form-item-custom>
         </div>
-      </div>
 
-      <!-- 3 Row -->
-      <div nz-row nzGutter="8">
-        <div nz-col nzSpan="12">
+        <div nz-col nzSpan="6">
           <nz-form-item-custom for="menuType" label="메뉴타입" required="true">
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <nz-input-select required="true"
@@ -113,6 +110,20 @@ import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree
           </nz-form-item-custom>
         </div>
 
+        <div nz-col nzSpan="6">
+          <nz-form-item-custom for="sequence" label="순번" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <nz-input-number nzId="sequence" formControlName="sequence" required
+                [nzMin]="0" [nzMax]="9999" placeholder="순번을 입력해주세요.">
+              </nz-input-number>
+            </nz-form-control>
+          </nz-form-item-custom>
+        </div>
+
+      </div>
+
+      <!-- 3 Row -->
+      <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
           <nz-form-item-custom for="appUrl" label="APP URL" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
@@ -121,16 +132,12 @@ import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree
             </nz-form-control>
           </nz-form-item-custom>
         </div>
-      </div>
 
-      <!-- 4 Row -->
-      <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
-          <nz-form-item-custom for="sequence" label="순번" required>
+          <nz-form-item-custom for="appIcon" label="APP ICON" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
-              <nz-input-number nzId="sequence" formControlName="sequence" required
-                [nzMin]="0" [nzMax]="9999" placeholder="순번을 입력해주세요.">
-              </nz-input-number>
+              <input nz-input id="appIcon" formControlName="appIcon" required
+                placeholder="ICON을 입력해주세요."/>
             </nz-form-control>
           </nz-form-item-custom>
         </div>
@@ -166,7 +173,9 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
       menuType          : new FormControl<string | null>(null, { validators: Validators.required }),
       parentMenuCode    : new FormControl<string | null>(null),
       sequence          : new FormControl<number | null>(null),
-      appUrl            : new FormControl<string | null>(null, { validators: Validators.required })
+      appUrl            : new FormControl<string | null>(null, { validators: Validators.required }),
+      appIconType       : new FormControl<string | null>(null),
+      appIcon           : new FormControl<string | null>(null)
   });
 
   override initLoadId = input<{menuGroupCode: string, menuCode: string}>();

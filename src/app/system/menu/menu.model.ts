@@ -6,4 +6,6 @@ export interface Menu {
   parentMenuCode: string | null;
   sequence: number | null;
   appUrl: string | null;
+  appIconType: string | null;
+  appIcon: string | null;
 }
