@@ -19,6 +19,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
 import { NzInputSelectComponent } from "../../shared-component/nz-input-select/nz-input-select.component";
 import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree-select/nz-input-tree-select.component";
+import { WebResourceService } from '../webresource/web-resource.service';
 
 @Component({
   selector: 'app-menu-form',
@@ -124,7 +125,7 @@ import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree
 
       <!-- 3 Row -->
       <div nz-row nzGutter="8">
-        <div nz-col nzSpan="12">
+        <div nz-col nzSpan="8">
           <nz-form-item-custom for="appUrl" label="APP URL" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
               <input nz-input id="appUrl" formControlName="appUrl" required
@@ -133,11 +134,35 @@ import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree
           </nz-form-item-custom>
         </div>
 
-        <div nz-col nzSpan="12">
+        <div nz-col nzSpan="8">
+          <nz-form-item-custom for="appIconType" label="APP ICON TYPE" required>
+            <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+              <!--
+              <input nz-input id="appIconType" formControlName="appIconType" required
+                placeholder="ICON TYPE을 입력해주세요."/>
+              -->
+              <nz-input-select required
+                formControlName="appIconType" itemId="appIconType"
+                [options]="appIconTypeList" [opt_value]="'value'" [opt_label]="'label'"
+                placeholder="ICON TYPE을 입력해주세요.">
+              </nz-input-select>
+            </nz-form-control>
+          </nz-form-item-custom>
+        </div>
+
+        <div nz-col nzSpan="8">
           <nz-form-item-custom for="appIcon" label="APP ICON" required>
             <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
+            @if (this.fg.controls.appIconType.value === 'RESOURCE') {
+              <nz-input-select required
+                formControlName="appIcon" itemId="appIcon"
+                [options]="resourceList" [opt_value]="'resourceId'" [opt_label]="'resourceName'"
+                placeholder="ICON을 입력해주세요.">
+              </nz-input-select>
+            } @else {
               <input nz-input id="appIcon" formControlName="appIcon" required
                 placeholder="ICON을 입력해주세요."/>
+            }
             </nz-form-control>
           </nz-form-item-custom>
         </div>
@@ -149,14 +174,20 @@ import { NzInputTreeSelectComponent } from "../../shared-component/nz-input-tree
 })
 export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit {
 
-  programList: any;
-  menuGroupList: any;
-  menuTypeList: any;
+  appIconTypeList :{value: string, label: string}[] = [
+    {value: 'NZ_ICON', label: 'NZ ICON'},
+    {value: 'RESOURCE', label: 'RESOURCE'}
+  ];
+
+  resourceList: any;
+  private resourceService = inject(WebResourceService);
 
   /**
    * 상위 메뉴 트리
    */
   menuHiererachy: MenuHierarchy[] = [];
+  menuGroupList: any;
+  menuTypeList: any;
 
   private menuService = inject(MenuService);
   private appAlarmService = inject(AppAlarmService);
@@ -197,6 +228,7 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
   ngOnInit() {
     this.getMenuTypeList();
     this.getMenuGroupList();
+    this.getResourceList();
   }
 
   ngAfterViewInit(): void {
@@ -304,6 +336,16 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
         .subscribe(
           (model: ResponseList<any>) => {
             this.menuTypeList = model.data;
+          }
+        );
+  }
+
+  getResourceList(): void {
+    this.resourceService
+        .getList()
+        .subscribe(
+          (model: ResponseList<any>) => {
+            this.resourceList = model.data;
           }
         );
   }
