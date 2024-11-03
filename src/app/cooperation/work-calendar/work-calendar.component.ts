@@ -189,10 +189,10 @@ export class WorkCalendarComponent implements OnInit {
     //this.navigator().date = new DayPilot.Date(param.start, true);
 
     // daypilot 날짜 선택시 종료일 + 1일로 설정되어서 강제로 전일자로 수정
-    const to: Date = param.end;
-    to.setDate(to.getDate() -1);
+    //const to: Date = param.end;
+    //to.setDate(to.getDate() -1);
 
-    this.newScheduleArgs = {workCalendarId: this.drawer.workGroup.initLoadId, start: param.start, end: to};
+    this.newScheduleArgs = {workCalendarId: this.drawer.workGroup.initLoadId, start: param.start, end: param.end};
     this.drawer.schedule.initLoadId = -1;
 
     this.openScheduleDrawer();
