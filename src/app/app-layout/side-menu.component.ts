@@ -4,6 +4,8 @@ import { Router, RouterModule } from '@angular/router';
 
 import { NzMenuModeType, NzMenuModule, NzMenuThemeType } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzImageModule } from 'ng-zorro-antd/image';
+
 import { MenuHierarchy } from './app-layout.model';
 
 import { AppLayoutService } from './app-layout.service';
@@ -17,7 +19,8 @@ import { ResponseList } from '../core/model/response-list';
     CommonModule,
     RouterModule,
     NzMenuModule,
-    NzIconModule
+    NzIconModule,
+    NzImageModule
   ],
   template: `
       <div class="logo">LOGO</div>
@@ -35,15 +38,16 @@ import { ResponseList } from '../core/model/response-list';
               >
                 <!-- [nzSelected]="menu.selected" -->
                 <!--<a routerLinkActive="active" [routerLink]="menu.url"></a>-->
-                @if (menu.icon) {
-                  <span nz-icon [nzType]="menu.icon"></span>
-                }
-                @if (menu.image) {
+                @if (menu.appIconType === 'RESOURCE' && menu.icon) {
                   <img
+                    nz-image
                     width="20px"
                     height="20px"
-                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                  />
+                    [nzSrc]="menu.icon"
+                  />&nbsp;
+                }
+                @else if (menu.icon) {
+                  <span nz-icon [nzType]="menu.icon"></span>
                 }
                 <span>{{ menu.title }}</span>
               </li>
