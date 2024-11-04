@@ -20,7 +20,8 @@
               "zone.js"
             ],
             "allowedCommonJsDependencies": [
-              "file-saver"
+              "file-saver",
+              "ckeditor5/build/ckeditor"
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -46,13 +47,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2MB",
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kB",
-                  "maximumError": "4kB"
+                  "maximumWarning": "1000kB",
+                  "maximumError": "4000kB"
                 }
               ],
               "outputHashing": "all"
