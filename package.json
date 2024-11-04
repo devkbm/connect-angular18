@@ -24,7 +24,6 @@
     "@types/file-saver": "^2.0.7",
     "ag-grid-angular": "^32.2.1",
     "ag-grid-community": "^32.2.1",
-    "ckeditor5": "^42.0.1",
     "ckeditor5-custom-build": "file:ckeditor5",
     "connect-angular18": "file:",
     "css-loader": "^7.1.2",
