@@ -22,6 +22,7 @@ import { GlobalProperty } from 'src/app/core/global-property';
 import { ChangeEvent, CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 import { ArticleService } from './article.service';
 import { Article } from './article.model';
+import { ArticleFileUploadComponent } from './article-file-upload.component';
 
 
 @Component({
@@ -36,7 +37,8 @@ import { Article } from './article.model';
     NzFormItemCustomComponent,
     NzInputCkeditorComponent,
     NzCrudButtonGroupComponent,
-    NzFileUploadComponent
+    NzFileUploadComponent,
+    ArticleFileUploadComponent
 ],
   template: `
     <!--{{fg.getRawValue() | json}}-->
@@ -77,6 +79,10 @@ import { Article } from './article.model';
       <app-nz-file-upload
         [fileList]="fileList">
       </app-nz-file-upload>
+
+      <app-article-file-upload>
+
+      </app-article-file-upload>
 
     </form>
 
