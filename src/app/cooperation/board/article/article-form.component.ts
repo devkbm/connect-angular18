@@ -39,7 +39,7 @@ import { ArticleFileUploadComponent } from './article-file-upload.component';
     NzCrudButtonGroupComponent,
     NzFileUploadComponent,
     ArticleFileUploadComponent
-],
+  ],
   template: `
     <!--{{fg.getRawValue() | json}}-->
     <!--{{fileList | json}}-->
@@ -76,16 +76,19 @@ import { ArticleFileUploadComponent } from './article-file-upload.component';
         </nz-form-control>
       </nz-form-item-custom>
 
+      <!--
       <app-nz-file-upload
         [fileList]="fileList">
       </app-nz-file-upload>
+      -->
 
-      <app-article-file-upload>
-
+      <app-article-file-upload
+        [(uploadedFileList)]="fileList">
       </app-article-file-upload>
 
     </form>
 
+    {{this.fileList | json}}
     <div class="footer">
       <app-nz-crud-button-group
         [searchVisible]="false"
@@ -244,6 +247,7 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
     if (window.opener) {
       window.close();
     }
+
   }
 
   get(id: any): void {
@@ -319,13 +323,14 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
   }
 
   convertFileList() {
-    const attachFileIdList = [];
+    const attachFileIdList: any = [];
 
-    // tslint:disable-next-line: forin
-    for (const val in this.fileList) {
-      // console.log(this.fileList[val].response[0].uid);
-      attachFileIdList.push(String(this.fileList[val].uid));
+    if (this.fileList instanceof Array) {
+      this.fileList.forEach( (element: any) => {
+        attachFileIdList.push(String(element.uid));
+      });
     }
+
     this.fg.get('attachFile')?.setValue(attachFileIdList);
   }
 
