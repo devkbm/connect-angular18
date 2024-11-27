@@ -1,16 +1,29 @@
-import { Component, input, model } from '@angular/core';
+import { Component, input, model, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FileUploadModule, FileUploader } from 'ng2-file-upload';
 
 import { GlobalProperty } from 'src/app/core/global-property';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+export interface UploadedFile {
+  uid: string;
+  name: string;
+  size: number;
+	contentType: string;
+  status: string;
+  response: string;
+  url: string;
+}
+
 
 @Component({
   selector: 'app-article-file-upload',
   standalone: true,
   imports: [
     CommonModule,
-    FileUploadModule
+    FileUploadModule,
+    NzIconModule
   ],
   template: `
 <!--
@@ -21,58 +34,60 @@ import { GlobalProperty } from 'src/app/core/global-property';
 -->
 
 <style>
-.my-drop-zone { border: dotted 3px lightgray; }
-.nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
-.another-file-over-class { border: dotted 3px green; }
+  .my-drop-zone { border: dotted 3px lightgray; }
+  .nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+  .another-file-over-class { border: dotted 3px green; }
 
-html, body { height: 100%; }
+  html, body { height: 100%; }
 </style>
 
 <div class="container">
-  {{this.uploadedFileList() | json}}
-  <div class="navbar navbar-default">
-    <div class="navbar-header">
-      <a class="navbar-brand" href>Angular2 File Upload</a>
-    </div>
-  </div>
+  <!--{{this.uploadedFileList() | json}}-->
 
   <div class="row">
-    <div class="col-md-3">
-      <h3>Select files</h3>
-      Multiple <input type="file" ng2FileSelect [uploader]="uploader" multiple/>
-      <!--
-      <br/>
-      Single <input type="file" ng2FileSelect [uploader]="uploader" />
-      -->
-    </div>
+    @if (isUploadBtnVisible()) {
+      <div class="col-md-3">
+        <label for="input-file" class="input-file-button">파일첨부</label>
+        <input id="input-file" type="file" ng2FileSelect [uploader]="uploader" multiple style="display:none"/>
+      </div>
+    }
 
     <div class="col-md-9" style="margin-bottom: 40px">
-      <h3>Upload queue</h3>
-      <p>Queue length: {{ uploader.queue.length }}</p>
+      <p>파일 개수 : {{ uploader.queue.length + this.uploadedFileList().length }}</p>
 
       <table class="table">
         <thead>
           <tr>
             <th width="50%">Name</th>
-            <th>Size</th>
+            <th width="50%">Size</th>
+            <!--
             <th>Progress</th>
             <th>Status</th>
             <th>Actions</th>
+            -->
           </tr>
         </thead>
 
         <tbody>
+          @for (file of this.uploadedFileList(); track file.uid) {
+          <tr>
+            <td><a [href]="file.url" download> {{file.name}}</a></td>
+            <td style="text-align: right">{{ file.size/1024/1024 | number:'.2' }} MB</td>
+          </tr>
+          }
+
           @for (item of uploader.queue; track item) {
           <tr>
             <td><strong>{{ item?.file?.name }}</strong></td>
-            @if (uploader.options.isHTML5) {
-              <td nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-              <td>
-                <div class="progress" style="margin-bottom: 0;">
-                  <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-                </div>
-              </td>
-            }
+            <td style="text-align: right">{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+
+            <!--
+            <td>
+              <div class="progress" style="margin-bottom: 0;">
+                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+              </div>
+            </td>
+
             <td class="text-center">
               @if (item.isSuccess) {
                 <span><i class="glyphicon glyphicon-ok"></i></span>
@@ -98,11 +113,13 @@ html, body { height: 100%; }
                 <span class="glyphicon glyphicon-trash"></span> Remove
               </button>
             </td>
+          -->
           </tr>
           }
         </tbody>
       </table>
 
+      <!--
       <div>
         <div>
           Queue progress:
@@ -123,6 +140,7 @@ html, body { height: 100%; }
           <span class="glyphicon glyphicon-trash"></span> Remove all
         </button>
       </div>
+      -->
 
     </div>
 
@@ -130,14 +148,31 @@ html, body { height: 100%; }
 
 </div>
   `,
-  styles: ``
+  styles: `
+    .table {
+      width: 100%;
+      table-layout: fixed;
+      background-color: blue;
+    }
+
+    .input-file-button {
+      padding: 6px 25px;
+      background-color:#FF6600;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+    }
+  `
 })
 export class ArticleFileUploadComponent {
 
-  uploader: FileUploader;
   uploadUrl: string = GlobalProperty.serverUrl + '/api/system/file';
+  uploader: FileUploader;
 
-  uploadedFileList = model<{uid: string, name: string, status: string, response: string, url: string}[]>([]);
+  isUploadBtnVisible = input<boolean>(true);
+
+  uploadedFileList = model<UploadedFile[]>([]);
+  uploadCompleted = output<UploadedFile[]>();
 
   constructor() {
     this.uploader = new FileUploader({
@@ -145,12 +180,23 @@ export class ArticleFileUploadComponent {
       authToken: sessionStorage.getItem('token')!,
     });
 
-    this.uploader.response.subscribe( res =>
-      this.uploadedFileList.set(JSON.parse(res))
-    );
+    this.uploader.response.subscribe( res => {
+      // 개별 파일로 업로드 처리되어 첫번째 response 데이터만 리스트에 추가
+      this.uploadedFileList().push(JSON.parse(res)[0]);
+    });
+
+    this.uploader.onCompleteAll = () => {
+      //console.log('업로드 완료');
+      this.uploadCompleted.emit(this.uploadedFileList());
+    };
   }
 
   upload() {
     this.uploader.uploadAll();
   }
+
+  isUpload(): boolean {
+    return this.uploader.queue.length > 0 ? true : false;
+  }
+
 }

@@ -34,10 +34,12 @@ import { ResponseList } from '../core/model/response-list';
                 nz-menu-item
                 [nzPaddingLeft]="menu.level * 24"
                 [nzDisabled]="menu.disabled"
-                (click)="moveToUrl(menu.url)"
+                routerLinkActive="active" [routerLink]="menu.url"
               >
+            <!--(click)="moveToUrl(menu.url)" -->
                 <!-- [nzSelected]="menu.selected" -->
                 <!--<a routerLinkActive="active" [routerLink]="menu.url"></a>-->
+
                 @if (menu.appIconType === 'RESOURCE' && menu.icon) {
                   <img
                     nz-image

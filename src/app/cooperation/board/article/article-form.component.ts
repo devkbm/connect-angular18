@@ -83,18 +83,18 @@ import { ArticleFileUploadComponent } from './article-file-upload.component';
       -->
 
       <app-article-file-upload
-        [(uploadedFileList)]="fileList">
+        [(uploadedFileList)]="fileList"
+        (uploadCompleted)="save()">
       </app-article-file-upload>
 
     </form>
 
-    {{this.fileList | json}}
     <div class="footer">
       <app-nz-crud-button-group
         [searchVisible]="false"
         [isSavePopupConfirm]="false"
         (closeClick)="closeForm()"
-        (saveClick)="save()"
+        (saveClick)="beforeSave()"
         (deleteClick)="remove(fg.get('articleId')?.value)">
       </app-nz-crud-button-group>
     </div>
@@ -165,6 +165,8 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
 
   upload = viewChild.required<NzUploadComponent>('upload');
   ckEditor = viewChild.required<CKEditorComponent>('ckEditor');
+
+  uploader = viewChild.required<ArticleFileUploadComponent>(ArticleFileUploadComponent);
 
   private boardService= inject(ArticleService);
   private activatedRoute = inject(ActivatedRoute);
@@ -268,7 +270,17 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
         );
   }
 
+  beforeSave() {
+    if (this.uploader().isUpload()) {
+      this.uploader().upload();
+    } else {
+      this.save();
+    }
+
+  }
+
   save(): void {
+
     this.convertFileList();
 
     this.boardService

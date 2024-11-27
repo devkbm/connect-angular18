@@ -10,10 +10,19 @@ import { ArticleService } from './article.service';
 import { Article } from './article.model';
 import { SessionManager } from 'src/app/core/session-manager';
 import { NzFileDownloadComponent } from 'src/app/shared-component/nz-file-download/nz-file-download.component';
+import { ArticleFileUploadComponent } from './article-file-upload.component';
 
 @Component({
   selector: 'app-article-view',
   standalone: true,
+  imports: [
+    CommonModule,
+    TrustHtmlPipe,
+    NzPageHeaderModule,
+    NzFileUploadComponent,
+    NzFileDownloadComponent,
+    ArticleFileUploadComponent
+  ],
   template: `
   <nz-page-header nzTitle="제목" [nzSubtitle]="article?.title">
     <nz-page-header-content>
@@ -24,16 +33,18 @@ import { NzFileDownloadComponent } from 'src/app/shared-component/nz-file-downlo
   <!--<app-nz-file-upload [fileList]="fileList"></app-nz-file-upload>-->
   <app-nz-file-download [fileList]="fileList" [height]="'100px'"></app-nz-file-download>
 
+  <app-article-file-upload
+    [isUploadBtnVisible]="false"
+    [(uploadedFileList)]="fileList">
+  </app-article-file-upload>
+
   <div [innerHTML]="article?.contents | trustHtml"></div>
   `,
   styles: `
   nz-page-header {
     border: 1px solid rgb(235, 237, 240);
   }
-  `,
-  imports: [
-    CommonModule, TrustHtmlPipe, NzPageHeaderModule, NzFileUploadComponent, NzFileDownloadComponent
-  ]
+  `
 })
 export class ArticleViewComponent {
 
