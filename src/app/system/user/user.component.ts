@@ -18,10 +18,10 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
-import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
-import { ButtonTemplate } from 'src/app/shared-component/nz-buttons/nz-buttons.component';
-import { NzButtonExcelUploadComponent } from "src/app/shared-component/nz-button-excel-upload/nz-button-excel-upload.component";
+import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-page-header-custom/nz-page-header-custom.component';
+import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-area/nz-search-area.component';
+import { ButtonTemplate } from 'src/app/third-party/ng-zorro/nz-buttons/nz-buttons.component';
+import { NzButtonExcelUploadComponent } from "src/app/third-party/ng-zorro/nz-button-excel-upload/nz-button-excel-upload.component";
 
 @Component({
   selector: 'app-user',

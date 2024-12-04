@@ -1,13 +1,13 @@
 
 import { Component, OnInit, inject, output } from '@angular/core';
-import { AggridFunction } from 'src/app/core/grid/aggrid-function';
+import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { DutyApplicationService } from './duty-application.service';
 import { DutyApplication } from './duty-application.model';
 import { AgGridModule } from 'ag-grid-angular';
 import { CommonModule } from '@angular/common';
-import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({

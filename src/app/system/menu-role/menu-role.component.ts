@@ -19,8 +19,8 @@ import { MenuGroupFormComponent } from '../menu/menu-group-form.component';
 import { MenuRoleTreeComponent } from './menu-role-tree.component';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
-import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzInputSelectComponent } from 'src/app/third-party/ng-zorro/nz-input-select/nz-input-select.component';
+import { NzFormItemCustomComponent } from 'src/app/third-party/ng-zorro/nz-form-item-custom/nz-form-item-custom.component';
 
 
 @Component({

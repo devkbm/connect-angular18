@@ -2,9 +2,9 @@ import { Component, OnInit, Input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 
-import { AggridFunction } from 'src/app/core/grid/aggrid-function';
+import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
 
-import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 
 import { TeamModel } from './team.model';
 import { RowSelectionOptions } from 'ag-grid-community';

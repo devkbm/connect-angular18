@@ -4,7 +4,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { Component, OnInit, Output, EventEmitter, inject, output } from '@angular/core';
 
 import { ResponseList } from 'src/app/core/model/response-list';
-import { AggridFunction } from 'src/app/core/grid/aggrid-function';
+import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { StaffService } from './staff.service';
 import { Staff } from './staff.model';

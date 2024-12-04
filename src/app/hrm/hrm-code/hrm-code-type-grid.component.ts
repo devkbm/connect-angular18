@@ -2,11 +2,11 @@ import { Component, OnInit, Output, EventEmitter, Input, output } from '@angular
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 
-import { AggridFunction } from 'src/app/core/grid/aggrid-function';
+import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
 
 import { HrmType } from './hrm-type.model';
 
-import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({

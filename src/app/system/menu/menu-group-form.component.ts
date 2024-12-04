@@ -12,7 +12,7 @@ import { existingMenuGroupValidator } from './menu-group-duplication-validator.d
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
+import { NzFormItemCustomComponent } from "../../third-party/ng-zorro/nz-form-item-custom/nz-form-item-custom.component";
 
 @Component({
   selector: 'app-menu-group-form',

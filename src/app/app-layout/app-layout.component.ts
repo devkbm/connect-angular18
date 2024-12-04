@@ -14,7 +14,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { UserProfileComponent } from 'src/app/app-layout/user-profile/user-profile.component';
-import { SideMenuComponent } from 'src/app/app-layout/side-menu.component';
+import { SideMenuComponent } from 'src/app/app-layout/side-menu/side-menu.component';
 
 @Component({
   selector: 'app-app-layout',

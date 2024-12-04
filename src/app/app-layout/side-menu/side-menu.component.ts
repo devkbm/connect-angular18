@@ -6,11 +6,11 @@ import { NzMenuModeType, NzMenuModule, NzMenuThemeType } from 'ng-zorro-antd/men
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzImageModule } from 'ng-zorro-antd/image';
 
-import { MenuHierarchy } from './app-layout.model';
+import { MenuHierarchy } from '../app-layout.model';
 
-import { AppLayoutService } from './app-layout.service';
-import { SessionManager } from '../core/session-manager';
-import { ResponseList } from '../core/model/response-list';
+import { AppLayoutService } from '../app-layout.service';
+import { SessionManager } from '../../core/session-manager';
+import { ResponseList } from '../../core/model/response-list';
 
 @Component({
   selector: 'app-side-menu',

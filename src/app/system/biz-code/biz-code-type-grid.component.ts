@@ -4,12 +4,12 @@ import { AgGridModule } from 'ag-grid-angular';
 import { Component, OnInit, inject, output } from '@angular/core';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
-import { AggridFunction } from 'src/app/core/grid/aggrid-function';
+import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
 import { ResponseList } from 'src/app/core/model/response-list';
 
 import { BizCodeType } from './biz-code-type.model';
 import { BizCodeTypeService } from './biz-code-type.service';
-import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({

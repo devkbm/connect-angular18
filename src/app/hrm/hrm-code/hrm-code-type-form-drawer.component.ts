@@ -1,7 +1,7 @@
 import { Component, input, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzCrudButtonGroupComponent } from 'src/app/third-party/ng-zorro/nz-crud-button-group/nz-crud-button-group.component';
 import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
 
 @Component({

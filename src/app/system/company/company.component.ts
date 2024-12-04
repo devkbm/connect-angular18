@@ -2,9 +2,9 @@ import { Component, OnInit, inject, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ButtonTemplate, NzButtonsComponent } from 'src/app/shared-component/nz-buttons/nz-buttons.component';
-import { NzPageHeaderCustomComponent } from "src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component";
-import { NzSearchAreaComponent } from "src/app/shared-component/nz-search-area/nz-search-area.component";
+import { ButtonTemplate, NzButtonsComponent } from 'src/app/third-party/ng-zorro/nz-buttons/nz-buttons.component';
+import { NzPageHeaderCustomComponent } from "src/app/third-party/ng-zorro/nz-page-header-custom/nz-page-header-custom.component";
+import { NzSearchAreaComponent } from "src/app/third-party/ng-zorro/nz-search-area/nz-search-area.component";
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';

@@ -2,14 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, effect, input } from '@angular/core';
 
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { NzFileUploadComponent } from 'src/app/shared-component/nz-file-upload/nz-file-upload.component';
-import { TrustHtmlPipe } from "src/app/shared-component/trust-html.pipe";
+import { NzFileUploadComponent } from 'src/app/third-party/ng-zorro/nz-file-upload/nz-file-upload.component';
+import { TrustHtmlPipe } from "src/app/core/pipe/trust-html.pipe";
 
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { ArticleService } from './article.service';
 import { Article } from './article.model';
 import { SessionManager } from 'src/app/core/session-manager';
-import { NzFileDownloadComponent } from 'src/app/shared-component/nz-file-download/nz-file-download.component';
+import { NzFileDownloadComponent } from 'src/app/third-party/ng-zorro/nz-file-download/nz-file-download.component';
 import { ArticleFileUploadComponent } from './article-file-upload.component';
 
 @Component({

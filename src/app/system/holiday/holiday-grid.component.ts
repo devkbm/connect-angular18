@@ -5,11 +5,11 @@ import { AgGridModule } from 'ag-grid-angular';
 
 import { DateInfo, Holiday } from './holiday.model';
 
-import { AggridFunction } from 'src/app/core/grid/aggrid-function';
+import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { HolidayService } from './holiday.service';
-import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({

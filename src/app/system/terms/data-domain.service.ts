@@ -7,7 +7,7 @@ import { DataService } from 'src/app/core/service/data.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { DataDomain } from './data-domain.model';
-import { HtmlSelectOption } from 'src/app/shared-component/nz-input-select/html-select-option';
+import { HtmlSelectOption } from 'src/app/third-party/ng-zorro/nz-input-select/html-select-option';
 
 
 @Injectable({

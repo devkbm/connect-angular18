@@ -10,13 +10,13 @@ import { ResponseObject } from 'src/app/core/model/response-object';
 
 import { DataDomainService } from './data-domain.service';
 import { DataDomain } from './data-domain.model';
-import { HtmlSelectOption } from 'src/app/shared-component/nz-input-select/html-select-option';
+import { HtmlSelectOption } from 'src/app/third-party/ng-zorro/nz-input-select/html-select-option';
 
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzFormItemCustomComponent } from 'src/app/shared-component/nz-form-item-custom/nz-form-item-custom.component';
+import { NzCrudButtonGroupComponent } from 'src/app/third-party/ng-zorro/nz-crud-button-group/nz-crud-button-group.component';
+import { NzFormItemCustomComponent } from 'src/app/third-party/ng-zorro/nz-form-item-custom/nz-form-item-custom.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
+import { NzInputSelectComponent } from 'src/app/third-party/ng-zorro/nz-input-select/nz-input-select.component';
 
 
 @Component({

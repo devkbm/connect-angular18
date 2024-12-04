@@ -1,4 +1,4 @@
-import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 import { CommonModule } from '@angular/common';
 import { Component, Renderer2, effect, inject, input } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { CompanyFormService } from './company-form.service';
 import { Company } from './company.model';
 import { ResponseObject } from 'src/app/core/model/response-object';
-import { NzFormItemCustomComponent } from "../../shared-component/nz-form-item-custom/nz-form-item-custom.component";
+import { NzFormItemCustomComponent } from "../../third-party/ng-zorro/nz-form-item-custom/nz-form-item-custom.component";
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @Component({

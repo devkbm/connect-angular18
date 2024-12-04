@@ -14,8 +14,8 @@ import { WorkCalendarFormComponent } from './calendar/work-calendar-form.compone
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { CalendarDaypilotNavigatorComponent } from 'src/app/shared-component/calendar/calendar-daypilot-navigator.component';
-import { ModeChangedArgs } from 'src/app/shared-component/calendar/calendar-daypilot.component';
+import { CalendarDaypilotNavigatorComponent } from 'src/app/third-party/daypilot/calendar-daypilot-navigator.component';
+import { ModeChangedArgs } from 'src/app/third-party/daypilot/calendar-daypilot.component';
 
 @Component({
   selector: 'app-work-calendar',

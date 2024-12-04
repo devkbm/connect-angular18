@@ -8,8 +8,8 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { WorkCalendarEventService } from '../event/work-calendar-event.service';
 import { WorkCalendarEvent } from '../event/work-calendar-event.model';
 
-import { CalendarDaypilotHeaderComponent } from "src/app/shared-component/calendar/calendar-daypilot-header.component";
-import { CalendarDaypilotComponent, ModeChangedArgs } from 'src/app/shared-component/calendar/calendar-daypilot.component';
+import { CalendarDaypilotHeaderComponent } from 'src/app/third-party/daypilot/calendar-daypilot-header.component';
+import { CalendarDaypilotComponent, ModeChangedArgs } from 'src/app/third-party/daypilot/calendar-daypilot.component';
 
 export interface NewDateSelectedArgs {
   workCalendarId: number;

@@ -7,8 +7,8 @@ import { DutyApplicationGridComponent } from './duty-application-grid.component'
 import { DutyDateListComponent } from './duty-date-list.component';
 
 
-import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
+import { NzCrudButtonGroupComponent } from 'src/app/third-party/ng-zorro/nz-crud-button-group/nz-crud-button-group.component';
+import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-page-header-custom/nz-page-header-custom.component';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @Component({

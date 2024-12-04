@@ -4,12 +4,12 @@ import { AgGridModule } from 'ag-grid-angular';
 import { Component, OnInit, Output, EventEmitter, inject, output } from '@angular/core';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
-import { AggridFunction } from 'src/app/core/grid/aggrid-function';
+import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
 import { ResponseList } from 'src/app/core/model/response-list';
 
 import { MenuService } from './menu.service';
 import { MenuGroup } from './menu-group.model';
-import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 import { RowSelectionOptions } from 'ag-grid-community';
 
 
