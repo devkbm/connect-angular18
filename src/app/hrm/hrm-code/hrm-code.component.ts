@@ -22,6 +22,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-page-header-custom/nz-page-header-custom.component';
 import { HrmCodeTypeFormDrawerComponent } from './hrm-code-type-form-drawer.component';
 import { HrmCodeFormDrawerComponent } from './hrm-code-form-drawer.component';
+import { ShapeComponent } from "../../core/app/shape.component";
 
 
 @Component({
@@ -43,47 +44,54 @@ import { HrmCodeFormDrawerComponent } from './hrm-code-form-drawer.component';
     HrmCodeTypeGridComponent,
     HrmCodeTypeFormDrawerComponent,
     HrmCodeGridComponent,
-    HrmCodeFormDrawerComponent
-  ],
+    HrmCodeFormDrawerComponent,
+    ShapeComponent
+],
   template: `
-<nz-page-header-custom title="인사시스템 코드 정보" subtitle="인사시스템 구분 코드 정보 관리"></nz-page-header-custom>
+<ng-template #header>
+  <nz-page-header-custom title="인사시스템 코드 정보" subtitle="인사시스템 구분 코드 정보 관리"></nz-page-header-custom>
+</ng-template>
 
-<div nz-row class="btn-group">
+<ng-template #search>
+  <div nz-row class="btn-group">
 
-  <div nz-col [nzSpan]="24" class="text-right">
-    <button nz-button (click)="newHrmCodeType()">
-      <span nz-icon nzType="form"></span>코드분류등록
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
+    <div nz-col [nzSpan]="24" class="text-right">
+      <button nz-button (click)="newHrmCodeType()">
+        <span nz-icon nzType="form"></span>코드분류등록
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
 
-    <button nz-button (click)="newHrmCode()">
-      <span nz-icon nzType="form"></span>코드등록
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button (click)="newHrmCode()">
+        <span nz-icon nzType="form"></span>코드등록
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
 
-    <button nz-button (click)="getGridHrmCodeType()">
-      <span nz-icon nzType="form"></span>조회
-    </button>
+      <button nz-button (click)="getGridHrmCodeType()">
+        <span nz-icon nzType="form"></span>조회
+      </button>
+    </div>
   </div>
-</div>
+</ng-template>
 
-<div class="grid-2row-2col">
-    <h3 class="header1">코드 분류 목록 {{drawer.codeType | json}}</h3>
-    <app-hrm-code-type-grid #gridHrmType
-      [list]="gridHrmCodeTypeList"
-      (rowClicked)="rowClickHrmCodeType($event)"
-      (rowDoubleClicked)="editHrmCodeType($event)"
-      (editButtonClicked)="editHrmCodeType($event)">
-    </app-hrm-code-type-grid>
+<app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
+  <div class="grid-2row-2col">
+      <h3 class="header1">코드 분류 목록 {{drawer.codeType | json}}</h3>
+      <app-hrm-code-type-grid #gridHrmType
+        [list]="gridHrmCodeTypeList"
+        (rowClicked)="rowClickHrmCodeType($event)"
+        (rowDoubleClicked)="editHrmCodeType($event)"
+        (editButtonClicked)="editHrmCodeType($event)">
+      </app-hrm-code-type-grid>
 
-    <h3 class="header2">코드 목록 {{drawer.code | json}}</h3>
-    <app-hrm-code-grid #gridHrmTypeCode
-      [list]="gridHrmCodeList"
-      (rowClicked)="rowClickHrmCode($event)"
-      (rowDoubleClicked)="editHrmCode($event)"
-      (editButtonClicked)="editHrmCode($event)">
-    </app-hrm-code-grid>
-</div>
+      <h3 class="header2">코드 목록 {{drawer.code | json}}</h3>
+      <app-hrm-code-grid #gridHrmTypeCode
+        [list]="gridHrmCodeList"
+        (rowClicked)="rowClickHrmCode($event)"
+        (rowDoubleClicked)="editHrmCode($event)"
+        (editButtonClicked)="editHrmCode($event)">
+      </app-hrm-code-grid>
+  </div>
+</app-shape>
 
 <app-hrm-code-type-form-drawer
   [drawer]="drawer.codeType"
@@ -106,8 +114,8 @@ import { HrmCodeFormDrawerComponent } from './hrm-code-form-drawer.component';
 }
 
 .grid-2row-2col {
+  height: 100%;
   display: grid;
-  height: calc(100% - 144px);
   grid-template-rows: 34px 1fr;
   grid-template-columns: 1fr 1fr;
   column-gap: 12px;

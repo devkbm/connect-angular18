@@ -34,7 +34,7 @@ import { NzFormItemCustomComponent } from "../../third-party/ng-zorro/nz-form-it
     NzFormItemCustomComponent
 ],
   template: `
-    {{fg.getRawValue()| json}} - {{fg.valid}}
+    <!--{{fg.getRawValue()| json}} - {{fg.valid}}-->
     <form nz-form [formGroup]="fg" nzLayout="vertical">
 
       <!-- ERROR TEMPLATE-->
@@ -158,7 +158,7 @@ import { NzFormItemCustomComponent } from "../../third-party/ng-zorro/nz-form-it
           <nz-form-item-custom for="comment" label="설명">
             <nz-form-control>
               <textarea nz-input id="comment" formControlName="comment"
-                placeholder="설명을 입력해주세요." [rows]="13">
+                placeholder="설명을 입력해주세요." [rows]="10">
               </textarea>
             </nz-form-control>
           </nz-form-item-custom>

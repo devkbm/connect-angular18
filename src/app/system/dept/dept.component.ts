@@ -12,6 +12,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-page-header-custom/nz-page-header-custom.component';
+import { ShapeComponent } from "../../core/app/shape.component";
 
 @Component({
   selector: 'app-dept',
@@ -28,109 +29,86 @@ import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-pag
     NzPageHeaderCustomComponent,
     DeptTreeComponent,
     CheckableDeptTreeComponent,
-    DeptFormComponent
-  ],
+    DeptFormComponent,
+    ShapeComponent
+],
   template: `
-<div class="page-header">
+<ng-template #header>
   <nz-page-header-custom title="부서코드 등록" subtitle="This is a subtitle"></nz-page-header-custom>
-</div>
+</ng-template>
 
-
-<div nz-row class="page-search">
-  <div nz-col [nzSpan]="12">
-    <nz-input-group nzSearch [nzSuffix]="suffixIconSearch">
-      <input type="text" [(ngModel)]="queryValue" nz-input placeholder="input search text">
-    </nz-input-group>
-    <ng-template #suffixIconSearch>
-      <span nz-icon nzType="search"></span>
-    </ng-template>
+<ng-template #search>
+  <div nz-row>
+    <div nz-col [nzSpan]="12">
+      <nz-input-group nzSearch [nzSuffix]="suffixIconSearch">
+        <input type="text" [(ngModel)]="queryValue" nz-input placeholder="input search text">
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <span nz-icon nzType="search"></span>
+      </ng-template>
+    </div>
+    <div nz-col [nzSpan]="12" style="text-align: right;">
+      <button nz-button (click)="getDeptTree()">
+        <span nz-icon nzType="search"></span>조회
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button (click)="initForm()">
+        <span nz-icon nzType="form" nzTheme="outline"></span>신규
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <!--
+        nz-popconfirm nzPopconfirmTitle="저장하시겠습니까?"
+        (nzOnConfirm)="saveDept()" (nzOnCancel)="false">
+      -->
+      <button nz-button nzType="primary" (click)="saveDept()">
+        <span nz-icon nzType="save" nzTheme="outline"></span>저장
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <!--
+        nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
+        (nzOnConfirm)="deleteDept()" (nzOnCancel)="false">
+      -->
+      <button nz-button nzDanger (click)="deleteDept()">
+        <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
+      </button>
+    </div>
   </div>
-  <div nz-col [nzSpan]="12" style="text-align: right;">
-    <button nz-button (click)="getDeptTree()">
-      <span nz-icon nzType="search"></span>조회
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button (click)="initForm()">
-      <span nz-icon nzType="form" nzTheme="outline"></span>신규
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <!--
-      nz-popconfirm nzPopconfirmTitle="저장하시겠습니까?"
-      (nzOnConfirm)="saveDept()" (nzOnCancel)="false">
-    -->
-    <button nz-button nzType="primary" (click)="saveDept()">
-      <span nz-icon nzType="save" nzTheme="outline"></span>저장
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <!--
-      nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
-      (nzOnConfirm)="deleteDept()" (nzOnCancel)="false">
-    -->
-    <button nz-button nzDanger (click)="deleteDept()">
-      <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
-    </button>
+</ng-template>
+
+
+<app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
+  <div class="container">
+    <div>
+      <h3 class="grid-title">부서코드 목록</h3>
+    </div>
+
+    <div style="flex: 1">
+      <div class="grid-wrapper">
+        <app-dept-tree
+          [searchValue]="queryValue"
+          (itemSelected)="selectedItem($event)">
+        </app-dept-tree>
+
+        <app-dept-form
+          (formSaved)="getDeptTree()"
+          (formDeleted)="getDeptTree()">
+        </app-dept-form>
+      </div>
+    </div>
   </div>
-</div>
-
-<div class="page-content-title">
-  <h3 class="grid-title">부서코드 목록</h3>
-</div>
-
-<div class="grid-wrapper">
-  <app-dept-tree
-    [searchValue]="queryValue"
-    (itemSelected)="selectedItem($event)">
-  </app-dept-tree>
-
-  <app-dept-form
-    (formSaved)="getDeptTree()"
-    (formDeleted)="getDeptTree()">
-  </app-dept-form>
-</div>
-
+</app-shape>
   `,
   styles: `
 :host {
   --page-header-height: 98px;
   --page-search-height: 46px;
-  --page-content-title-height: 26px;
-  --page-content-title-margin-height: 6px;
-  --page-content-margin-height: 6px;
-}
-
-.page-header {
-  height: var(--page-header-height);
-}
-
-.page-search {
-  height: var(--page-search-height);
-}
-
-.page-content-title {
-  height: var(--page-content-title-height);
 }
 
 .grid-title {
-  margin-top: var(--page-content-title-margin-height);
   margin-left: 6px;
   border-left: 6px solid green;
   padding-left: 6px;
   vertical-align: text-top;
-}
-
-.page-content {
-  --margin-height: 6px;
-  margin-top: var(--page-content-margin-height);
-  height: calc(100vh - (
-                        var(--app-header-height) +
-                        var(--app-footer-height) +
-                        var(--page-header-height) +
-                        var(--page-search-height) +
-                        var(--page-content-title-height) +
-                        var(--page-content-title-margin-height) +
-                        var(--page-content-margin-height)
-                       )
-              );
 }
 
 .pgm-title {
@@ -147,9 +125,14 @@ import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-pag
   padding-right: 5;
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .grid-wrapper {
   display: grid;
-  grid-template-rows: 24px 1fr;
   grid-template-columns: 200px 1fr;
 }
 

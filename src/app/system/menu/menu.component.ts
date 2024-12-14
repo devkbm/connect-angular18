@@ -16,6 +16,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-area/nz-search-area.component';
+import { ShapeComponent } from "../../core/app/shape.component";
 
 @Component({
   selector: 'app-menu',
@@ -37,82 +38,85 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
     MenuRoleTreeComponent,
     MenuGroupFormDrawerComponent,
     MenuFormDrawerComponent,
-  ],
+    ShapeComponent
+],
   template: `
-<nz-page-header-custom title="메뉴 등록" subtitle="This is a subtitle"></nz-page-header-custom>
+<ng-template #header>
+  <nz-page-header-custom title="메뉴 등록" subtitle="This is a subtitle"></nz-page-header-custom>
+</ng-template>
 
-<app-nz-search-area [height]="'var(--page-search-height)'">
-  <div nz-row>
-    <div nz-col [nzSpan]="8">
-      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-        <ng-template #addOnBeforeTemplate>
-          <nz-select [(ngModel)]="query.menuGroup.key">
-            @for (option of query.menuGroup.list; track option.value) {
-            <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-            }
-          </nz-select>
-        </ng-template>
-        <input type="text" [(ngModel)]="query.menuGroup.value" nz-input placeholder="input search text" (keyup.enter)="getMenuGroupList()">
-        <ng-template #suffixIconSearch>
-          <span nz-icon nzType="search"></span>
-        </ng-template>
-      </nz-input-group>
+<ng-template #search>
+  <app-nz-search-area>
+    <div nz-row>
+      <div nz-col [nzSpan]="8">
+        <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+          <ng-template #addOnBeforeTemplate>
+            <nz-select [(ngModel)]="query.menuGroup.key">
+              @for (option of query.menuGroup.list; track option.value) {
+              <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+              }
+            </nz-select>
+          </ng-template>
+          <input type="text" [(ngModel)]="query.menuGroup.value" nz-input placeholder="input search text" (keyup.enter)="getMenuGroupList()">
+          <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </nz-input-group>
+      </div>
+
+      <div nz-col [nzSpan]="8">
+        <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate2" [nzSuffix]="suffixIconSearch2">
+          <ng-template #addOnBeforeTemplate2>
+            <nz-select [(ngModel)]="query.menu.key">
+              @for (option of query.menu.list; track option.value) {
+              <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+              }
+            </nz-select>
+          </ng-template>
+          <input type="text" [(ngModel)]="query.menu.value" nz-input placeholder="input search text" (keyup.enter)="getMenuList()">
+          <ng-template #suffixIconSearch2>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </nz-input-group>
+      </div>
+
+      <div nz-col [nzSpan]="8" style="text-align: right;">
+        <button nz-button (click)="newMenuGroup()">
+          <span nz-icon nzType="search"></span>메뉴그룹등록
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+
+        <button nz-button (click)="newMenu()">
+          <span nz-icon nzType="form"></span>메뉴등록
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+
+        <button nz-button (click)="getMenuGroupList()">
+          <span nz-icon nzType="form"></span>조회
+        </button>
+
+      </div>
     </div>
+  </app-nz-search-area>
+</ng-template>
 
-    <div nz-col [nzSpan]="8">
-      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate2" [nzSuffix]="suffixIconSearch2">
-        <ng-template #addOnBeforeTemplate2>
-          <nz-select [(ngModel)]="query.menu.key">
-            @for (option of query.menu.list; track option.value) {
-            <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-            }
-          </nz-select>
-        </ng-template>
-        <input type="text" [(ngModel)]="query.menu.value" nz-input placeholder="input search text" (keyup.enter)="getMenuList()">
-        <ng-template #suffixIconSearch2>
-          <span nz-icon nzType="search"></span>
-        </ng-template>
-      </nz-input-group>
-    </div>
+<app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
+  <div class="page-content">
+    <h3 class="header1">메뉴 그룹 목록</h3>
+    <app-menu-group-grid class="grid1"
+      (rowClicked)="menuGroupGridRowClicked($event)"
+      (editButtonClicked)="editMenuGroup($event)"
+      (rowDoubleClicked)="editMenuGroup($event)">
+    </app-menu-group-grid>
 
-    <div nz-col [nzSpan]="8" style="text-align: right;">
-      <button nz-button (click)="newMenuGroup()">
-        <span nz-icon nzType="search"></span>메뉴그룹등록
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-
-      <button nz-button (click)="newMenu()">
-        <span nz-icon nzType="form"></span>메뉴등록
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-
-      <button nz-button (click)="getMenuGroupList()">
-        <span nz-icon nzType="form"></span>조회
-      </button>
-
-    </div>
+    <h3 class="header2">메뉴 목록</h3>
+    <app-menu-grid class="grid2"
+      (rowClicked)="menuGridRowClicked($event)"
+      (editButtonClicked)="editMenu($event)"
+      (rowDoubleClicked)="editMenu($event)">
+    </app-menu-grid>
   </div>
-</app-nz-search-area>
-
-<div class="page-content">
-  <h3 class="header1">메뉴 그룹 목록</h3>
-  <app-menu-group-grid
-    #menuGroupGrid
-    id="menuGroupGrid"
-    (rowClicked)="menuGroupGridRowClicked($event)"
-    (editButtonClicked)="editMenuGroup($event)"
-    (rowDoubleClicked)="editMenuGroup($event)">
-  </app-menu-group-grid>
-
-  <h3 class="header2">메뉴 목록</h3>
-  <app-menu-grid
-    id="menuGrid"
-    #menuGrid
-    (rowClicked)="menuGridRowClicked($event)"
-    (editButtonClicked)="editMenu($event)"
-    (rowDoubleClicked)="editMenu($event)">
-  </app-menu-grid>
-</div>
+</app-shape>
 
 <app-menu-group-form-drawer
   [drawer]="drawer.menuGroup"
@@ -128,25 +132,10 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
 :host {
   --page-header-height: 98px;
   --page-search-height: 46px;
-  --page-content-title-height: 26px;
-  --page-content-title-margin-height: 6px;
-  --page-content-margin-height: 6px;
-}
 
-.page-header {
-  height: var(--page-header-height);
-}
-
-.page-search {
-  height: var(--page-search-height);
-}
-
-.page-content-title {
-  height: var(--page-content-title-height);
 }
 
 .grid-title {
-  margin-top: var(--page-content-title-margin-height);
   margin-left: 6px;
   border-left: 6px solid green;
   padding-left: 6px;
@@ -154,17 +143,7 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
 }
 
 .page-content {
-  margin-top: var(--page-content-margin-height);
-  height: calc(100vh - (
-                        var(--app-header-height) +
-                        var(--app-footer-height) +
-                        var(--page-header-height) +
-                        var(--page-search-height) +
-                        /*var(--page-content-title-height) +
-                        var(--page-content-title-margin-height) +*/
-                        var(--page-content-margin-height)
-                       )
-              );
+  height: 100%;
   display: grid;
   grid-template-rows: 34px 1fr;
   grid-template-columns: 1fr 1.5fr;
@@ -180,7 +159,6 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
 
 .header1 {
   grid-area: header1;
-  margin-top: var(--page-content-title-margin-height);
   margin-left: 6px;
   border-left: 6px solid green;
   padding-left: 6px;
@@ -189,7 +167,6 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
 
 .header2 {
   grid-area: header2;
-  margin-top: var(--page-content-title-margin-height);
   margin-left: 6px;
   border-left: 6px solid green;
   padding-left: 6px;

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ResponseObject } from 'src/app/core/model/response-object';
+import { ShapeComponent } from "src/app/core/app/shape.component";
 
 import { RoleGridComponent } from './role-grid.component';
 import { RoleFormDrawerComponent } from './role-form-drawer.component';
@@ -20,8 +21,9 @@ import { ButtonTemplate, NzButtonsComponent } from 'src/app/third-party/ng-zorro
 import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-area/nz-search-area.component';
 
 
+
 @Component({
-  selector: 'app-authority',
+  selector: 'app-role',
   standalone: true,
   imports: [
     CommonModule,
@@ -37,48 +39,55 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
     NzPageHeaderCustomComponent,
     NzSearchAreaComponent,
     RoleGridComponent,
-    RoleFormDrawerComponent
-  ],
+    RoleFormDrawerComponent,
+    ShapeComponent
+],
   template: `
-<div class="page-header">
+<ng-template #header>
   <nz-page-header-custom class="page-header" title="롤 등록" subtitle="This is a subtitle"></nz-page-header-custom>
-</div>
+</ng-template>
 
-<app-nz-search-area [height]="'var(--page-search-height)'">
-  <div nz-row>
-    <div nz-col [nzSpan]="12">
-      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-        <ng-template #addOnBeforeTemplate>
-          <nz-select [(ngModel)]="query.role.key">
-            @for (option of query.role.list; track option.value) {
-            <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-            }
-          </nz-select>
-        </ng-template>
-        <input type="text" [(ngModel)]="query.role.value" nz-input placeholder="input search text" (keyup.enter)="getRoleList()">
-        <ng-template #suffixIconSearch>
-          <span nz-icon nzType="search"></span>
-        </ng-template>
-      </nz-input-group>
+<ng-template #search>
+  <app-nz-search-area>
+    <div nz-row>
+      <div nz-col [nzSpan]="12">
+        <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+          <ng-template #addOnBeforeTemplate>
+            <nz-select [(ngModel)]="query.role.key">
+              @for (option of query.role.list; track option.value) {
+              <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+              }
+            </nz-select>
+          </ng-template>
+          <input type="text" [(ngModel)]="query.role.value" nz-input placeholder="input search text" (keyup.enter)="getRoleList()">
+          <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </nz-input-group>
+      </div>
+
+      <div nz-col [nzSpan]="12" style="text-align: right;">
+        <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
+      </div>
+    </div>
+  </app-nz-search-area>
+</ng-template>
+
+<app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
+  <div class="container">
+    <div>
+      <h3 class="grid-title">롤 목록</h3>
     </div>
 
-    <div nz-col [nzSpan]="12" style="text-align: right;">
-      <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
+    <div style="flex: 1">
+      <app-role-grid #authGrid
+        (rowClicked)="selectedItem($event)"
+        (editButtonClicked)="editDrawOpen($event)"
+        (rowDoubleClicked)="editDrawOpen($event)">
+      </app-role-grid>
     </div>
   </div>
-</app-nz-search-area>
-
-<div class="page-content-title">
-  <h3 class="grid-title">롤 목록</h3>
-</div>
-
-<div class="page-content">
-  <app-role-grid #authGrid
-    (rowClicked)="selectedItem($event)"
-    (editButtonClicked)="editDrawOpen($event)"
-    (rowDoubleClicked)="editDrawOpen($event)">
-  </app-role-grid>
-</div>
+</app-shape>
 
 <app-role-form-drawer
   [drawer]="drawer.role"
@@ -90,21 +99,12 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
 :host {
   --page-header-height: 98px;
   --page-search-height: 46px;
-  --page-content-title-height: 26px;
-  --page-content-title-margin-height: 6px;
-  --page-content-margin-height: 6px;
 }
 
-.page-header {
-  height: var(--page-header-height);
-}
-
-.page-search {
-  height: var(--page-search-height);
-}
-
-.page-content-title {
-  height: var(--page-content-title-height);
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .grid-title {
@@ -113,20 +113,6 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
   border-left: 6px solid green;
   padding-left: 6px;
   vertical-align: text-top;
-}
-
-.page-content {
-  margin-top: var(--page-content-margin-height);
-  height: calc(100vh - (
-                        var(--app-header-height) +
-                        var(--app-footer-height) +
-                        var(--page-header-height) +
-                        var(--page-search-height) +
-                        var(--page-content-title-height) +
-                        var(--page-content-title-margin-height) +
-                        var(--page-content-margin-height)
-                       )
-              );
 }
 
 [nz-button] {

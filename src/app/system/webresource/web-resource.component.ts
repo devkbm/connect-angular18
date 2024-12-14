@@ -16,6 +16,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-area/nz-search-area.component';
 import { WebResourceFormDrawerComponent } from './web-resource-form-drawer.component';
+import { ShapeComponent } from "../../core/app/shape.component";
 
 @Component({
   selector: 'app-web-resource',
@@ -31,60 +32,71 @@ import { WebResourceFormDrawerComponent } from './web-resource-form-drawer.compo
     NzButtonsComponent,
     NzPageHeaderCustomComponent,
     NzSearchAreaComponent,
-
     WebResourceGridComponent,
-    WebResourceFormDrawerComponent
-  ],
+    WebResourceFormDrawerComponent,
+    ShapeComponent
+],
   template: `
-<nz-page-header-custom title="리소스 등록" subtitle="This is a subtitle"></nz-page-header-custom>
+<ng-template #header>
+  <nz-page-header-custom title="리소스 등록" subtitle="This is a subtitle"></nz-page-header-custom>
+</ng-template>>
 
-<app-nz-search-area [height]="'var(--page-search-height)'">
-  <div nz-row>
-    <div nz-col [nzSpan]="12">
-      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-        <ng-template #addOnBeforeTemplate>
-          <nz-select [(ngModel)]="query.resource.key">
-            @for (option of query.resource.list; track option.value) {
-              <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-            }
-          </nz-select>
-        </ng-template>
-        <input type="text" [(ngModel)]="query.resource.value" nz-input placeholder="input search text" (keyup.enter)="getList()">
-        <ng-template #suffixIconSearch>
-          <span nz-icon nzType="search"></span>
-        </ng-template>
-      </nz-input-group>
+<ng-template #search>
+  <app-nz-search-area>
+    <div nz-row>
+      <div nz-col [nzSpan]="12">
+        <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+          <ng-template #addOnBeforeTemplate>
+            <nz-select [(ngModel)]="query.resource.key">
+              @for (option of query.resource.list; track option.value) {
+                <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+              }
+            </nz-select>
+          </ng-template>
+          <input type="text" [(ngModel)]="query.resource.value" nz-input placeholder="input search text" (keyup.enter)="getList()">
+          <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </nz-input-group>
+      </div>
+      <div nz-col [nzSpan]="12" style="text-align: right;">
+        <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
+        <!--
+        <button nz-button (click)="getList()">
+          <span nz-icon nzType="search"></span>조회
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button (click)="initForm()">
+          <span nz-icon nzType="form" nzTheme="outline"></span>신규
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button nzDanger="true"
+          nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
+          (nzOnConfirm)="delete()" (nzOnCancel)="false">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
+        </button>
+        -->
+      </div>
     </div>
-    <div nz-col [nzSpan]="12" style="text-align: right;">
-      <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
-      <!--
-      <button nz-button (click)="getList()">
-        <span nz-icon nzType="search"></span>조회
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-      <button nz-button (click)="initForm()">
-        <span nz-icon nzType="form" nzTheme="outline"></span>신규
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-      <button nz-button nzDanger="true"
-        nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
-        (nzOnConfirm)="delete()" (nzOnCancel)="false">
-        <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
-      </button>
-      -->
+  </app-nz-search-area>
+</ng-template>
+
+<app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
+  <div class="container">
+    <div>
+      <h3 class="grid-title">웹서버 리소스 목록</h3>
+    </div>
+
+    <div style="flex: 1">
+      <app-web-resource-grid #grid
+        (rowClicked)="resourceGridRowClicked($event)"
+        (editButtonClicked)="editResource($event)"
+        (rowDoubleClicked)="editResource($event)">
+      </app-web-resource-grid>
     </div>
   </div>
-</app-nz-search-area>
+</app-shape>
 
-<h3 class="grid-title">웹서버 리소스 목록</h3>
-
-<div class="grid-wrapper">
-  <app-web-resource-grid #grid
-    (rowClicked)="resourceGridRowClicked($event)"
-    (editButtonClicked)="editResource($event)"
-    (rowDoubleClicked)="editResource($event)">
-  </app-web-resource-grid>
-</div>
 
 <app-web-resource-form-drawer
   [drawer]="drawer.resource"
@@ -95,9 +107,12 @@ import { WebResourceFormDrawerComponent } from './web-resource-form-drawer.compo
 :host {
   --page-header-height: 98px;
   --page-search-height: 46px;
-  --page-content-title-height: 26px;
-  --page-content-title-margin-height: 6px;
-  --page-content-margin-height: 6px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .grid-title {
@@ -108,12 +123,7 @@ import { WebResourceFormDrawerComponent } from './web-resource-form-drawer.compo
   border-left: 6px solid green;
   vertical-align: text-top;
 }
-
-/* 페이지 헤더 98px, 조회조건 46px, 그리드 제목 26px, 푸터 24px 제외 */
-.grid-wrapper {
-  height: calc(100% - 194px)
-}
-  `
+`
 })
 export class WebResourceComponent implements OnInit {
 

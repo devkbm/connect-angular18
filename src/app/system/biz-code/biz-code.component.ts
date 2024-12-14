@@ -13,6 +13,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-area/nz-search-area.component';
+import { ShapeComponent } from "../../core/app/shape.component";
 
 
 @Component({
@@ -31,47 +32,51 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
     BizCodeTypeGridComponent,
     BizCodeGridComponent,
     BizCodeFormDrawerComponent,
-    BizCodeTypeFormDrawerComponent
+    BizCodeTypeFormDrawerComponent,
+    ShapeComponent
 ],
   template: `
-<div class="page-header">
+<ng-template #header>
   <nz-page-header-custom title="업무코드 등록" subtitle="This is a subtitle"></nz-page-header-custom>
-</div>
+</ng-template>
 
-<app-nz-search-area [height]="'var(--page-search-height)'">
-  <div nz-row>
-    <div nz-col [nzSpan]="24" class="text-align-right">
-      <button nz-button (click)="selectBizCodeTypeList()">
-        <span nz-icon nzType="search" nzTheme="outline"></span>조회
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-      <button nz-button (click)="newCodeType()">
-        <span nz-icon nzType="form" nzTheme="outline"></span>신규 분류
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-      <button nz-button (click)="newCode()">
-        <span nz-icon nzType="form" nzTheme="outline"></span>신규 코드
-      </button>
+<ng-template #search>
+  <app-nz-search-area>
+    <div nz-row>
+      <div nz-col [nzSpan]="24" style="text-align: right">
+        <button nz-button (click)="selectBizCodeTypeList()">
+          <span nz-icon nzType="search" nzTheme="outline"></span>조회
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button (click)="newCodeType()">
+          <span nz-icon nzType="form" nzTheme="outline"></span>신규 분류
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button (click)="newCode()">
+          <span nz-icon nzType="form" nzTheme="outline"></span>신규 코드
+        </button>
+      </div>
     </div>
+  </app-nz-search-area>
+</ng-template>
+
+<app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
+  <div class="container">
+    <h3 class="header1">업무코드분류</h3>
+    <app-biz-type-grid class="grid1"
+      (rowClicked)="codeTypeGridRowClicked($event)"
+      (editButtonClicked)="editCodeType($event)"
+      (rowDoubleClicked)="editCodeType($event)">
+    </app-biz-type-grid>
+
+    <h3 class="header2">업무코드</h3>
+    <app-biz-code-grid class="grid2"
+      (rowClicked)="codeGridRowClicked($event)"
+      (editButtonClicked)="editCode($event)"
+      (rowDoubleClicked)="editCode($event)">
+    </app-biz-code-grid>
   </div>
-</app-nz-search-area>
-
-
-<div class="page-content">
-  <h3 class="header1">업무코드분류</h3>
-  <app-biz-type-grid
-    (rowClicked)="codeTypeGridRowClicked($event)"
-    (editButtonClicked)="editCodeType($event)"
-    (rowDoubleClicked)="editCodeType($event)">
-  </app-biz-type-grid>
-
-  <h3 class="header2">업무코드</h3>
-  <app-biz-code-grid
-    (rowClicked)="codeGridRowClicked($event)"
-    (editButtonClicked)="editCode($event)"
-    (rowDoubleClicked)="editCode($event)">
-  </app-biz-code-grid>
-</div>
+</app-shape>
 
 <app-biz-code-type-form-drawer
   [drawer]="drawer.codeType"
@@ -88,43 +93,17 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
 :host {
   --page-header-height: 98px;
   --page-search-height: 46px;
-  --page-content-title-height: 26px;
-  --page-content-title-margin-height: 6px;
-  --page-content-margin-height: 6px;
-}
-
-.page-header {
-  height: var(--page-header-height);
-}
-
-.page-search {
-  height: var(--page-search-height);
-}
-
-.page-content-title {
-  height: var(--page-content-title-height);
 }
 
 .grid-title {
-  margin-top: var(--page-content-title-margin-height);
   margin-left: 6px;
   border-left: 6px solid green;
   padding-left: 6px;
   vertical-align: text-top;
 }
 
-.page-content {
-  margin-top: var(--page-content-margin-height);
-  height: calc(100vh - (
-                        var(--app-header-height) +
-                        var(--app-footer-height) +
-                        var(--page-header-height) +
-                        var(--page-search-height) +
-                        /*var(--page-content-title-height) +
-                        var(--page-content-title-margin-height) +*/
-                        var(--page-content-margin-height)
-                       )
-              );
+.container {
+  height: 100%;
   display: grid;
   grid-template-rows: 34px 1fr;
   grid-template-columns: 1fr 1fr;
@@ -134,13 +113,8 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
     "grid1   grid2";
 }
 
-.text-align-right {
-  text-align: right;
-}
-
 .header1 {
   grid-area: header1;
-  margin-top: var(--page-content-title-margin-height);
   margin-left: 6px;
   border-left: 6px solid green;
   padding-left: 6px;
@@ -149,7 +123,6 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
 
 .header2 {
   grid-area: header2;
-  margin-top: var(--page-content-title-margin-height);
   margin-left: 6px;
   border-left: 6px solid green;
   padding-left: 6px;

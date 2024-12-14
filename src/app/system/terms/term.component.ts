@@ -19,6 +19,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-area/nz-search-area.component';
+import { ShapeComponent } from "../../core/app/shape.component";
 
 @Component({
   selector: 'app-term',
@@ -27,7 +28,6 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-
     NzDrawerModule,
     NzTabsModule,
     NzGridModule,
@@ -36,66 +36,65 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
     NzInputModule,
     NzButtonModule,
     NzIconModule,
-
     NzPageHeaderCustomComponent,
     NzSearchAreaComponent,
-
     DataDomainFormComponent,
     DataDomainGridComponent,
     TermFormComponent,
     TermGridComponent,
     WordFormComponent,
-    WordGridComponent
-  ],
+    WordGridComponent,
+    ShapeComponent
+],
   template: `
-<div class="page-header">
+<ng-template #header>
   <nz-page-header-custom title="용어사전 등록" subtitle="This is a subtitle"></nz-page-header-custom>
-</div>
+</ng-template>
 
-<app-nz-search-area [height]="'var(--page-search-height)'">
-  <div nz-row>
-    <div nz-col [nzSpan]="12">
-      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-        <input type="text" [(ngModel)]="query.term.value" nz-input placeholder="input search text" (keyup.enter)="getTermList()">
-      </nz-input-group>
-      <ng-template #addOnBeforeTemplate>
-        <nz-select [(ngModel)]="query.term.key">
-          @for (option of query.term.list; track option.value) {
-          <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-          }
-        </nz-select>
-      </ng-template>
-      <ng-template #suffixIconSearch>
-        <span nz-icon nzType="search"></span>
-      </ng-template>
+<ng-template #search>
+  <app-nz-search-area>
+    <div nz-row>
+      <div nz-col [nzSpan]="12">
+        <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+          <input type="text" [(ngModel)]="query.term.value" nz-input placeholder="input search text" (keyup.enter)="getTermList()">
+        </nz-input-group>
+        <ng-template #addOnBeforeTemplate>
+          <nz-select [(ngModel)]="query.term.key">
+            @for (option of query.term.list; track option.value) {
+            <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+            }
+          </nz-select>
+        </ng-template>
+        <ng-template #suffixIconSearch>
+          <span nz-icon nzType="search"></span>
+        </ng-template>
+      </div>
+      <div nz-col [nzSpan]="12" style="text-align: right;">
+        <button nz-button (click)="getTermList()">
+          <span nz-icon nzType="search"></span>조회
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button (click)="newTerm()">
+          <span nz-icon nzType="form" nzTheme="outline"></span>신규 용어
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button (click)="newWord()">
+          <span nz-icon nzType="form" nzTheme="outline"></span>신규 단어
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button (click)="newDomain()">
+          <span nz-icon nzType="form" nzTheme="outline"></span>신규 도메인
+        </button>
+      </div>
     </div>
-    <div nz-col [nzSpan]="12" style="text-align: right;">
-      <button nz-button (click)="getTermList()">
-        <span nz-icon nzType="search"></span>조회
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-      <button nz-button (click)="newTerm()">
-        <span nz-icon nzType="form" nzTheme="outline"></span>신규 용어
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-      <button nz-button (click)="newWord()">
-        <span nz-icon nzType="form" nzTheme="outline"></span>신규 단어
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-      <button nz-button (click)="newDomain()">
-        <span nz-icon nzType="form" nzTheme="outline"></span>신규 도메인
-      </button>
-    </div>
-  </div>
-</app-nz-search-area>
+  </app-nz-search-area>
+</ng-template>
 
-
-<div class="page-content">
+<app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
   <nz-tabset [nzSelectedIndex]="tabIndex">
     <nz-tab nzTitle="용어사전">
-      <!--<h3>용어사전 목록</h3>-->
-      <div class="grid-wrapper">
-        <app-term-grid #termGrid
+      <div [style.height]="'calc(100vh - var(--page-header-height) - var(--page-search-height) - 155px)'">
+        <app-term-grid
           (rowClicked)="termGridSelected($event)"
           (editButtonClicked)="editTerm($event)"
           (rowDoubleClicked)="editTerm($event)">
@@ -104,18 +103,18 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
     </nz-tab>
 
     <nz-tab nzTitle="단어사전">
-      <div class="grid-wrapper">
-        <app-word-grid #wordGrid
-        (rowClicked)="wordGridSelected($event)"
-        (editButtonClicked)="editWord($event)"
-        (rowDoubleClicked)="editWord($event)">
+      <div [style.height]="'calc(100vh - var(--page-header-height) - var(--page-search-height) - 155px)'">
+        <app-word-grid
+          (rowClicked)="wordGridSelected($event)"
+          (editButtonClicked)="editWord($event)"
+          (rowDoubleClicked)="editWord($event)">
         </app-word-grid>
       </div>
     </nz-tab>
 
     <nz-tab nzTitle="도메인">
-      <div class="grid-wrapper">
-        <app-data-domain-grid #domainGrid
+      <div [style.height]="'calc(100vh - var(--page-header-height) - var(--page-search-height) - 155px)'">
+        <app-data-domain-grid
           (rowClicked)="domainGridSelected($event)"
           (editButtonClicked)="this.drawer.domain.visible = true"
           (rowDoubleClicked)="this.drawer.domain.visible = true">
@@ -123,7 +122,7 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
       </div>
     </nz-tab>
   </nz-tabset>
-</div>
+</app-shape>
 
 <nz-drawer
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
@@ -176,49 +175,19 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
 :host {
   --page-header-height: 98px;
   --page-search-height: 46px;
-  --page-content-title-height: 26px;
-  --page-content-title-margin-height: 6px;
-  --page-content-margin-height: 6px;
-}
-
-.page-header {
-  height: var(--page-header-height);
-}
-
-.page-search {
-  height: var(--page-search-height);
-}
-
-.page-content-title {
-  height: var(--page-content-title-height);
 }
 
 .grid-title {
-  margin-top: var(--page-content-title-margin-height);
   margin-left: 6px;
   border-left: 6px solid green;
   padding-left: 6px;
   vertical-align: text-top;
 }
 
-.page-content {
-  margin-top: var(--page-content-margin-height);
-  height: calc(100vh - (
-                        var(--app-header-height) +
-                        var(--app-footer-height) +
-                        var(--page-header-height) +
-                        var(--page-search-height) +
-                        var(--page-content-title-height) +
-                        var(--page-content-title-margin-height) +
-                        var(--page-content-margin-height)
-                       )
-              );
-}
-
-.grid-wrapper {
-  height: calc(100vh - 304px);
-  margin: 0;
-  padding: 0;
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
   `
 })

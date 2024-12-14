@@ -15,6 +15,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-area/nz-search-area.component';
 import { CommonCodeGridComponent } from './common-code-grid.component';
+import { ShapeComponent } from "../../core/app/shape.component";
 
 @Component({
   selector: 'app-common-code',
@@ -29,79 +30,85 @@ import { CommonCodeGridComponent } from './common-code-grid.component';
     NzButtonsComponent,
     NzPageHeaderCustomComponent,
     NzSearchAreaComponent,
-
     CommonCodeTreeComponent,
-    CommonCodeGridComponent,
-    CommonCodeFormComponent
-  ],
+    CommonCodeFormComponent,
+    ShapeComponent
+],
   template: `
-<nz-page-header-custom title="공통코드 등록" subtitle="This is a subtitle"></nz-page-header-custom>
+<ng-template #header>
+  <nz-page-header-custom title="공통코드 등록" subtitle="This is a subtitle"></nz-page-header-custom>
+</ng-template>
 
-<!--조회 조건-->
-<app-nz-search-area [height]="'var(--page-search-height)'">
-  <div nz-row>
-    <div nz-col [nzSpan]="12">
-      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-        <input type="text" [(ngModel)]="queryValue" nz-input placeholder="input search text">
-      </nz-input-group>
-      <ng-template #addOnBeforeTemplate>
-        <nz-select [(ngModel)]="systeTypeCode">
-          @for (option of systemTypeCodeList; track option.value) {
-          <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-          }
-        </nz-select>
-      </ng-template>
-      <ng-template #suffixIconSearch>
-        <span nz-icon nzType="search"></span>
-      </ng-template>
+<ng-template #search>
+  <app-nz-search-area>
+    <div nz-row>
+      <div nz-col [nzSpan]="12">
+        <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+          <input type="text" [(ngModel)]="queryValue" nz-input placeholder="input search text">
+        </nz-input-group>
+        <ng-template #addOnBeforeTemplate>
+          <nz-select [(ngModel)]="systeTypeCode">
+            @for (option of systemTypeCodeList; track option.value) {
+            <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+            }
+          </nz-select>
+        </ng-template>
+        <ng-template #suffixIconSearch>
+          <span nz-icon nzType="search"></span>
+        </ng-template>
+      </div>
+      <div nz-col [nzSpan]="12" style="text-align: right;">
+        <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
+        <!--
+        <button nz-button nzType="primary" (click)="getCommonCodeTree()">
+          <span nz-icon nzType="search"></span>조회
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button (click)="newForm()">
+          <span nz-icon nzType="form" nzTheme="outline"></span>신규
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button nzType="primary"
+          nz-popconfirm nzPopconfirmTitle="저장하시겠습니까?"
+          (nzOnConfirm)="saveCommonCode()" (nzOnCancel)="false">
+          <span nz-icon nzType="save" nzTheme="outline"></span>저장
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button nzDanger="true"
+          nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
+          (nzOnConfirm)="deleteCommonCode()" (nzOnCancel)="false">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
+        </button>
+        -->
+      </div>
     </div>
-    <div nz-col [nzSpan]="12" style="text-align: right;">
-      <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
-      <!--
-      <button nz-button nzType="primary" (click)="getCommonCodeTree()">
-        <span nz-icon nzType="search"></span>조회
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-      <button nz-button (click)="newForm()">
-        <span nz-icon nzType="form" nzTheme="outline"></span>신규
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-      <button nz-button nzType="primary"
-        nz-popconfirm nzPopconfirmTitle="저장하시겠습니까?"
-        (nzOnConfirm)="saveCommonCode()" (nzOnCancel)="false">
-        <span nz-icon nzType="save" nzTheme="outline"></span>저장
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-      <button nz-button nzDanger="true"
-        nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
-        (nzOnConfirm)="deleteCommonCode()" (nzOnCancel)="false">
-        <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
-      </button>
-      -->
+  </app-nz-search-area>
+</ng-template>
+
+<app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
+  <div class="container">
+    <div>
+      <h3 class="pgm-title">공통코드 목록</h3>
+    </div>
+
+    <div class="grid-wrapper">
+      <app-common-code-tree #commonCodeTree
+        [searchValue]="queryValue"
+        (itemSelected)="selectedItem($event)">
+      </app-common-code-tree>
+
+      <app-common-code-form #commonCodeForm
+        (formSaved)="getCommonCodeTree()"
+        (formDeleted)="getCommonCodeTree()">
+      </app-common-code-form>
     </div>
   </div>
-</app-nz-search-area>
-
-<h3 class="pgm-title">공통코드 목록</h3>
-<div class="grid-wrapper">
-  <app-common-code-tree #commonCodeTree
-    [searchValue]="queryValue"
-    (itemSelected)="selectedItem($event)">
-  </app-common-code-tree>
-
-  <app-common-code-form #commonCodeForm
-    (formSaved)="getCommonCodeTree()"
-    (formDeleted)="getCommonCodeTree()">
-  </app-common-code-form>
-</div>
+</app-shape>
   `,
   styles: `
 :host {
   --page-header-height: 98px;
   --page-search-height: 46px;
-  --page-content-title-height: 26px;
-  --page-content-title-margin-height: 6px;
-  --page-content-margin-height: 6px;
 }
 
 .pgm-title {

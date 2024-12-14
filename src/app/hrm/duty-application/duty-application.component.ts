@@ -10,6 +10,7 @@ import { DutyDateListComponent } from './duty-date-list.component';
 import { NzCrudButtonGroupComponent } from 'src/app/third-party/ng-zorro/nz-crud-button-group/nz-crud-button-group.component';
 import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-page-header-custom/nz-page-header-custom.component';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { ShapeComponent } from "../../core/app/shape.component";
 
 @Component({
   selector: 'app-duty-application',
@@ -20,31 +21,41 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     ReactiveFormsModule,
     NzDatePickerModule,
     NzCrudButtonGroupComponent,
-
     NzPageHeaderCustomComponent,
-
     DutyDateListComponent,
     DutyApplicationGridComponent,
-    DutyApplicationFormComponent
-  ],
+    DutyApplicationFormComponent,
+    ShapeComponent
+],
   template: `
-<nz-page-header-custom title="부서코드 등록" subtitle="This is a subtitle"></nz-page-header-custom>
 
-<div nz-row class="btn-group">
+<ng-template #header>
+  <nz-page-header-custom title="부서코드 등록" subtitle="This is a subtitle"></nz-page-header-custom>
+</ng-template>
 
-</div>
+<ng-template #search>
+  <div nz-row class="btn-group">
 
-<div class="grid-wrapper">
+  </div>
+</ng-template>
 
-  <app-duty-application-grid>
-  </app-duty-application-grid>
+<app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
+  <div class="grid-wrapper">
 
-  <app-duty-application-form>
-  </app-duty-application-form>
-</div>
+    <app-duty-application-grid>
+    </app-duty-application-grid>
 
+    <app-duty-application-form>
+    </app-duty-application-form>
+  </div>
+</app-shape>
   `,
   styles: `
+:host {
+  --page-header-height: 98px;
+  --page-search-height: 46px;
+}
+
 .pgm-title {
   padding-left: 5px;
   border-left: 5px solid green;
@@ -60,9 +71,15 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 }
 
 .grid-wrapper {
+  height: calc(100% - 5px);
   display: grid;
-  grid-template-rows: 1fr;
   grid-template-columns: 300px 1fr;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
   `

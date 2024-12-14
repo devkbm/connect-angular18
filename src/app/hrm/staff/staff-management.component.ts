@@ -39,6 +39,7 @@ import { StaffFamilyFormDrawerComponent } from './staff-family/staff-family-form
 import { StaffLicenseFormDrawerComponent } from './staff-license/staff-license-form-drawer.component';
 import { StaffSchoolCareerFormDrawerComponent } from './staff-school-career/staff-school-career-form-drawer.component';
 import { StaffContactFormDrawerComponent } from './staff-contact/staff-contact-form-drawer.component';
+import { ShapeComponent } from "../../core/app/shape.component";
 
 
 @Component({
@@ -48,7 +49,6 @@ import { StaffContactFormDrawerComponent } from './staff-contact/staff-contact-f
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-
     NzDrawerModule,
     NzTabsModule,
     NzCollapseModule,
@@ -57,169 +57,161 @@ import { StaffContactFormDrawerComponent } from './staff-contact/staff-contact-f
     NzButtonModule,
     NzIconModule,
     NzPageHeaderCustomComponent,
-
-    StaffAppointmentRecordFormComponent,
     StaffAppointmentRecordFormDrawerComponent,
     StaffAppointmentRecordGridComponent,
-
-    StaffFamilyFormComponent,
     StaffFamilyFormDrawerComponent,
     StaffFamilyGridComponent,
-
-    NewStaffFormComponent,
     NewStaffFormDrawerComponent,
-
     StaffContactFormComponent,
-    StaffDutyResponsibilityFormComponent,
     StaffDutyResponsibilityFormDrawerComponent,
     StaffDutyResponsibilityListComponent,
-
-    StaffLicenseFormComponent,
     StaffLicenseFormDrawerComponent,
     StaffLicenseGridComponent,
-
-    StaffSchoolCareerFormComponent,
     StaffSchoolCareerFormDrawerComponent,
     StaffSchoolCareerGridComponent,
-
     StaffRegistFormComponent,
     StaffGridComponent,
     StaffCurrentAppointmentDescriptionComponent,
-    StaffCardComponent,
     StaffCardListComponent,
-    StaffContactFormDrawerComponent,
-  ],
+    ShapeComponent
+],
   template: `
-<nz-page-header-custom title="직원정보관리" subtitle="This is a subtitle"></nz-page-header-custom>
+<ng-template #header>
+  <nz-page-header-custom title="직원정보관리" subtitle="This is a subtitle"></nz-page-header-custom>
+</ng-template>
 
-<div nz-row class="btn-group">
+<ng-template #search>
+  <div nz-row class="btn-group">
 
-  <div nz-col [nzSpan]="24" style="text-align: right;">
-    {{selectedStaff | json}}
-    <button nz-button (click)="selectGridStaff()">
-      <span nz-icon nzType="search" nzTheme="outline"></span>조회
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button nzType="primary" (click)="newStaff()">
-      <span nz-icon nzType="save" nzTheme="outline"></span>신규직원등록
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button nzType="primary" (click)="newDutyResponsibility()">
-      <span nz-icon nzType="save" nzTheme="outline"></span>직책등록
-    </button>
+    <div nz-col [nzSpan]="24" style="text-align: right;">
+      {{selectedStaff | json}}
+      <button nz-button (click)="selectGridStaff()">
+        <span nz-icon nzType="search" nzTheme="outline"></span>조회
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button nzType="primary" (click)="newStaff()">
+        <span nz-icon nzType="save" nzTheme="outline"></span>신규직원등록
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button nzType="primary" (click)="newDutyResponsibility()">
+        <span nz-icon nzType="save" nzTheme="outline"></span>직책등록
+      </button>
+    </div>
   </div>
-</div>
+</ng-template>
 
-<div class="app-grid">
-  <app-staff-grid
-    (rowClicked)="staffGridRowClicked($event)">
-  </app-staff-grid>
+<app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
+  <div class="app-grid">
+    <app-staff-grid
+      (rowClicked)="staffGridRowClicked($event)">
+    </app-staff-grid>
 
-  <div>
-    <app-staff-regist-form [staffNo]="selectedStaff?.staffNo">
-    </app-staff-regist-form>
-    <nz-collapse>
-      <nz-collapse-panel [nzHeader]="'발령'">
-        <app-staff-current-appointment-description [staffNo]="selectedStaff?.staffNo">
-        </app-staff-current-appointment-description>
-      </nz-collapse-panel>
-      <nz-collapse-panel [nzHeader]="'보직'">
-        <div style="height:100px; padding: 0px; margin: 0px;">
-          <app-staff-duty-responsibility-list
-            [staffId]="selectedStaff?.staffNo">
-          </app-staff-duty-responsibility-list>
-        </div>
-      </nz-collapse-panel>
-    </nz-collapse>
+    <div>
+      <app-staff-regist-form [staffNo]="selectedStaff?.staffNo">
+      </app-staff-regist-form>
+      <nz-collapse>
+        <nz-collapse-panel [nzHeader]="'발령'">
+          <app-staff-current-appointment-description [staffNo]="selectedStaff?.staffNo">
+          </app-staff-current-appointment-description>
+        </nz-collapse-panel>
+        <nz-collapse-panel [nzHeader]="'보직'">
+          <div style="height:100px; padding: 0px; margin: 0px;">
+            <app-staff-duty-responsibility-list
+              [staffId]="selectedStaff?.staffNo">
+            </app-staff-duty-responsibility-list>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+
+
+    <div>
+      <nz-tabset [nzAnimated]="false">
+        <nz-tab nzTitle="연락처">
+          <div class="tab-grid">
+            <app-staff-contact-form
+              [staff]="selectedStaff"
+              (formSaved)="selectGridAppointment()"
+              (formDeleted)="selectGridAppointment()"
+              (formClosed)="drawer.contact.visible = false">
+            </app-staff-contact-form>
+          </div>
+        </nz-tab>
+
+        <nz-tab nzTitle="발령기록">
+          <button nz-button nzType="primary" (click)="newAppoint()">
+            <span nz-icon nzType="save" nzTheme="outline"></span>발령등록
+          </button>
+          @defer (on idle) {
+          <div class="tab-grid">
+            <app-staff-appointment-record-grid
+              [staffNo]="selectedStaff?.staffNo"
+              (editButtonClicked)="editAppointment($event)"
+              (rowDoubleClicked)="editAppointment($event)">
+            </app-staff-appointment-record-grid>
+          </div>
+          }
+        </nz-tab>
+
+        <nz-tab nzTitle="가족">
+          <button nz-button nzType="primary" (click)="newFamily()">
+            <span nz-icon nzType="save" nzTheme="outline"></span>가족등록
+          </button>
+          @defer {
+          <div class="tab-grid">
+            <app-staff-family-grid
+              [staffId]="selectedStaff?.staffNo"
+              (editButtonClicked)="editFamily($event)"
+              (rowDoubleClicked)="editFamily($event)">
+            </app-staff-family-grid>
+          </div>
+          }
+        </nz-tab>
+
+        <nz-tab nzTitle="학력">
+          <button nz-button nzType="primary" (click)="newSchoolCareer()">
+            <span nz-icon nzType="save" nzTheme="outline"></span>학력등록
+          </button>
+          @defer (on idle) {
+          <div class="tab-grid">
+            <app-staff-school-career-grid
+              [staffId]="selectedStaff?.staffNo"
+              (editButtonClicked)="editSchoolCareer($event)"
+              (rowDoubleClicked)="editSchoolCareer($event)">
+            </app-staff-school-career-grid>
+          </div>
+          }
+        </nz-tab>
+
+        <nz-tab nzTitle="자격면허">
+          <button nz-button nzType="primary" (click)="newLicense()">
+            <span nz-icon nzType="save" nzTheme="outline"></span>자격면허등록
+          </button>
+          @defer (on idle) {
+          <div class="tab-grid">
+            <app-staff-license-grid
+              [staffId]="selectedStaff?.staffNo"
+              (editButtonClicked)="editLicense($event)"
+              (rowDoubleClicked)="editLicense($event)">
+            </app-staff-license-grid>
+          </div>
+          }
+        </nz-tab>
+
+        <nz-tab nzTitle="카드명단">
+        @defer (on idle) {
+          <div class="tab-grid">
+            <app-staff-card-list>
+            </app-staff-card-list>
+          </div>
+        }
+        </nz-tab>
+
+      </nz-tabset>
+    </div>
+
   </div>
-
-
-  <div>
-    <nz-tabset [nzAnimated]="false">
-      <nz-tab nzTitle="연락처">
-        <div class="tab-grid">
-          <app-staff-contact-form
-            [staff]="selectedStaff"
-            (formSaved)="selectGridAppointment()"
-            (formDeleted)="selectGridAppointment()"
-            (formClosed)="drawer.contact.visible = false">
-          </app-staff-contact-form>
-        </div>
-      </nz-tab>
-
-      <nz-tab nzTitle="발령기록">
-        <button nz-button nzType="primary" (click)="newAppoint()">
-          <span nz-icon nzType="save" nzTheme="outline"></span>발령등록
-        </button>
-        @defer (on idle) {
-        <div class="tab-grid">
-          <app-staff-appointment-record-grid
-            [staffNo]="selectedStaff?.staffNo"
-            (editButtonClicked)="editAppointment($event)"
-            (rowDoubleClicked)="editAppointment($event)">
-          </app-staff-appointment-record-grid>
-        </div>
-        }
-      </nz-tab>
-
-      <nz-tab nzTitle="가족">
-        <button nz-button nzType="primary" (click)="newFamily()">
-          <span nz-icon nzType="save" nzTheme="outline"></span>가족등록
-        </button>
-        @defer {
-        <div class="tab-grid">
-          <app-staff-family-grid
-            [staffId]="selectedStaff?.staffNo"
-            (editButtonClicked)="editFamily($event)"
-            (rowDoubleClicked)="editFamily($event)">
-          </app-staff-family-grid>
-        </div>
-        }
-      </nz-tab>
-
-      <nz-tab nzTitle="학력">
-        <button nz-button nzType="primary" (click)="newSchoolCareer()">
-          <span nz-icon nzType="save" nzTheme="outline"></span>학력등록
-        </button>
-        @defer (on idle) {
-        <div class="tab-grid">
-          <app-staff-school-career-grid
-            [staffId]="selectedStaff?.staffNo"
-            (editButtonClicked)="editSchoolCareer($event)"
-            (rowDoubleClicked)="editSchoolCareer($event)">
-          </app-staff-school-career-grid>
-        </div>
-        }
-      </nz-tab>
-
-      <nz-tab nzTitle="자격면허">
-        <button nz-button nzType="primary" (click)="newLicense()">
-          <span nz-icon nzType="save" nzTheme="outline"></span>자격면허등록
-        </button>
-        @defer (on idle) {
-        <div class="tab-grid">
-          <app-staff-license-grid
-            [staffId]="selectedStaff?.staffNo"
-            (editButtonClicked)="editLicense($event)"
-            (rowDoubleClicked)="editLicense($event)">
-          </app-staff-license-grid>
-        </div>
-        }
-      </nz-tab>
-
-      <nz-tab nzTitle="카드명단">
-      @defer (on idle) {
-        <div class="tab-grid">
-          <app-staff-card-list>
-          </app-staff-card-list>
-        </div>
-      }
-      </nz-tab>
-
-    </nz-tabset>
-  </div>
-
-</div>
+</app-shape>
 
 <app-new-staff-form-drawer
   [drawer]="drawer.newStaff"
@@ -264,15 +256,19 @@ import { StaffContactFormDrawerComponent } from './staff-contact/staff-contact-f
 </app-staff-license-form-drawer>
   `,
   styles: `
+:host {
+  --page-header-height: 98px;
+  --page-search-height: 46px;
+}
+
 .app-grid {
-  height: calc(100vh - 336px);
+  background-color:red;
+  height: 100%;
   display: grid;
   /*grid-auto-flow: column;*/
-  grid-template-rows: 1fr;
   grid-template-columns: 200px 400px 1fr;
   column-gap: 10px;
   margin-top: 10px;
-
 }
 
 .btn-group {
@@ -290,7 +286,7 @@ import { StaffContactFormDrawerComponent } from './staff-contact/staff-contact-f
 }
 
 .tab-grid {
-  height: calc(100vh - 336px);
+  height: calc(100vh - 330px);
 }
   `
 })

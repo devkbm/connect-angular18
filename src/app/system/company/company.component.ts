@@ -15,6 +15,7 @@ import { CompanyFormDrawerComponent } from "./company-form-drawer.component";
 
 import { CompanyGridService } from './company-grid.service';
 import { CompanyGridComponent } from './company-grid.component';
+import { ShapeComponent } from "src/app/core/app/shape.component";
 
 @Component({
   selector: 'app-company',
@@ -31,15 +32,23 @@ import { CompanyGridComponent } from './company-grid.component';
     NzPageHeaderCustomComponent,
     NzSearchAreaComponent,
     CompanyGridComponent,
-    CompanyFormDrawerComponent
+    CompanyFormDrawerComponent,
+    ShapeComponent
 ],
   template: `
-<nz-page-header-custom title="리소스 등록" subtitle="This is a subtitle"></nz-page-header-custom>
 
-<app-nz-search-area [height]="'var(--page-search-height)'">
-  <div nz-row>
-    <div nz-col [nzSpan]="12">
-      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+<ng-template #header>
+  <nz-page-header-custom title="회사 등록" subtitle="This is a subtitle"></nz-page-header-custom>
+</ng-template>
+
+<ng-template #search>
+  <app-nz-search-area>
+    <div nz-row>
+      <div nz-col [nzSpan]="12">
+        <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+          <input type="text" [(ngModel)]="query.company.value" nz-input placeholder="input search text" (keyup.enter)="getList()">
+        </nz-input-group>
+
         <ng-template #addOnBeforeTemplate>
           <nz-select [(ngModel)]="query.company.key">
             @for (option of query.company.list; track option.value) {
@@ -47,55 +56,59 @@ import { CompanyGridComponent } from './company-grid.component';
             }
           </nz-select>
         </ng-template>
-        <input type="text" [(ngModel)]="query.company.value" nz-input placeholder="input search text" (keyup.enter)="getList()">
+
         <ng-template #suffixIconSearch>
           <span nz-icon nzType="search"></span>
         </ng-template>
-      </nz-input-group>
+      </div>
+      <div nz-col [nzSpan]="12" style="text-align: right;">
+        <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
+      </div>
     </div>
-    <div nz-col [nzSpan]="12" style="text-align: right;">
-      <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
+  </app-nz-search-area>
+</ng-template>
+
+<app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
+  <div class="container">
+    <div>
+      <h3 class="grid-title">회사 목록 {{drawer| json}} </h3>
+    </div>
+    <div style="flex: 1">
+      <app-company-grid #grid
+        (rowClicked)="resourceGridRowClicked($event)"
+        (editButtonClicked)="editResource($event)"
+        (rowDoubleClicked)="editResource($event)">
+      </app-company-grid>
     </div>
   </div>
-</app-nz-search-area>
-
-<h3 class="grid-title">회사 목록 {{drawer| json}} </h3>
-
-<div class="grid-wrapper">
-  <app-company-grid #grid
-    (rowClicked)="resourceGridRowClicked($event)"
-    (editButtonClicked)="editResource($event)"
-    (rowDoubleClicked)="editResource($event)">
-  </app-company-grid>
-</div>
+</app-shape>
 
 <app-company-form-drawer
   [drawer]="drawer.company"
   (drawerClosed)="getList()">
 </app-company-form-drawer>
+
   `,
   styles: `
-:host {
-  --page-header-height: 98px;
-  --page-search-height: 46px;
-  --page-content-title-height: 26px;
-  --page-content-title-margin-height: 6px;
-  --page-content-margin-height: 6px;
-}
+  :host {
+    --page-header-height: 98px;
+    --page-search-height: 46px;
+  }
 
-.grid-title {
-  height: 26px;
-  margin-top: 6px;
-  margin-left: 6px;
-  padding-left: 6px;
-  border-left: 6px solid green;
-  vertical-align: text-top;
-}
+  .grid-title {
+    height: 26px;
+    margin-top: 6px;
+    margin-left: 6px;
+    padding-left: 6px;
+    border-left: 6px solid green;
+    vertical-align: text-top;
+  }
 
-/* 페이지 헤더 98px, 조회조건 46px, 그리드 제목 26px, 푸터 24px 제외 */
-.grid-wrapper {
-  height: calc(100% - 194px)
-}
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
   `
 })
 export class CompanyComponent implements OnInit {
@@ -111,8 +124,8 @@ export class CompanyComponent implements OnInit {
       key: 'resourceCode',
       value: '',
       list: [
-        {label: '리소스코드', value: 'resourceCode'},
-        {label: '리소스명', value: 'resourceName'},
+        {label: '회사코드', value: 'resourceCode'},
+        {label: '회사명', value: 'resourceName'},
         {label: 'URL', value: 'url'},
         {label: '설명', value: 'description'}
       ]

@@ -22,6 +22,7 @@ import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-pag
 import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-area/nz-search-area.component';
 import { ButtonTemplate } from 'src/app/third-party/ng-zorro/nz-buttons/nz-buttons.component';
 import { NzButtonExcelUploadComponent } from "src/app/third-party/ng-zorro/nz-button-excel-upload/nz-button-excel-upload.component";
+import { ShapeComponent } from "../../core/app/shape.component";
 
 @Component({
   selector: 'app-user',
@@ -43,66 +44,72 @@ import { NzButtonExcelUploadComponent } from "src/app/third-party/ng-zorro/nz-bu
     UserGridComponent,
     UserImageUploadComponent,
     UserFormDrawerComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    ShapeComponent
 ],
   template: `
-<div class="page-header">
+<ng-template #header>
   <nz-page-header-custom title="사용자 등록" subtitle="This is a subtitle"></nz-page-header-custom>
-</div>
+</ng-template>
 
-<app-nz-search-area [height]="'var(--page-search-height)'">
-  <div nz-row>
-    <div nz-col [nzSpan]="12">
-      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-        <ng-template #addOnBeforeTemplate>
-          <nz-select [(ngModel)]="query.user.key">
-            @for (option of query.user.list; track option.value) {
-            <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-            }
-          </nz-select>
-        </ng-template>
-        <input type="text" [(ngModel)]="query.user.value" nz-input placeholder="input search text" (keyup.enter)="getUserList()">
-        <ng-template #suffixIconSearch>
-          <span nz-icon nzType="search"></span>
-        </ng-template>
-      </nz-input-group>
+<ng-template #search>
+  <app-nz-search-area>
+    <div nz-row>
+      <div nz-col [nzSpan]="12">
+        <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+          <ng-template #addOnBeforeTemplate>
+            <nz-select [(ngModel)]="query.user.key">
+              @for (option of query.user.list; track option.value) {
+              <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+              }
+            </nz-select>
+          </ng-template>
+          <input type="text" [(ngModel)]="query.user.value" nz-input placeholder="input search text" (keyup.enter)="getUserList()">
+          <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </nz-input-group>
+      </div>
+
+      <div nz-col [nzSpan]="12" style="text-align: right;">
+        <!--<app-nz-buttons [buttons]="buttons"></app-nz-buttons>-->
+
+        <app-nz-button-excel-upload [urn]="'/api/system/user-excel'">
+        </app-nz-button-excel-upload>
+
+        <button nz-button (click)="getUserList()">
+          <span nz-icon nzType="search"></span>조회
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button (click)="newForm()">
+          <span nz-icon nzType="form" nzTheme="outline"></span>신규
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button nzDanger="true"
+          nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
+          (nzOnConfirm)="deleteUser()" (nzOnCancel)="false">
+            <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
+        </button>
+      </div>
+    </div>
+  </app-nz-search-area>
+</ng-template>
+
+<app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
+  <div class="container">
+    <div>
+      <h3 class="grid-title">사용자 목록</h3>
     </div>
 
-    <div nz-col [nzSpan]="12" style="text-align: right;">
-      <!--<app-nz-buttons [buttons]="buttons"></app-nz-buttons>-->
-
-      <app-nz-button-excel-upload [urn]="'/api/system/user-excel'">
-      </app-nz-button-excel-upload>
-
-      <button nz-button (click)="getUserList()">
-        <span nz-icon nzType="search"></span>조회
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-      <button nz-button (click)="newForm()">
-        <span nz-icon nzType="form" nzTheme="outline"></span>신규
-      </button>
-      <nz-divider nzType="vertical"></nz-divider>
-      <button nz-button nzDanger="true"
-        nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
-        (nzOnConfirm)="deleteUser()" (nzOnCancel)="false">
-          <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
-      </button>
+    <div style="flex: 1">
+      <app-user-grid #userGrid
+        (rowClicked)="userGridSelected($event)"
+        (editButtonClicked)="editForm($event)"
+        (rowDoubleClicked)="editForm($event)">
+      </app-user-grid>
     </div>
   </div>
-</app-nz-search-area>
-
-
-<div class="page-content-title">
-  <h3 class="grid-title">사용자 목록</h3>
-</div>
-
-<div class="page-content">
-  <app-user-grid #userGrid
-    (rowClicked)="userGridSelected($event)"
-    (editButtonClicked)="editForm($event)"
-    (rowDoubleClicked)="editForm($event)">
-  </app-user-grid>
-</div>
+</app-shape>
 
 <app-user-form-drawer
   [drawer]="drawer.user"
@@ -113,44 +120,19 @@ import { NzButtonExcelUploadComponent } from "src/app/third-party/ng-zorro/nz-bu
 :host {
   --page-header-height: 98px;
   --page-search-height: 46px;
-  --page-content-title-height: 26px;
-  --page-content-title-margin-height: 6px;
-  --page-content-margin-height: 6px;
-}
-
-.page-header {
-  height: var(--page-header-height);
-}
-
-.page-search {
-  height: var(--page-search-height);
-}
-
-.page-content-title {
-  height: var(--page-content-title-height);
 }
 
 .grid-title {
-  margin-top: var(--page-content-title-margin-height);
   margin-left: 6px;
   border-left: 6px solid green;
   padding-left: 6px;
   vertical-align: text-top;
 }
 
-.page-content {
-  --margin-height: 6px;
-  margin-top: var(--page-content-margin-height);
-  height: calc(100vh - (
-                        var(--app-header-height) +
-                        var(--app-footer-height) +
-                        var(--page-header-height) +
-                        var(--page-search-height) +
-                        var(--page-content-title-height) +
-                        var(--page-content-title-margin-height) +
-                        var(--page-content-margin-height)
-                       )
-              );
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 [nz-button] {
