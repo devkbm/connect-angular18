@@ -80,11 +80,13 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
     </div>
 
     <div style="flex: 1">
+      @defer {
       <app-role-grid #authGrid
         (rowClicked)="selectedItem($event)"
         (editButtonClicked)="editDrawOpen($event)"
         (rowDoubleClicked)="editDrawOpen($event)">
       </app-role-grid>
+      }
     </div>
   </div>
 </app-shape>

@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect, output } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { ResponseList } from 'src/app/core/model/response-list';
@@ -145,7 +144,7 @@ import { NzInputSelectComponent } from 'src/app/third-party/ng-zorro/nz-input-se
 
   `]
 })
-export class BizCodeTypeFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class BizCodeTypeFormComponent implements OnInit, AfterViewInit {
 
   bizTypeList: SelectControlModel[] = [];
 
@@ -153,7 +152,11 @@ export class BizCodeTypeFormComponent extends FormBase implements OnInit, AfterV
   private appAlarmService = inject(AppAlarmService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     typeId    : new FormControl<string | null>(null, { validators: [Validators.required] }),
     typeName  : new FormControl<string | null>(null, { validators: [Validators.required] }),
     sequence  : new FormControl<number | null>(null),
@@ -161,11 +164,9 @@ export class BizCodeTypeFormComponent extends FormBase implements OnInit, AfterV
     comment   : new FormControl<string | null>(null)
   });
 
-  override initLoadId = input<string>('');
+  initLoadId = input<string>('');
 
   constructor() {
-    super();
-
     effect(() => {
       if (this.initLoadId()) {
         this.get(this.initLoadId());
@@ -189,11 +190,9 @@ export class BizCodeTypeFormComponent extends FormBase implements OnInit, AfterV
   }
 
   newForm(): void {
-    this.formType = FormType.NEW;
   }
 
   modifyForm(formData: BizCodeType): void {
-    this.formType = FormType.MODIFY;
     this.fg.controls.typeId.disable();
 
     this.fg.patchValue(formData);
@@ -216,7 +215,12 @@ export class BizCodeTypeFormComponent extends FormBase implements OnInit, AfterV
 
   save(): void {
     if (this.fg.invalid) {
-      this.checkForm()
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

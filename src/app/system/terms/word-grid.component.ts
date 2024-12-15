@@ -1,16 +1,16 @@
-import { CommonModule } from '@angular/common';
-import { AgGridModule } from 'ag-grid-angular';
-
 import { Component, OnInit, inject, output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { AgGridModule } from 'ag-grid-angular';
+import { ColDef, GetRowIdFunc, GetRowIdParams } from 'ag-grid-community';
+import { RowSelectionOptions } from 'ag-grid-community';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 
 import { ResponseList } from 'src/app/core/model/response-list';
-import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 
 import { WordService } from './word.service';
 import { Word } from './word.model';
-import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
-import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({
   selector: 'app-word-grid',
@@ -19,22 +19,35 @@ import { RowSelectionOptions } from 'ag-grid-community';
     CommonModule, AgGridModule
   ],
   template: `
-   <ag-grid-angular
-      [ngStyle]="style"
+    <ag-grid-angular
       class="ag-theme-balham-dark"
-      [rowSelection]="rowSelection"
       [rowData]="list"
+      [style.height]="'100%'"
+      [rowSelection]="rowSelection"
       [columnDefs]="columnDefs"
       [getRowId]="getRowId"
       [defaultColDef]="defaultColDef"
       (gridReady)="onGridReady($event)"
       (rowClicked)="rowClickedFunc($event)"
       (rowDoubleClicked)="rowDbClickedFunc($event)">
-  </ag-grid-angular>
+    </ag-grid-angular>
   `,
   styles: []
 })
-export class WordGridComponent extends AggridFunction implements OnInit {
+export class WordGridComponent implements OnInit {
+  //#region Ag-grid Api
+  gridApi: any;
+  gridColumnApi: any;
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
+  getSelectedRows() {
+    return this.gridApi.getSelectedRows();
+  }
+  //#endregion
 
   list: Word[] = [];
 
@@ -51,37 +64,37 @@ export class WordGridComponent extends AggridFunction implements OnInit {
   private service = inject(WordService);
   private appAlarmService = inject(AppAlarmService);
 
+  defaultColDef: ColDef = { resizable: true, sortable: true };
+
+  columnDefs: ColDef[] = [
+    {
+      headerName: '',
+      width: 34,
+      cellStyle: {'text-align': 'center', padding: '0px'},
+      cellRenderer: ButtonRendererComponent,
+      cellRendererParams: {
+        onClick: this.onEditButtonClick.bind(this),
+        label: '',
+        iconType: 'form'
+      }
+    },
+    {
+      headerName: 'No',
+      valueGetter: 'node.rowIndex + 1',
+      width: 70,
+      cellStyle: {'text-align': 'center'}
+    },
+    {headerName: '논리명',        field: 'logicalName',     width: 100 },
+    {headerName: '물리명',        field: 'physicalName',    width: 100 },
+    {headerName: '논리명(영문)',  field: 'logicalNameEng',  width: 100 },
+    {headerName: '비고',          field: 'comment',         width: 400 }
+  ];
+
+  getRowId: GetRowIdFunc = (params: GetRowIdParams) => {
+    return params.data.logicalName;
+  };
+
   ngOnInit() {
-    this.defaultColDef = { resizable: true, sortable: true };
-
-    this.columnDefs = [
-      {
-        headerName: '',
-        width: 34,
-        cellStyle: {'text-align': 'center', padding: '0px'},
-        cellRenderer: ButtonRendererComponent,
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: '',
-          iconType: 'form'
-        }
-      },
-      {
-        headerName: 'No',
-        valueGetter: 'node.rowIndex + 1',
-        width: 70,
-        cellStyle: {'text-align': 'center'}
-      },
-      {headerName: '논리명',        field: 'logicalName',     width: 100 },
-      {headerName: '물리명',        field: 'physicalName',    width: 100 },
-      {headerName: '논리명(영문)',  field: 'logicalNameEng',  width: 100 },
-      {headerName: '비고',          field: 'comment',         width: 400 }
-    ];
-
-    this.getRowId = function(params: any) {
-      return params.data.logicalName;
-    };
-
     this.getList();
   }
 

@@ -1,10 +1,9 @@
-import { Component, OnInit, AfterViewInit, inject, viewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 
 import { DeptService } from './dept.service';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -227,7 +226,7 @@ import { NzFormItemCustomComponent } from "../../third-party/ng-zorro/nz-form-it
 
   `]
 })
-export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class DeptFormComponent implements OnInit, AfterViewInit {
 
   //deptCode = viewChild.required<NzInputTextComponent>('deptCode');
 
@@ -237,7 +236,11 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
   private appAlarmService = inject(AppAlarmService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     parentDeptCode          : new FormControl<string | null>(null),
     /*deptId                  : new FormControl<string | null>(null, {
                                 validators: Validators.required,
@@ -269,7 +272,6 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   newForm(): void {
-    this.formType = FormType.NEW;
 
     this.fg.reset();
     //this.fg.controls.deptId.setAsyncValidators(existingDeptValidator(this.service));
@@ -293,8 +295,6 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   modifyForm(formData: Dept): void {
-    this.formType = FormType.MODIFY;
-
     this.getDeptHierarchy();
 
     //this.fg.get('deptId')?.setAsyncValidators(null);
@@ -325,7 +325,12 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
 
   save(): void {
     if (this.fg.invalid) {
-      this.checkForm()
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, input, signal, effect, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, input, signal, effect, Renderer2, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { ResponseList } from 'src/app/core/model/response-list';
 
@@ -151,11 +150,10 @@ export interface NewFormValue {
   `,
   styles: []
 })
-export class WorkCalendarEventFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
+export class WorkCalendarEventFormComponent implements OnInit, AfterViewInit, OnChanges {
 
   //text = viewChild.required<NzInputTextareaComponent>('text');
 
-  override initLoadId = input<number>(-1);
   newFormValue = input<NewFormValue>();
 
   timeFormat: TimeFormat = TimeFormat.HourMinute;
@@ -166,7 +164,11 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
   private workGroupService = inject(WorkCalendarService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     id              : new FormControl<string | null>({value: null, disabled: true}, { validators: [Validators.required] }),
     text            : new FormControl<string | null>(null, { validators: [Validators.required] }),
     start           : new FormControl<string | Date | null>(null),
@@ -175,11 +177,11 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
     workCalendarId  : new FormControl<number | null>(null, { validators: [Validators.required] })
   });
 
+  initLoadId = input<number>(-1);
+
   isAllDay = signal<boolean>(false);
 
   constructor() {
-    super();
-
     effect(() => {
       if (this.isAllDay()) {
         let start = new Date(this.fg.controls.start.value!) as Date;
@@ -223,8 +225,6 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
   }
 
   newForm(params: NewFormValue): void {
-    this.formType = FormType.NEW;
-
     // 30분 단위로 입력받기 위해 초,밀리초 초기화
     params.start.setSeconds(0);
     params.start.setMilliseconds(0);
@@ -240,8 +240,6 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
   }
 
   modifyForm(formData: WorkCalendarEvent): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.patchValue(formData);
   }
 
@@ -263,7 +261,12 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
 
   save(): void {
     if (this.fg.invalid) {
-      this.checkForm();
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

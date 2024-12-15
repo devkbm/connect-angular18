@@ -63,18 +63,21 @@ import { ShapeComponent } from "../../core/app/shape.component";
 <app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
   <div class="container">
     <h3 class="header1">업무코드분류</h3>
+    @defer {
     <app-biz-type-grid class="grid1"
       (rowClicked)="codeTypeGridRowClicked($event)"
       (editButtonClicked)="editCodeType($event)"
       (rowDoubleClicked)="editCodeType($event)">
     </app-biz-type-grid>
-
+    }
     <h3 class="header2">업무코드</h3>
+    @defer {
     <app-biz-code-grid class="grid2"
       (rowClicked)="codeGridRowClicked($event)"
       (editButtonClicked)="editCode($event)"
       (rowDoubleClicked)="editCode($event)">
     </app-biz-code-grid>
+    }
   </div>
 </app-shape>
 

@@ -1,10 +1,9 @@
-import { Component, OnInit, inject, viewChild, Renderer2, input, effect } from '@angular/core';
+import { Component, OnInit, inject, viewChild, Renderer2, input, effect, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { UserImageUploadComponent } from './user-image-upload.component';
 
-import { FormType, FormBase } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
@@ -166,7 +165,7 @@ import { NzInputTreeSelectDeptComponent } from 'src/app/third-party/ng-zorro/nz-
   `,
   styles: []
 })
-export class UserFormComponent extends FormBase implements OnInit {
+export class UserFormComponent implements OnInit {
 
   public authList: any;
   public deptHierarchy: DeptHierarchy[] = [];
@@ -196,7 +195,11 @@ export class UserFormComponent extends FormBase implements OnInit {
   private appAlarmService = inject(AppAlarmService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     userId: new FormControl<string | null>(null, {
       validators: Validators.required,
       asyncValidators: [existingUserValidator(this.service)],
@@ -213,10 +216,9 @@ export class UserFormComponent extends FormBase implements OnInit {
     roleList: new FormControl<string[] | null>({ value: null, disabled: false }, { validators: Validators.required })
   });
 
-  override initLoadId = input<string>('');
+  initLoadId = input<string>('');
 
   constructor() {
-    super();
 
     effect(() => {
       if (this.initLoadId()) {
@@ -224,7 +226,6 @@ export class UserFormComponent extends FormBase implements OnInit {
       }
     })
   }
-
 
   ngOnInit(): void {
     this.getAuthorityList();
@@ -236,7 +237,6 @@ export class UserFormComponent extends FormBase implements OnInit {
   }
 
   newForm(): void {
-    this.formType = FormType.NEW;
     this.imageBase64 = null;
     this.previewImage = '';
 
@@ -259,8 +259,6 @@ export class UserFormComponent extends FormBase implements OnInit {
   }
 
   modifyForm(formData: User): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.controls.userId.setAsyncValidators(null);
     this.fg.controls.staffNo.disable();
 
@@ -292,7 +290,12 @@ export class UserFormComponent extends FormBase implements OnInit {
 
   save(): void {
     if (this.fg.invalid) {
-      this.checkForm();
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

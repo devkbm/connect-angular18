@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit, inject, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2, output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
@@ -171,7 +170,7 @@ import { NzCrudButtonGroupComponent } from 'src/app/third-party/ng-zorro/nz-crud
 
   `]
 })
-export class TermFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class TermFormComponent implements OnInit, AfterViewInit {
   systemTypeList: any;
   wordList: Word[] = [];
   dataDomainList: DataDomain[] = [];
@@ -182,7 +181,11 @@ export class TermFormComponent extends FormBase implements OnInit, AfterViewInit
   private appAlarmService = inject(AppAlarmService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     termId       : new FormControl<string | null>(null),
     system       : new FormControl<string | null>(null, { validators: Validators.required }),
     term         : new FormControl<string | null>(null, { validators: Validators.required }),
@@ -193,13 +196,15 @@ export class TermFormComponent extends FormBase implements OnInit, AfterViewInit
     comment      : new FormControl<string | null>(null)
   });
 
+  initLoadId = input<string>('');
+
   ngOnInit(): void {
     this.getSystemTypeList();
     this.getWordList();
     this.getDataDoaminList();
 
-    if (this.initLoadId) {
-      this.get(this.initLoadId);
+    if (this.initLoadId()) {
+      this.get(this.initLoadId());
     } else {
       this.newForm();
     }
@@ -215,8 +220,6 @@ export class TermFormComponent extends FormBase implements OnInit, AfterViewInit
 
 
   newForm() {
-    this.formType = FormType.NEW;
-
     this.fg.controls.termId.disable();
     this.fg.controls.columnName.disable();
     this.fg.controls.system.enable();
@@ -226,8 +229,6 @@ export class TermFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   modifyForm(formData: Term) {
-    this.formType = FormType.MODIFY;
-
     this.fg.controls.termId.disable();
     this.fg.controls.columnName.disable();
     this.fg.controls.system.disable();
@@ -257,7 +258,12 @@ export class TermFormComponent extends FormBase implements OnInit, AfterViewInit
 
   save() {
     if (this.fg.invalid) {
-      this.checkForm()
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

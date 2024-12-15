@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, OnInit, Renderer2, effect, inject, input } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Renderer2, effect, inject, input, output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
@@ -9,7 +9,6 @@ import { ResponseObject } from 'src/app/core/model/response-object';
 import { BoardManagement } from './board-management.model';
 import { BoardHierarchy } from '../board-hierarcy/board-hierarchy.model';
 import { ResponseList } from 'src/app/core/model/response-list';
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -171,7 +170,7 @@ import { NzInputSelectComponent } from 'src/app/third-party/ng-zorro/nz-input-se
 
   `]
 })
-export class BoardFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class BoardFormComponent implements OnInit, AfterViewInit {
 
   parentBoardItems: BoardHierarchy[] = [];
 
@@ -180,7 +179,11 @@ export class BoardFormComponent extends FormBase implements OnInit, AfterViewIni
   private service = inject(BoardManagementService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     boardId         : new FormControl<string | null>(null),
     boardParentId   : new FormControl<string | null>(null),
     boardName       : new FormControl<string | null>('', { validators: [Validators.required] }),
@@ -188,11 +191,9 @@ export class BoardFormComponent extends FormBase implements OnInit, AfterViewIni
     boardDescription: new FormControl<string | null>(null)
   });
 
-  override initLoadId = input<any>();
+  initLoadId = input<any>();
 
   constructor() {
-    super();
-
     effect(() => {
       if (this.initLoadId()) {
         this.get(this.initLoadId());
@@ -214,8 +215,6 @@ export class BoardFormComponent extends FormBase implements OnInit, AfterViewIni
   }
 
   newForm(): void {
-    this.formType = FormType.NEW;
-
     this.fg.reset();
     this.fg.controls.boardId.enable();
     this.fg.controls.boardType.setValue('BOARD');
@@ -224,8 +223,6 @@ export class BoardFormComponent extends FormBase implements OnInit, AfterViewIni
   }
 
   modifyForm(formData: BoardManagement): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.controls.boardId.disable();
 
     this.fg.patchValue(formData);

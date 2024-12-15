@@ -262,7 +262,6 @@ import { ShapeComponent } from "../../core/app/shape.component";
 }
 
 .app-grid {
-  background-color:red;
   height: 100%;
   display: grid;
   /*grid-auto-flow: column;*/

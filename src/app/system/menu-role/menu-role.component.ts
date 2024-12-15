@@ -71,24 +71,25 @@ import { NzFormItemCustomComponent } from 'src/app/third-party/ng-zorro/nz-form-
     </div>
 
     <div class="page-content">
+      @defer {
       <app-menu-group-grid class="grid1"
         (rowClicked)="menuGroupClicked($event)"
         (editButtonClicked)="editMenuGroup($event)"
         (rowDoubleClicked)="editMenuGroup($event)">
       </app-menu-group-grid>
-
+      }
+      @defer {
       <app-menu-grid class="grid2"
         (rowClicked)="menuClicked($event)"
         (editButtonClicked)="editMenu($event)"
         (rowDoubleClicked)="editMenu($event)">
       </app-menu-grid>
-
+      }
       <app-role-grid class="grid3"
         (rowClicked)="roleClicked($event)"
         (editButtonClicked)="editRole($event)"
         (rowDoubleClicked)="editRole($event)">
       </app-role-grid>
-
 
       <app-menu-role-tree class="tree"
         [menuGroupCode]="menuGroup.selectedItem"

@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, OnInit, Input, inject, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 
@@ -167,7 +166,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
   `,
   styles: [``]
 })
-export class StaffRegistFormComponent extends FormBase implements OnInit {
+export class StaffRegistFormComponent implements OnInit {
 
   @Input() staffNo?: string;
 
@@ -187,7 +186,11 @@ export class StaffRegistFormComponent extends FormBase implements OnInit {
   private service = inject(StaffService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     companyCode                 : new FormControl<string | null>(null, { validators: Validators.required }),
     staffNo                     : new FormControl<string | null>(null, { validators: Validators.required }),
     name                        : new FormControl<string | null>(null, { validators: Validators.required }),
@@ -205,14 +208,10 @@ export class StaffRegistFormComponent extends FormBase implements OnInit {
   }
 
   newForm(): void {
-    this.formType = FormType.NEW;
-
     this.fg.reset();
   }
 
   modifyForm(formData: Staff): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.patchValue(formData);
   }
 

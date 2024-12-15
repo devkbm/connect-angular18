@@ -1,8 +1,7 @@
-import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -172,7 +171,7 @@ import { WebResourceService } from '../webresource/web-resource.service';
   `,
   styles: []
 })
-export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class MenuFormComponent implements OnInit, AfterViewInit {
 
   appIconTypeList :{value: string, label: string}[] = [
     {value: 'NZ_ICON', label: 'NZ ICON'},
@@ -193,7 +192,11 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
   private appAlarmService = inject(AppAlarmService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
       menuGroupCode       : new FormControl<string | null>(null, { validators: Validators.required }),
       menuCode            : new FormControl<string | null>(null, {
         validators: Validators.required,
@@ -209,10 +212,9 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
       appIcon           : new FormControl<string | null>(null)
   });
 
-  override initLoadId = input<{menuGroupCode: string, menuCode: string}>();
+  initLoadId = input<{menuGroupCode: string, menuCode: string}>();
 
   constructor() {
-    super();
 
     effect(() => {
       if (this.initLoadId()) {
@@ -240,7 +242,6 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   newForm(menuGroupCode: string): void {
-    this.formType = FormType.NEW;
 
     this.getMenuHierarchy(menuGroupCode);
 
@@ -251,7 +252,6 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   modifyForm(formData: Menu): void {
-    this.formType = FormType.MODIFY;
 
     this.getMenuHierarchy(formData.menuGroupCode!);
     this.fg.controls.menuCode.disable();
@@ -280,12 +280,15 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   save() {
-    /*
     if (this.fg.invalid) {
-      this.checkForm()
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
-    */
 
     this.menuService
         .registerMenu(this.fg.getRawValue())

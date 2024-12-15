@@ -1,7 +1,6 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
@@ -98,7 +97,7 @@ import { NzInputSelectComponent } from 'src/app/third-party/ng-zorro/nz-input-se
     }
   `]
 })
-export class TeamFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
+export class TeamFormComponent implements OnInit, AfterViewInit, OnChanges {
   //teamName = viewChild.required<NzInputTextComponent>('teamName');
 
   members: TeamJoinableUserModel[] = [];
@@ -106,29 +105,29 @@ export class TeamFormComponent extends FormBase implements OnInit, AfterViewInit
   private service = inject(TeamService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     teamId      : new FormControl<string | null>(null, { validators: [Validators.required] }),
     teamName    : new FormControl<string | null>(null, { validators: [Validators.required] }),
     memberList  : new FormControl<string[] | null>(null)
   });
 
+  initLoadId = input<string>('');
+
   ngOnInit() {
     this.getMembers();
 
-    if (this.initLoadId) {
-      this.get(this.initLoadId);
+    if (this.initLoadId()) {
+      this.get(this.initLoadId());
     } else {
       this.newForm();
     }
   }
 
   ngAfterViewInit(): void {
-    if (this.formType === FormType.NEW) {
-      //this.teamName().focus();
-    } else {
-      //this.teamName().focus();
-    }
-
 
   }
 
@@ -136,7 +135,6 @@ export class TeamFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   newForm(): void {
-    this.formType = FormType.NEW;
     this.fg.reset();
 
     this.fg.controls.teamId.disable();
@@ -144,7 +142,6 @@ export class TeamFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   modifyForm(formData: TeamModel): void {
-    this.formType = FormType.MODIFY;
     this.fg.controls.teamId.disable();
 
     this.fg.patchValue(formData);
@@ -171,7 +168,12 @@ export class TeamFormComponent extends FormBase implements OnInit, AfterViewInit
 
   save(): void {
     if (this.fg.invalid) {
-      this.checkForm();
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

@@ -1,8 +1,7 @@
-import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { ResponseList } from 'src/app/core/model/response-list';
@@ -179,7 +178,7 @@ import { NzInputSelectComponent } from 'src/app/third-party/ng-zorro/nz-input-se
 
   `]
 })
-export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class RoleFormComponent implements OnInit, AfterViewInit {
 
   //roleCode = viewChild.required<NzInputTextComponent>('roleCode');
 
@@ -190,7 +189,11 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
   private menuService = inject(MenuService);
   menuGroupList: any;
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     roleCode : new FormControl<string | null>('', {
                                                     validators: Validators.required,
                                                     asyncValidators: [existingRoleValidator(this.service)],
@@ -201,10 +204,9 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
     menuGroupCode : new FormControl<string | null>(null)
   });
 
-  override initLoadId = input<string>();
+  initLoadId = input<string>();
 
   constructor() {
-    super();
 
     effect(() => {
       if (this.initLoadId()) {
@@ -226,8 +228,6 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   newForm(): void {
-    this.formType = FormType.NEW;
-
     this.fg.reset();
     this.fg.controls.roleCode.setAsyncValidators(existingRoleValidator(this.service));
 
@@ -237,8 +237,6 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   modifyForm(formData: Role): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.controls.roleCode.setAsyncValidators(null);
     this.fg.controls.roleCode.disable();
 
@@ -262,7 +260,12 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
 
   save(): void {
     if (this.fg.invalid) {
-      this.checkForm();
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

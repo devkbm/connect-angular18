@@ -1,14 +1,17 @@
 
 import { Component, OnInit, inject, output } from '@angular/core';
-import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
+import { CommonModule } from '@angular/common';
+
+import { AgGridModule } from 'ag-grid-angular';
+import { ColDef, GetRowIdFunc, GetRowIdParams } from 'ag-grid-community';
+import { RowSelectionOptions } from 'ag-grid-community';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
+
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
+
 import { DutyApplicationService } from './duty-application.service';
 import { DutyApplication } from './duty-application.model';
-import { AgGridModule } from 'ag-grid-angular';
-import { CommonModule } from '@angular/common';
-import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
-import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({
   standalone: true,
@@ -16,10 +19,10 @@ import { RowSelectionOptions } from 'ag-grid-community';
   imports: [CommonModule, AgGridModule],
   template: `
     <ag-grid-angular
-      [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="rowSelection"
       [rowData]="_list"
+      [style.height]="'100%'"
+      [rowSelection]="rowSelection"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
       [getRowId]="getRowId"
@@ -31,7 +34,20 @@ import { RowSelectionOptions } from 'ag-grid-community';
   styles: [`
   `]
 })
-export class DutyApplicationGridComponent extends AggridFunction implements OnInit {
+export class DutyApplicationGridComponent implements OnInit {
+  //#region Ag-grid Api
+  gridApi: any;
+  gridColumnApi: any;
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
+  getSelectedRows() {
+    return this.gridApi.getSelectedRows();
+  }
+  //#endregion
 
   _list: DutyApplication[] = [];
 
@@ -48,42 +64,39 @@ export class DutyApplicationGridComponent extends AggridFunction implements OnIn
   private appAlarmService = inject(AppAlarmService);
   private dutyApplicationService = inject(DutyApplicationService);
 
+  defaultColDef: ColDef = { sortable: true, resizable: true };
+
+  columnDefs: ColDef[] = [
+    {
+      headerName: '',
+      width: 34,
+      cellStyle: {'text-align': 'center', 'padding': '0px'},
+      cellRenderer: ButtonRendererComponent,
+      cellRendererParams: {
+        onClick: this.onEditButtonClick.bind(this),
+        label: '',
+        iconType: 'form'
+      }
+    },
+    {
+      headerName: 'No',
+      valueGetter: 'node.rowIndex + 1',
+      width: 70,
+      cellStyle: {'text-align': 'center'}
+    },
+    { headerName: '근태신청ID',         field: 'dutyId',              width: 150 },
+    { headerName: '사원번호',           field: 'staffId',             width: 80 },
+    { headerName: '근태코드',           field: 'dutyCode',            width: 80 },
+    { headerName: '근태사유',           field: 'dutyReason',          width: 80 },
+    { headerName: '근태시작일시',       field: 'dutyStartDateTime',   width: 80 },
+    { headerName: '근태근태종료일시',   field: 'dutyEndDateTime',     width: 80 }
+  ];
+
+  getRowId: GetRowIdFunc = (params: GetRowIdParams) => {
+    return params.data.dutyId;
+  };
+
   ngOnInit() {
-    this.columnDefs = [
-      {
-        headerName: '',
-        width: 34,
-        cellStyle: {'text-align': 'center', 'padding': '0px'},
-        cellRenderer: ButtonRendererComponent,
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: '',
-          iconType: 'form'
-        }
-      },
-      {
-        headerName: 'No',
-        valueGetter: 'node.rowIndex + 1',
-        width: 70,
-        cellStyle: {'text-align': 'center'}
-      },
-      { headerName: '근태신청ID',         field: 'dutyId',              width: 150 },
-      { headerName: '사원번호',           field: 'staffId',             width: 80 },
-      { headerName: '근태코드',           field: 'dutyCode',            width: 80 },
-      { headerName: '근태사유',           field: 'dutyReason',          width: 80 },
-      { headerName: '근태시작일시',       field: 'dutyStartDateTime',   width: 80 },
-      { headerName: '근태근태종료일시',   field: 'dutyEndDateTime',     width: 80 }
-    ];
-
-    this.defaultColDef = {
-      sortable: true,
-      resizable: true
-    };
-
-    this.getRowId = function(params: any) {
-      return params.data.dutyId;
-    };
-
     this.getGridList('');
   }
 

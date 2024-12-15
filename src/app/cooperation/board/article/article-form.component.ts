@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, inject, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, inject, input, output, viewChild } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -14,7 +14,6 @@ import { NzInputCkeditorComponent } from 'src/app/third-party/ckeditor/nz-input-
 import { NzFileUploadComponent } from 'src/app/third-party/ng-zorro/nz-file-upload/nz-file-upload.component';
 
 import { ResponseObject } from 'src/app/core/model/response-object';
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { GlobalProperty } from 'src/app/core/global-property';
 // import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
@@ -57,7 +56,6 @@ import { ArticleFileUploadComponent } from './article-file-upload.component';
       <input type="hidden" formControlName="articleId">
       <input type="hidden" formControlName="articleParentId">
 
-
       <nz-form-item-custom for="title" label="메뉴코드" required>
         <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
           <input nz-input id="title" formControlName="title" required
@@ -68,11 +66,13 @@ import { ArticleFileUploadComponent } from './article-file-upload.component';
 
       <nz-form-item-custom for="contents" label="내용">
         <nz-form-control>
-          <nz-input-ckeditor
-            formControlName="contents"
-            [itemId]="'contents'"
-            [height]="'45vh'">
-          </nz-input-ckeditor>
+          @defer {
+            <nz-input-ckeditor
+              formControlName="contents"
+              [itemId]="'contents'"
+              [height]="'45vh'">
+            </nz-input-ckeditor>
+          }
         </nz-form-control>
       </nz-form-item-custom>
 
@@ -127,7 +127,7 @@ import { ArticleFileUploadComponent } from './article-file-upload.component';
 
   `]
 })
-export class ArticleFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class ArticleFormComponent implements OnInit, AfterViewInit {
   //public Editor = ClassicEditor;
 
   editorConfig = {
@@ -172,7 +172,11 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
   private activatedRoute = inject(ActivatedRoute);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     boardId         : new FormControl<string | null>(null, { validators: [Validators.required] }),
     articleId       : new FormControl<string | null>(null, { validators: [Validators.required] }),
     articleParentId : new FormControl<string | null>(null),
@@ -192,6 +196,8 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
     editable        : boolean
     */
   });
+
+  initLoadId = input<string>('');
 
   ngOnInit(): void {
 
@@ -225,7 +231,6 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
   }
 
   newForm(boardId: any): void {
-    this.formType = FormType.NEW;
     this.fg.reset();
     this.fg.controls.boardId.setValue(boardId);
     this.fileList = [];
@@ -237,7 +242,6 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
   }
 
   modifyForm(formData: Article): void {
-    this.formType = FormType.MODIFY;
     this.fg.reset();
     this.fg.patchValue(formData);
   }

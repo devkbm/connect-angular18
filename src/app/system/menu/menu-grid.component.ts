@@ -1,16 +1,17 @@
+import { Component, OnInit, Input, inject, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AgGridModule } from 'ag-grid-angular';
 
-import { Component, OnInit, Output, EventEmitter, Input, inject, output } from '@angular/core';
+import { AgGridModule } from 'ag-grid-angular';
+import { ColDef, GetRowIdFunc, GetRowIdParams } from 'ag-grid-community';
+import { RowSelectionOptions } from 'ag-grid-community';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
-import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
 import { ResponseList } from 'src/app/core/model/response-list';
 
 import { MenuService } from './menu.service';
 import { Menu } from './menu.model';
-import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
-import { RowSelectionOptions } from 'ag-grid-community';
+
 
 @Component({
   selector: 'app-menu-grid',
@@ -20,10 +21,10 @@ import { RowSelectionOptions } from 'ag-grid-community';
   ],
   template: `
     <ag-grid-angular
-      [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="rowSelection"
       [rowData]="menuList"
+      [style.height]="'100%'"
+      [rowSelection]="rowSelection"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
       [getRowId]="getRowId"
@@ -33,7 +34,21 @@ import { RowSelectionOptions } from 'ag-grid-community';
   </ag-grid-angular>
   `
 })
-export class MenuGridComponent extends AggridFunction implements OnInit {
+export class MenuGridComponent implements OnInit {
+
+  //#region Ag-grid Api
+  gridApi: any;
+  gridColumnApi: any;
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
+  getSelectedRows() {
+    return this.gridApi.getSelectedRows();
+  }
+  //#endregion
 
   menuList: Menu[] = [];
 
@@ -52,42 +67,40 @@ export class MenuGridComponent extends AggridFunction implements OnInit {
   private menuService = inject(MenuService);
   private appAlarmService = inject(AppAlarmService);
 
+  defaultColDef: ColDef = { sortable: true, resizable: true };
+
+  columnDefs: ColDef[] = [
+    {
+      headerName: '',
+      width: 34,
+      cellStyle: {'text-align': 'center', 'padding': '0px'},
+      cellRenderer: ButtonRendererComponent,
+      cellRendererParams: {
+        onClick: this.onEditButtonClick.bind(this),
+        label: '',
+        iconType: 'form'
+      }
+    },
+    {
+      headerName: 'No',
+      valueGetter: 'node.rowIndex + 1',
+      width: 50,
+      cellStyle: {'text-align': 'center'}
+    },
+    {headerName: '메뉴그룹코드',  field: 'menuGroupCode',   width: 100 },
+    {headerName: '메뉴코드',      field: 'menuCode',        width: 80},
+    {headerName: '메뉴명',        field: 'menuName',        width: 130},
+    {headerName: '메뉴타입',      field: 'menuType',        width: 100 },
+    {headerName: '상위메뉴코드',  field: 'parentMenuCode',  width: 100 },
+    {headerName: '순번',          field: 'sequence',        width: 60},
+    {headerName: 'APP URL',       field: 'appUrl',          width: 300 }
+  ];
+
+  getRowId: GetRowIdFunc = (params: GetRowIdParams) => {
+      return params.data.menuGroupCode + params.data.menuCode;
+  };
+
   ngOnInit() {
-    this.columnDefs = [
-      {
-        headerName: '',
-        width: 34,
-        cellStyle: {'text-align': 'center', 'padding': '0px'},
-        cellRenderer: ButtonRendererComponent,
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: '',
-          iconType: 'form'
-        }
-      },
-      {
-        headerName: 'No',
-        valueGetter: 'node.rowIndex + 1',
-        width: 50,
-        cellStyle: {'text-align': 'center'}
-      },
-      {headerName: '메뉴그룹코드',  field: 'menuGroupCode',   width: 100 },
-      {headerName: '메뉴코드',      field: 'menuCode',        width: 80},
-      {headerName: '메뉴명',        field: 'menuName',        width: 130},
-      {headerName: '메뉴타입',      field: 'menuType',        width: 100 },
-      {headerName: '상위메뉴코드',  field: 'parentMenuCode',  width: 100 },
-      {headerName: '순번',          field: 'sequence',        width: 60},
-      {headerName: 'APP URL',       field: 'appUrl',          width: 300 }
-    ];
-
-    this.defaultColDef = {
-      sortable: true,
-      resizable: true
-    };
-
-    this.getRowId = (data: any) => {
-        return data.data.menuGroupCode + data.data.menuCode;
-    };
   }
 
   private onEditButtonClick(e: any) {

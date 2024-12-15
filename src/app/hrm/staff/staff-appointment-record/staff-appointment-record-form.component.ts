@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, inject, input, effect } from '@angular/core';
+import { Component, OnInit, Input, inject, input, effect, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -257,7 +256,7 @@ import { NzInputTreeSelectDeptComponent } from 'src/app/third-party/ng-zorro/nz-
   `,
   styles: []
 })
-export class StaffAppointmentRecordFormComponent extends FormBase implements OnInit {
+export class StaffAppointmentRecordFormComponent implements OnInit {
 
   bizTypeList = [{code:'code', name:'name'},{code:'code2', name:'name2'}];
 
@@ -305,7 +304,11 @@ export class StaffAppointmentRecordFormComponent extends FormBase implements OnI
   private deptService = inject(DeptService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
       staffNo                 : new FormControl<string | null>(null, { validators: Validators.required }),
       staffName               : new FormControl<string | null>(null),
       seq                     : new FormControl<string | null>(null),
@@ -326,12 +329,10 @@ export class StaffAppointmentRecordFormComponent extends FormBase implements OnI
       dutyResponsibilityCode  : new FormControl<string | null>(null)
   });
 
-  override initLoadId = input<{staffId: string, seq: string}>();
+  initLoadId = input<{staffId: string, seq: string}>();
   staff = input<{companyCode: string, staffNo: string, staffName: string}>();
 
   constructor() {
-    super();
-
     effect(() => {
       if (this.initLoadId()) {
         this.get(this.initLoadId()?.staffId!, this.initLoadId()?.seq!);
@@ -372,8 +373,6 @@ export class StaffAppointmentRecordFormComponent extends FormBase implements OnI
   }
 
   newForm(): void {
-    this.formType = FormType.NEW;
-
     this.fg.controls.staffNo.disable();
     this.fg.controls.staffName.disable();
 
@@ -386,8 +385,6 @@ export class StaffAppointmentRecordFormComponent extends FormBase implements OnI
   }
 
   modifyForm(formData: StaffAppointmentRecord): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.controls.staffNo.disable();
     this.fg.controls.staffName.disable();
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject, viewChild } from '@angular/core';
+import { Component, OnInit, inject, viewChild } from '@angular/core';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
@@ -44,10 +44,12 @@ import { TeamFormComponent } from './team-form.component';
 </div>
 
 <div style="height:300px">
+  @defer {
   <app-team-grid [list]="gridList"
     (editButtonClicked)="editTeam($event)"
     (rowDoubleClicked)="editTeam($event)">
   </app-team-grid>
+  }
 </div>
 
 <nz-drawer
@@ -118,9 +120,9 @@ export class TeamComponent implements OnInit {
   grid = viewChild.required(TeamGridComponent);
 
   drawer: {
-    team: { visible: boolean, initLoadId: number | null },
+    team: { visible: boolean, initLoadId: string },
   } = {
-    team: { visible: false, initLoadId: null }
+    team: { visible: false, initLoadId: '' }
   }
 
   gridList: TeamModel[] = [];
@@ -130,7 +132,7 @@ export class TeamComponent implements OnInit {
   }
 
   newTeam() {
-    this.drawer.team.initLoadId = null;
+    this.drawer.team.initLoadId = '';
     this.drawer.team.visible = true;
   }
 

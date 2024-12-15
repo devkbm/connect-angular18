@@ -1,17 +1,16 @@
-import { CommonModule } from '@angular/common';
-import { AgGridModule } from 'ag-grid-angular';
-
 import { Component, OnInit, inject, output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { AgGridModule } from 'ag-grid-angular';
+import { ColDef, GetRowIdFunc, GetRowIdParams } from 'ag-grid-community';
+import { RowSelectionOptions } from 'ag-grid-community';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 
 import { ResponseList } from 'src/app/core/model/response-list';
-import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 
 import { TermService } from './term.service';
 import { Term } from './term.model';
-import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
-import { RowSelectionOptions } from 'ag-grid-community';
-
 
 @Component({
   selector: 'app-term-grid',
@@ -21,10 +20,10 @@ import { RowSelectionOptions } from 'ag-grid-community';
   ],
   template: `
     <ag-grid-angular
-      [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="rowSelection"
       [rowData]="termList"
+      [style.height]="'100%'"
+      [rowSelection]="rowSelection"
       [columnDefs]="columnDefs"
       [getRowId]="getRowId"
       [defaultColDef]="defaultColDef"
@@ -34,7 +33,20 @@ import { RowSelectionOptions } from 'ag-grid-community';
   </ag-grid-angular>
   `
 })
-export class TermGridComponent extends AggridFunction implements OnInit {
+export class TermGridComponent implements OnInit {
+  //#region Ag-grid Api
+  gridApi: any;
+  gridColumnApi: any;
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
+  getSelectedRows() {
+    return this.gridApi.getSelectedRows();
+  }
+  //#endregion
 
   termList: Term[] = [];
 
@@ -51,41 +63,44 @@ export class TermGridComponent extends AggridFunction implements OnInit {
   private termService = inject(TermService);
   private appAlarmService = inject(AppAlarmService);
 
+  defaultColDef: ColDef = {
+    sortable: true,
+    resizable: true
+  };
+
+  columnDefs: ColDef[] = [
+    {
+      headerName: '',
+      width: 34,
+      cellStyle: {'text-align': 'center', padding: '0px'},
+      cellRenderer: ButtonRendererComponent,
+      cellRendererParams: {
+        onClick: this.onEditButtonClick.bind(this),
+        label: '',
+        iconType: 'form'
+      }
+    },
+    {
+      headerName: 'No',
+      valueGetter: 'node.rowIndex + 1',
+      width: 70,
+      cellStyle: {'text-align': 'center'}
+    },
+    {headerName: '용어ID',      field: 'termId',            width: 200 },
+    {headerName: '시스템',      field: 'system',            width: 100 },
+    {headerName: '용어',        field: 'term',              width: 200 , tooltipField: 'term'},
+    {headerName: '용어(영문)',  field: 'termEng',           width: 150 },
+    {headerName: '컬럼명',      field: 'columnName',        width: 200 },
+    {headerName: '도메인명',    field: 'dataDomainName',    width: 100 },
+    {headerName: '설명',        field: 'description',       width: 400 },
+    {headerName: '비고',        field: 'comment',           width: 400 }
+  ];
+
+  getRowId: GetRowIdFunc = (params: GetRowIdParams) => {
+      return params.data.termId;
+  };
+
   ngOnInit() {
-    this.defaultColDef = { resizable: true, sortable: true };
-
-    this.columnDefs = [
-      {
-        headerName: '',
-        width: 34,
-        cellStyle: {'text-align': 'center', padding: '0px'},
-        cellRenderer: ButtonRendererComponent,
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: '',
-          iconType: 'form'
-        }
-      },
-      {
-        headerName: 'No',
-        valueGetter: 'node.rowIndex + 1',
-        width: 70,
-        cellStyle: {'text-align': 'center'}
-      },
-      {headerName: '용어ID',      field: 'termId',            width: 200 },
-      {headerName: '시스템',      field: 'system',            width: 100 },
-      {headerName: '용어',        field: 'term',              width: 200 , tooltipField: 'term'},
-      {headerName: '용어(영문)',  field: 'termEng',           width: 150 },
-      {headerName: '컬럼명',      field: 'columnName',        width: 200 },
-      {headerName: '도메인명',    field: 'dataDomainName',    width: 100 },
-      {headerName: '설명',        field: 'description',       width: 400 },
-      {headerName: '비고',        field: 'comment',           width: 400 }
-    ];
-
-    this.getRowId = function(params: any) {
-        return params.data.termId;
-    };
-
     this.getList();
   }
 

@@ -85,18 +85,21 @@ import { ShapeComponent } from "../../core/app/shape.component";
       <app-holiday-calendar>
       </app-holiday-calendar>
     -->
+      @defer {
       <app-calendar-daypilot-navigator
-        [events]="holidayGrid.filteredList()"
+        [events]="grid().filteredList()"
         (selectChanged)="navigatorSelectChanged($event)">
       </app-calendar-daypilot-navigator>
+      }
       <!--{{holidayGrid.filteredList() | json}}-->
+      @defer {
       <app-holiday-grid
           #holidayGrid
           (rowClicked)="holidayGridRowClicked($event)"
           (editButtonClicked)="edit($event)"
           (rowDoubleClicked)="edit($event)">
       </app-holiday-grid>
-
+      }
     </div>
   </div>
 </app-shape>

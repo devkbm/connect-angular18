@@ -1,10 +1,9 @@
-import { Component, OnInit, AfterViewInit, inject, input, effect, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, input, effect, Renderer2, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { SessionManager } from 'src/app/core/session-manager';
 import { ResponseObject } from 'src/app/core/model/response-object';
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseList } from 'src/app/core/model/response-list';
 
 import { WorkCalendar } from './work-calendar.model';
@@ -94,28 +93,30 @@ import { NzInputNgxColorsComponent } from 'src/app/third-party/ngx-colors/nz-inp
   `,
   styles: []
 })
-export class WorkCalendarFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class WorkCalendarFormComponent implements OnInit, AfterViewInit {
 
   workGroupList: any;
   memberList: any;
   color: any;
   preset_colors = ['#fff', '#000', '#2889e9', '#e920e9', '#fff500', 'rgb(236,64,64)'];
 
-  override initLoadId = input<number>(-1);
-
   private workGroupService = inject(WorkCalendarService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     workCalendarId    : new FormControl<number | null>({value: null, disabled: true}, { validators: [Validators.required] }),
     workCalendarName  : new FormControl<string | null>(null, { validators: [Validators.required] }),
     color             : new FormControl<string | null>(null),
     memberList        : new FormControl<any | null>(null)
   });
 
-  constructor() {
-    super();
+  initLoadId = input<number>(-1);
 
+  constructor() {
     this.getAllMember();
 
     effect(() => {
@@ -139,15 +140,11 @@ export class WorkCalendarFormComponent extends FormBase implements OnInit, After
   }
 
   newForm(): void {
-    this.formType = FormType.NEW;
-
     this.fg.controls.memberList.setValue([SessionManager.getUserId()]);
     //this.fg.get('memberList')?.setValue([SessionManager.getUserId()]);
   }
 
   modifyForm(formData: WorkCalendar): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.patchValue(formData);
   }
 

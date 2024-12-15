@@ -2,16 +2,15 @@ import { Component, OnInit, inject, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AgGridModule } from 'ag-grid-angular';
-import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
-import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
-
+import { ColDef, GetRowIdFunc, GetRowIdParams } from 'ag-grid-community';
+import { RowSelectionOptions } from 'ag-grid-community';
 import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
+
+import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
 
 import { Company } from './company.model';
 import { CompanyGridService } from './company-grid.service';
-import { RowSelectionOptions } from 'ag-grid-community';
-
 
 @Component({
   selector: 'app-company-grid',
@@ -22,10 +21,10 @@ import { RowSelectionOptions } from 'ag-grid-community';
   ],
   template: `
     <ag-grid-angular
-      [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="rowSelection"
       [rowData]="_list"
+      [style.height]="'100%'"
+      [rowSelection]="rowSelection"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
       [getRowId]="getRowId"
@@ -36,7 +35,20 @@ import { RowSelectionOptions } from 'ag-grid-community';
   `,
   styles: []
 })
-export class CompanyGridComponent extends AggridFunction implements OnInit {
+export class CompanyGridComponent implements OnInit {
+  //#region Ag-grid Api
+  gridApi: any;
+  gridColumnApi: any;
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
+  getSelectedRows() {
+    return this.gridApi.getSelectedRows();
+  }
+  //#endregion
 
   _list: Company[] = [];
 
@@ -53,36 +65,40 @@ export class CompanyGridComponent extends AggridFunction implements OnInit {
   private service = inject(CompanyGridService);
   private appAlarmService = inject(AppAlarmService);
 
-  ngOnInit(): void {
-    this.columnDefs = [
-      {
-        headerName: '',
-        width: 34,
-        cellStyle: {'text-align': 'center', 'padding': '0px'},
-        cellRenderer: ButtonRendererComponent,
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: '',
-          iconType: 'form'
-        }
-      },
-      {
-        headerName: 'No',
-        valueGetter: 'node.rowIndex + 1',
-        width: 70,
-        cellStyle: {'text-align': 'center'}
-      },
-      { headerName: '회사코드',       field: 'companyCode',                 width: 80 },
-      { headerName: '회사명',         field: 'companyName',                 width: 100 },
-      { headerName: '사업자등록번호',  field: 'businessRegistrationNumber',  width: 120 },
-      { headerName: '법인번호',       field: 'coporationNumber',            width: 100 },
-      { headerName: '대표자',         field: 'nameOfRepresentative',        width: 100 },
-      { headerName: '설립일',         field: 'establishmentDate',           width: 100 }
-    ];
+  defaultColDef: ColDef = { sortable: true, resizable: true };
 
-    this.getRowId = (params: any) => {
-        return params.data.companyCode;
-    };
+  columnDefs: ColDef[] = [
+    {
+      headerName: '',
+      width: 34,
+      cellStyle: {'text-align': 'center', 'padding': '0px'},
+      cellRenderer: ButtonRendererComponent,
+      cellRendererParams: {
+        onClick: this.onEditButtonClick.bind(this),
+        label: '',
+        iconType: 'form'
+      }
+    },
+    {
+      headerName: 'No',
+      valueGetter: 'node.rowIndex + 1',
+      width: 70,
+      cellStyle: {'text-align': 'center'}
+    },
+    { headerName: '회사코드',       field: 'companyCode',                 width: 80 },
+    { headerName: '회사명',         field: 'companyName',                 width: 100 },
+    { headerName: '사업자등록번호',  field: 'businessRegistrationNumber',  width: 120 },
+    { headerName: '법인번호',       field: 'coporationNumber',            width: 100 },
+    { headerName: '대표자',         field: 'nameOfRepresentative',        width: 100 },
+    { headerName: '설립일',         field: 'establishmentDate',           width: 100 }
+  ];
+
+  getRowId: GetRowIdFunc = (params: GetRowIdParams) => {
+      return params.data.companyCode;
+  };
+
+  ngOnInit(): void {
+    this.getList();
   }
 
   getList(): void {

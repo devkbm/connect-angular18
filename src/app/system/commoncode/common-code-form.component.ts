@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, inject } from '@angular/core';
+import { Component, OnInit, Renderer2, inject, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -10,7 +10,6 @@ import { ResponseObject } from 'src/app/core/model/response-object';
 import { CommonCode } from './common-code.model';
 import { CommonCodeHierarchy } from './common-code-hierarchy.model';
 import { ResponseList } from 'src/app/core/model/response-list';
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { SystemTypeEnum } from './system-type-enum.model';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -232,7 +231,7 @@ import { NzInputSelectComponent } from 'src/app/third-party/ng-zorro/nz-input-se
 
   `]
 })
-export class CommonCodeFormComponent extends FormBase implements OnInit {
+export class CommonCodeFormComponent implements OnInit {
 
   nodeItems: CommonCodeHierarchy[] = [];
   systemTypeCodeList: SystemTypeEnum[] = [];
@@ -241,7 +240,11 @@ export class CommonCodeFormComponent extends FormBase implements OnInit {
   private appAlarmService = inject(AppAlarmService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     systemTypeCode          : new FormControl<string | null>(null),
     codeId                  : new FormControl<string | null>(null),
     parentId                : new FormControl<string | null>(null),
@@ -266,7 +269,6 @@ export class CommonCodeFormComponent extends FormBase implements OnInit {
   }
 
   newForm(systemTypeCode: string, parentId: any): void {
-    this.formType = FormType.NEW;
     this.fg.reset();
 
     this.fg.controls.codeId.disable();
@@ -283,8 +285,6 @@ export class CommonCodeFormComponent extends FormBase implements OnInit {
   }
 
   modifyForm(formData: CommonCode): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.controls.codeId.disable();
     this.fg.controls.code.disable();
     this.fg.controls.systemTypeCode.disable();
@@ -312,7 +312,12 @@ export class CommonCodeFormComponent extends FormBase implements OnInit {
 
   save(): void {
     if (this.fg.invalid) {
-      this.checkForm()
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

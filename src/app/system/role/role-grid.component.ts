@@ -1,16 +1,16 @@
-import { CommonModule } from '@angular/common';
-import { AgGridModule } from 'ag-grid-angular';
-
 import { Component, OnInit, inject, output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { AgGridModule } from 'ag-grid-angular';
+import { ColDef, GetRowIdFunc, GetRowIdParams } from 'ag-grid-community';
+import { RowSelectionOptions } from 'ag-grid-community';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
-import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
 import { ResponseList } from 'src/app/core/model/response-list';
 
 import { RoleService } from './role.service';
 import { Role } from './role.model';
-import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
-import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({
   selector: 'app-role-grid',
@@ -18,10 +18,10 @@ import { RowSelectionOptions } from 'ag-grid-community';
   imports: [ CommonModule, AgGridModule ],
   template: `
     <ag-grid-angular
-      [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="rowSelection"
       [rowData]="roleList"
+      [style.height]="'100%'"
+      [rowSelection]="rowSelection"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
       [getRowId]="getRowId"
@@ -41,7 +41,21 @@ import { RowSelectionOptions } from 'ag-grid-community';
     :host::ng-deep .header-right .ag-header-cell-label { flex-direction: row-reverse; }
   `]
 })
-export class RoleGridComponent extends AggridFunction implements OnInit {
+export class RoleGridComponent implements OnInit {
+
+  //#region Ag-grid Api
+  gridApi: any;
+  gridColumnApi: any;
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
+  getSelectedRows() {
+    return this.gridApi.getSelectedRows();
+  }
+  //#endregion
 
   roleList: Role[] = [];
 
@@ -58,63 +72,63 @@ export class RoleGridComponent extends AggridFunction implements OnInit {
   private service = inject(RoleService);
   private appAlarmService = inject(AppAlarmService);
 
+  defaultColDef: ColDef = { sortable: true, resizable: true };
+
+  columnDefs : ColDef[] = [
+    {
+      headerName: '',
+      sortable: true,
+      resizable: true,
+      width: 34,
+      suppressSizeToFit: true,
+      cellStyle: {'text-align': 'center', padding: '0px'},
+      cellRenderer: ButtonRendererComponent,
+      cellRendererParams: {
+        onClick: this.onEditButtonClick.bind(this),
+        label: '',
+        iconType: 'form'
+      }
+    },
+    {
+      headerName: 'No',
+      headerClass: 'header-right',
+      valueGetter: 'node.rowIndex + 1',
+      suppressSizeToFit: true,
+      width: 70,
+      cellStyle: {'text-align': 'center'}
+    },
+    {
+      headerName: '롤코드',
+      headerClass: 'header-center',
+      field: 'roleCode',
+      suppressSizeToFit: true,
+      width: 100
+    },
+    {
+      headerName: '롤명',
+      headerClass: 'header-center',
+      field: 'roleName',
+      suppressSizeToFit: true,
+      width: 100
+    },
+    {
+      headerName: '설명',
+      field: 'description'
+    },
+    {
+      headerName: '메뉴그룹코드',
+      headerClass: 'header-center',
+      field: 'menuGroupCode',
+      suppressSizeToFit: true,
+      width: 100
+    }
+  ];
+
+  getRowId: GetRowIdFunc = (params: GetRowIdParams) => {
+    return params.data.roleCode;
+  };
+
   ngOnInit() {
-    this.defaultColDef = { resizable: true, sortable: true };
-
-    this.columnDefs = [
-        {
-          headerName: '',
-          sortable: true,
-          resizable: true,
-          width: 34,
-          suppressSizeToFit: true,
-          cellStyle: {'text-align': 'center', padding: '0px'},
-          cellRenderer: ButtonRendererComponent,
-          cellRendererParams: {
-            onClick: this.onEditButtonClick.bind(this),
-            label: '',
-            iconType: 'form'
-          }
-        },
-        {
-          headerName: 'No',
-          headerClass: 'header-right',
-          valueGetter: 'node.rowIndex + 1',
-          suppressSizeToFit: true,
-          width: 70,
-          cellStyle: {'text-align': 'center'}
-        },
-        {
-          headerName: '롤코드',
-          headerClass: 'header-center',
-          field: 'roleCode',
-          suppressSizeToFit: true,
-          width: 100
-        },
-        {
-          headerName: '롤명',
-          headerClass: 'header-center',
-          field: 'roleName',
-          suppressSizeToFit: true,
-          width: 100
-        },
-        {
-          headerName: '설명',
-          field: 'description'
-        },
-        {
-          headerName: '메뉴그룹코드',
-          headerClass: 'header-center',
-          field: 'menuGroupCode',
-          suppressSizeToFit: true,
-          width: 100
-        }
-    ];
-
-    this.getRowId = function(params: any) {
-      return params.data.roleCode;
-    };
-
     this.getList();
   }
 
@@ -124,7 +138,6 @@ export class RoleGridComponent extends AggridFunction implements OnInit {
         .subscribe(
           (model: ResponseList<Role>) => {
             this.roleList = model.data;
-            this.sizeToFit();
             this.appAlarmService.changeMessage(model.message);
           }
         );

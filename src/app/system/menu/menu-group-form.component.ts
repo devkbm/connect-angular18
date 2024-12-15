@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, AfterViewInit, inject, viewChild, Renderer2, input, effect } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, viewChild, Renderer2, input, effect, output } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
 
@@ -84,13 +83,17 @@ import { NzFormItemCustomComponent } from "../../third-party/ng-zorro/nz-form-it
   `,
   styles: []
 })
-export class MenuGroupFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class MenuGroupFormComponent implements OnInit, AfterViewInit {
 
   private menuService = inject(MenuService);
   private appAlarmService = inject(AppAlarmService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     /*
     menuGroupId     : new FormControl<string | null>(null, {
       validators: Validators.required,
@@ -103,10 +106,9 @@ export class MenuGroupFormComponent extends FormBase implements OnInit, AfterVie
     description     : new FormControl<string | null>(null)
   });
 
-  override initLoadId = input<string>();
+  initLoadId = input<string>();
 
   constructor() {
-    super();
 
     effect(() => {
       if (this.initLoadId()) {
@@ -126,7 +128,6 @@ export class MenuGroupFormComponent extends FormBase implements OnInit, AfterVie
   }
 
   newForm(): void {
-    this.formType = FormType.NEW;
     this.fg.reset();
 
     this.fg.controls.menuGroupCode.enable();
@@ -134,7 +135,6 @@ export class MenuGroupFormComponent extends FormBase implements OnInit, AfterVie
   }
 
   modifyForm(formData: MenuGroup): void {
-    this.formType = FormType.MODIFY;
     this.fg.controls.menuGroupCode.disable();
 
     this.fg.patchValue(formData);
@@ -156,12 +156,15 @@ export class MenuGroupFormComponent extends FormBase implements OnInit, AfterVie
   }
 
   save() {
-    /*
     if (this.fg.invalid) {
-      this.checkForm()
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
-    */
 
     this.menuService
         .registerMenuGroup(this.fg.getRawValue())

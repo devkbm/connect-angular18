@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject, effect, input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, effect, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { StaffSchoolCareer } from './staff-school-career.model';
@@ -164,7 +163,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
   `,
   styles: []
 })
-export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
+export class StaffSchoolCareerFormComponent implements OnInit, AfterViewInit, OnChanges {
 
   /**
    * 학력 - HR0009
@@ -179,7 +178,11 @@ export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, 
   private hrmCodeService = inject(HrmCodeService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     staffNo             : new FormControl<string | null>(null, { validators: Validators.required }),
     staffName           : new FormControl<string | null>(null, { validators: Validators.required }),
     seq                 : new FormControl<string | null>(null),
@@ -195,12 +198,10 @@ export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, 
   });
 
   //@Input() staff?: {companyCode: string, staffNo: string, staffName: string};
-  override initLoadId = input<{staffId: string, seq: string}>();
+  initLoadId = input<{staffId: string, seq: string}>();
   staff = input<{companyCode: string, staffNo: string, staffName: string}>();
 
   constructor()  {
-    super();
-
     effect(() => {
       if (this.initLoadId()) {
         this.get(this.initLoadId()?.staffId!, this.initLoadId()?.seq!);
@@ -230,8 +231,6 @@ export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, 
   }
 
   newForm() {
-    this.formType = FormType.NEW;
-
     if (this.staff) {
       this.fg.controls.staffNo.setValue(this.staff()?.staffNo!);
       this.fg.controls.staffName.setValue(this.staff()?.staffName!);
@@ -240,8 +239,6 @@ export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, 
 
 
   modifyForm(formData: StaffSchoolCareer) {
-    this.formType = FormType.MODIFY;
-
     if (this.staff) {
       this.fg.controls.staffNo.setValue(this.staff()?.staffNo!);
       this.fg.controls.staffName.setValue(this.staff()?.staffName!);

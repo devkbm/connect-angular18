@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject, input, effect } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, input, effect, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { ResponseList } from 'src/app/core/model/response-list';
@@ -127,7 +126,7 @@ import { NzInputSelectComponent } from 'src/app/third-party/ng-zorro/nz-input-se
   `,
   styles: []
 })
-export class StaffFamilyFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
+export class StaffFamilyFormComponent implements OnInit, AfterViewInit, OnChanges {
 
   /**
    * 가족관계 - HR0008
@@ -138,7 +137,11 @@ export class StaffFamilyFormComponent extends FormBase implements OnInit, AfterV
   hrmCodeService = inject(HrmCodeService);
   appAlarmService = inject(AppAlarmService);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     staffNo             : new FormControl<string | null>(null, { validators: Validators.required }),
     staffName           : new FormControl<string | null>(null, { validators: Validators.required }),
     seq                 : new FormControl<string | null>(null),
@@ -151,12 +154,10 @@ export class StaffFamilyFormComponent extends FormBase implements OnInit, AfterV
   });
 
   //@Input() staff?: {companyCode: string, staffNo: string, staffName: string};
-  override initLoadId = input<{staffId: string, seq: string}>();
+  initLoadId = input<{staffId: string, seq: string}>();
   staff = input<{companyCode: string, staffNo: string, staffName: string}>();
 
   constructor() {
-    super();
-
     effect(() => {
       if (this.initLoadId()) {
         this.get(this.initLoadId()?.staffId!, this.initLoadId()?.seq!);
@@ -185,8 +186,6 @@ export class StaffFamilyFormComponent extends FormBase implements OnInit, AfterV
   }
 
   newForm() {
-    this.formType = FormType.NEW;
-
     this.fg.controls.staffNo.disable();
     this.fg.controls.staffName.disable();
 
@@ -198,8 +197,6 @@ export class StaffFamilyFormComponent extends FormBase implements OnInit, AfterV
 
 
   modifyForm(formData: StaffFamily) {
-    this.formType = FormType.MODIFY;
-
     this.fg.controls.staffNo.disable();
     this.fg.controls.staffName.disable();
 

@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild, Renderer2, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
@@ -118,7 +117,7 @@ import { NzInputSelectComponent } from 'src/app/third-party/ng-zorro/nz-input-se
   `,
   styles: [``]
 })
-export class DataDomainFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
+export class DataDomainFormComponent implements OnInit, AfterViewInit, OnChanges {
 
   databaseList: HtmlSelectOption[] = [];
 
@@ -126,7 +125,11 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
   private appAlarmService = inject(AppAlarmService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     domainId      : new FormControl<string | null>(null, { validators: Validators.required }),
     domainName    : new FormControl<string | null>(null, { validators: Validators.required }),
     database      : new FormControl<string | null>(null, { validators: Validators.required }),
@@ -134,14 +137,16 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
     comment       : new FormControl<string | null>(null)
   });
 
+  initLoadId = input<string>('');
+
   ngOnChanges(changes: SimpleChanges): void {
   }
 
   ngOnInit() {
     this.getDatabaseList();
 
-    if (this.initLoadId) {
-      this.get(this.initLoadId);
+    if (this.initLoadId()) {
+      this.get(this.initLoadId());
     } else {
       this.newForm();
     }
@@ -156,8 +161,6 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
   }
 
   newForm() {
-    this.formType = FormType.NEW;
-
     this.fg.controls.database.enable();
     this.fg.controls.domainName.enable();
 
@@ -167,8 +170,6 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
   }
 
   modifyForm(formData: DataDomain) {
-    this.formType = FormType.MODIFY;
-
     this.fg.controls.database.disable();
     this.fg.controls.domainName.disable();
 
@@ -196,7 +197,13 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
 
   save() {
     if (this.fg.invalid) {
-      this.checkForm()
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+
       return;
     }
 

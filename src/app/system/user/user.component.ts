@@ -102,11 +102,13 @@ import { ShapeComponent } from "../../core/app/shape.component";
     </div>
 
     <div style="flex: 1">
+      @defer {
       <app-user-grid #userGrid
         (rowClicked)="userGridSelected($event)"
         (editButtonClicked)="editForm($event)"
         (rowDoubleClicked)="editForm($event)">
       </app-user-grid>
+      }
     </div>
   </div>
 </app-shape>

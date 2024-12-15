@@ -10,7 +10,7 @@ export interface TeamJoinableUserModel {
 }
 
 export interface Team {
-  teamId: number;
+  teamId: string;
   teamName: string;
   memberList: string[];
 }

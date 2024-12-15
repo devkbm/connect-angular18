@@ -1,12 +1,10 @@
-import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
+import { Component, Renderer2, effect, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, Renderer2, effect, inject, input } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { CompanyFormService } from './company-form.service';
 import { Company } from './company.model';
@@ -106,13 +104,17 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
   styles: `
   `
 })
-export class CompanyFormComponent extends FormBase {
+export class CompanyFormComponent  {
 
   private service = inject(CompanyFormService);
   private appAlarmService = inject(AppAlarmService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     companyCode                 : new FormControl<string | null>(null, { validators: [Validators.required] }),
     companyName                 : new FormControl<string | null>(null, { validators: [Validators.required] }),
     businessRegistrationNumber  : new FormControl<string | null>(null),
@@ -121,10 +123,9 @@ export class CompanyFormComponent extends FormBase {
     establishmentDate           : new FormControl<Date | null>(null)
   });
 
-  override initLoadId = input<string>('');
+  initLoadId = input<string>('');
 
   constructor() {
-    super();
 
     effect(() => {
       if (this.initLoadId()) {
@@ -138,14 +139,11 @@ export class CompanyFormComponent extends FormBase {
   }
 
   newForm() {
-    this.formType = FormType.NEW;
-
     this.fg.reset();
     this.focusInput();
   }
 
   modifyForm(formData: Company) {
-    this.formType = FormType.MODIFY;
     this.fg.patchValue(formData);
   }
 
@@ -166,7 +164,12 @@ export class CompanyFormComponent extends FormBase {
 
   save() {
     if (this.fg.invalid) {
-      this.checkForm();
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

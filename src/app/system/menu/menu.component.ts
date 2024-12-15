@@ -103,18 +103,21 @@ import { ShapeComponent } from "../../core/app/shape.component";
 <app-shape [header]="{template: header, height: 'var(--page-header-height)'}" [search]="{template: search, height: 'var(--page-search-height)'}">
   <div class="page-content">
     <h3 class="header1">메뉴 그룹 목록</h3>
+    @defer {
     <app-menu-group-grid class="grid1"
       (rowClicked)="menuGroupGridRowClicked($event)"
       (editButtonClicked)="editMenuGroup($event)"
       (rowDoubleClicked)="editMenuGroup($event)">
     </app-menu-group-grid>
-
+    }
     <h3 class="header2">메뉴 목록</h3>
+    @defer {
     <app-menu-grid class="grid2"
       (rowClicked)="menuGridRowClicked($event)"
       (editButtonClicked)="editMenu($event)"
       (rowDoubleClicked)="editMenu($event)">
     </app-menu-grid>
+    }
   </div>
 </app-shape>
 
@@ -236,7 +239,7 @@ export class MenuComponent {
     }
 
     this.drawer.menuGroup.visible = false;
-    this.gridMenu().clearData();
+    //this.gridMenu().clearData();
     this.gridMenuGroup().getMenuGroupList(params);
   }
 

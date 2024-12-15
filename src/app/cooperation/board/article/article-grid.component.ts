@@ -1,17 +1,17 @@
+import { Component, OnInit, inject, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Output, EventEmitter, inject, output } from '@angular/core';
 
 import { AgGridModule } from 'ag-grid-angular';
+import { ColDef, GetRowIdFunc, GetRowIdParams } from 'ag-grid-community';
+import { FirstDataRenderedEvent, GridSizeChangedEvent, RowClickedEvent, RowDoubleClickedEvent, RowSelectionOptions, SelectionChangedEvent } from 'ag-grid-community';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
-import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
 import { ResponseList } from 'src/app/core/model/response-list';
-
-import { FirstDataRenderedEvent, GridSizeChangedEvent, RowClickedEvent, RowDoubleClickedEvent, RowSelectionOptions, SelectionChangedEvent } from 'ag-grid-community';
 
 import { ArticleService } from './article.service';
 import { Article } from './article.model';
-import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
+
 
 @Component({
   standalone: true,
@@ -21,10 +21,10 @@ import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/bu
   ],
   template: `
     <ag-grid-angular
-      [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="rowSelection"
       [rowData]="articleList"
+      [style.height]="'100%'"
+      [rowSelection]="rowSelection"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
       [getRowId]="getRowId"
@@ -36,7 +36,21 @@ import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/bu
     </ag-grid-angular>
   `
 })
-export class ArticleGridComponent extends AggridFunction implements OnInit {
+export class ArticleGridComponent implements OnInit {
+
+  //#region Ag-grid Api
+  gridApi: any;
+  gridColumnApi: any;
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
+  getSelectedRows() {
+    return this.gridApi.getSelectedRows();
+  }
+  //#endregion
 
   articleList: Article[] = [];
 
@@ -53,63 +67,60 @@ export class ArticleGridComponent extends AggridFunction implements OnInit {
   private appAlarmService = inject(AppAlarmService);
   private boardService = inject(ArticleService);
 
+  defaultColDef: ColDef = { sortable: true, resizable: true };
+
+  columnDefs: ColDef[] = [
+    {
+        headerName: '번호',
+        //valueGetter: 'node.rowIndex + 1',
+        field: 'articleId',
+        width: 70,
+        cellStyle: {'text-align': 'center'},
+        suppressSizeToFit: true
+    },
+    {
+        headerName: '제목',
+        field: 'title'
+    },
+    {
+      headerName: '등록일자',
+      cellRenderer: (data: any) => {
+        return new Date(data.value).toLocaleString();
+      },
+      field: 'createdDt',
+      width: 210,
+      cellStyle: {'text-align': 'center'},
+      suppressSizeToFit: true
+    },
+    {
+      headerName: '수정일자',
+      cellRenderer: (data: any) => {
+        return new Date(data.value).toLocaleString();
+      },
+      field: 'modifiedDt',
+      width: 210,
+      cellStyle: {'text-align': 'center'},
+      suppressSizeToFit: true
+    },
+    {
+      headerName: '',
+      width: 34,
+      cellStyle: {'text-align': 'center', 'padding': '0px'},
+      cellRenderer: ButtonRendererComponent,
+      cellRendererParams: {
+        onClick: this.onEditButtonClick.bind(this),
+        label: '',
+        iconType: 'form'
+      },
+      suppressSizeToFit: true
+    }
+  ];
+
+  getRowId: GetRowIdFunc = (params: GetRowIdParams) => {
+    return params.data.articleId;
+  };
+
   ngOnInit() {
-    this.columnDefs = [
-      {
-          headerName: '번호',
-          //valueGetter: 'node.rowIndex + 1',
-          field: 'articleId',
-          width: 70,
-          cellStyle: {'text-align': 'center'},
-          suppressSizeToFit: true
-      },
-      {
-          headerName: '제목',
-          field: 'title'
-      },
-      {
-        headerName: '등록일자',
-        cellRenderer: (data: any) => {
-          return new Date(data.value).toLocaleString();
-        },
-        field: 'createdDt',
-        width: 210,
-        cellStyle: {'text-align': 'center'},
-        suppressSizeToFit: true
-      },
-      {
-        headerName: '수정일자',
-        cellRenderer: (data: any) => {
-          return new Date(data.value).toLocaleString();
-        },
-        field: 'modifiedDt',
-        width: 210,
-        cellStyle: {'text-align': 'center'},
-        suppressSizeToFit: true
-      },
-      {
-        headerName: '',
-        width: 34,
-        cellStyle: {'text-align': 'center', 'padding': '0px'},
-        cellRenderer: ButtonRendererComponent,
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: '',
-          iconType: 'form'
-        },
-        suppressSizeToFit: true
-      }
-    ];
-
-    this.defaultColDef = {
-      sortable: true,
-      resizable: true,
-    };
-
-    this.getRowId = function(params: any) {
-      return params.data.articleId;
-    };
-
     //this.setWidthAndHeight('100%', '100%');
   }
 

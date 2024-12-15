@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit, inject, input, effect } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, input, effect, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 
@@ -15,10 +14,9 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzFormItemCustomComponent } from 'src/app/third-party/ng-zorro/nz-form-item-custom/nz-form-item-custom.component';
-import { NzCrudButtonGroupComponent } from 'src/app/third-party/ng-zorro/nz-crud-button-group/nz-crud-button-group.component';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
+import { NzFormItemCustomComponent } from 'src/app/third-party/ng-zorro/nz-form-item-custom/nz-form-item-custom.component';
 
 @Component({
   selector: 'app-hrm-code-form',
@@ -32,8 +30,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
     NzInputNumberModule,
     NzCheckboxModule,
     NzDividerModule,
-    NzFormItemCustomComponent,
-    NzCrudButtonGroupComponent
+    NzFormItemCustomComponent
   ],
   template: `
     {{fg.getRawValue() | json}}
@@ -170,12 +167,16 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
   `,
   styles: []
 })
-export class HrmTypeCodeFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class HrmTypeCodeFormComponent implements OnInit, AfterViewInit {
 
   private service = inject(HrmCodeService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     typeId        : new FormControl<string | null>(null, { validators: Validators.required }),
     code          : new FormControl<string | null>(null, {
                                     validators: Validators.required,
@@ -193,11 +194,9 @@ export class HrmTypeCodeFormComponent extends FormBase implements OnInit, AfterV
     the5AddInfo   : new FormControl<string | null>(null)
   });
 
-  override initLoadId = input<{typeId: string, code: string}>();
+  initLoadId = input<{typeId: string, code: string}>();
 
   constructor() {
-    super();
-
     effect(() => {
       if (this.initLoadId()) {
         if (this.initLoadId()?.typeId && this.initLoadId()?.code) {
@@ -217,8 +216,6 @@ export class HrmTypeCodeFormComponent extends FormBase implements OnInit, AfterV
   }
 
   newForm(typeId: string): void {
-    this.formType = FormType.NEW;
-
     this.fg.controls.typeId.setValue(typeId);
     this.fg.controls.useYn.setValue(true);
 
@@ -227,8 +224,6 @@ export class HrmTypeCodeFormComponent extends FormBase implements OnInit, AfterV
   }
 
   modifyForm(formData: HrmCode): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.patchValue(formData);
 
     this.fg.controls.code.disable();

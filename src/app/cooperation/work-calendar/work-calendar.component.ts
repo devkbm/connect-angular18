@@ -48,16 +48,20 @@ import { ModeChangedArgs } from 'src/app/third-party/daypilot/calendar-daypilot.
     -->
 
     <div class="grid-wrapper">
+      @defer {
       <app-calendar-daypilot-navigator class="navi"
         [events]="this.eventData"
         (selectChanged)="navigatorSelectChanged($event)">
       </app-calendar-daypilot-navigator>
-
+      }
+      @defer {
       <app-my-work-calendar-grid class="title"
           (rowClicked)="workGroupSelect($event)"
           (rowDoubleClicked)="modifyWorkGroup($event)">
       </app-my-work-calendar-grid>
+      }
 
+      @defer {
       <app-work-calendar-view class="calendar"
         [fkWorkCalendar]="drawer.workGroup.initLoadId"
         (itemSelected)="editSchedule($event)"
@@ -66,6 +70,7 @@ import { ModeChangedArgs } from 'src/app/third-party/daypilot/calendar-daypilot.
         (visibleRangeChanged)="calendarVisibleRangeChanged($event)"
         (modeChanged)="modeChanged($event)">
       </app-work-calendar-view>
+      }
     </div>
 
     <app-work-calendar-event-form-drawer

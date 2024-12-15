@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject, input, effect } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject, input, effect, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
 
@@ -126,12 +125,16 @@ import { NzListRoadAddressComponent } from 'src/app/third-party/ng-zorro/nz-list
     }
   `]
 })
-export class StaffContactFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
+export class StaffContactFormComponent implements OnInit, AfterViewInit, OnChanges {
 
   private service = inject(StaffContactService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     //staffId           : new FormControl<string | null>(null, { validators: Validators.required }),
     staffNo           : new FormControl<string | null>(null, { validators: Validators.required }),
     staffName         : new FormControl<string | null>(null, { validators: Validators.required }),
@@ -144,12 +147,10 @@ export class StaffContactFormComponent extends FormBase implements OnInit, After
   });
 
   //@Input() staff?: {companyCode: string, staffNo: string, staffName: string};
-  override initLoadId = input<{staffId: string, seq: string}>();
+  initLoadId = input<{staffId: string, seq: string}>();
   staff = input<{companyCode: string, staffNo: string, staffName: string}>();
 
   constructor() {
-    super();
-
     effect(() => {
       if (this.staff()) {
         this.get(this.staff()?.staffNo!);
@@ -183,8 +184,6 @@ export class StaffContactFormComponent extends FormBase implements OnInit, After
   }
 
   newForm() {
-    this.formType = FormType.NEW;
-
     this.fg.controls.homePostNumber.disable();
     this.fg.controls.homeMainAddress.disable();
 
@@ -197,8 +196,6 @@ export class StaffContactFormComponent extends FormBase implements OnInit, After
 
 
   modifyForm(formData: StaffContact) {
-    this.formType = FormType.MODIFY;
-
     this.fg.controls.homePostNumber.disable();
     this.fg.controls.homeMainAddress.disable();
 

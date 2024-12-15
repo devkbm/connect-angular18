@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild, output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
 
@@ -78,20 +77,26 @@ import { NzFormItemCustomComponent } from 'src/app/third-party/ng-zorro/nz-form-
   `,
   styles: []
 })
-export class NewStaffFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
+export class NewStaffFormComponent implements OnInit, AfterViewInit, OnChanges {
 
   //staffNo = viewChild.required<NzInputTextComponent>('staffNo');
 
   private service = inject(StaffService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     staffNo                     : new FormControl<string | null>(null, { validators: Validators.required }),
     name                        : new FormControl<string | null>(null, { validators: Validators.required }),
     residentRegistrationNumber  : new FormControl<string | null>(null, { validators: Validators.required }),
     nameEng                     : new FormControl<string | null>(null),
     nameChi                     : new FormControl<string | null>(null)
   });
+
+  initLoadId = input<string>('');
 
   ngOnInit() {
   }
@@ -104,8 +109,6 @@ export class NewStaffFormComponent extends FormBase implements OnInit, AfterView
   }
 
   newForm(id: String) {
-    this.formType = FormType.NEW;
-
     //this.staffNo().focus();
   }
 

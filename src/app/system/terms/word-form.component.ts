@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild, Renderer2, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
 
@@ -99,22 +98,28 @@ import { NzFormItemCustomComponent } from 'src/app/third-party/ng-zorro/nz-form-
   `,
   styles: [``]
 })
-export class WordFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
+export class WordFormComponent implements OnInit, AfterViewInit, OnChanges {
 
   private service = inject(WordService);
   private appAlarmService = inject(AppAlarmService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     logicalName     : new FormControl<string | null>(null, { validators: Validators.required }),
     physicalName    : new FormControl<string | null>(null, { validators: Validators.required }),
     logicalNameEng  : new FormControl<string | null>(null),
     comment         : new FormControl<string | null>(null)
   });
 
+  initLoadId = input<string>('');
+
   ngOnInit() {
-    if (this.initLoadId) {
-      this.get(this.initLoadId);
+    if (this.initLoadId()) {
+      this.get(this.initLoadId());
     } else {
       this.newForm();
     }
@@ -132,7 +137,6 @@ export class WordFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   newForm() {
-    this.formType = FormType.NEW;
 
     this.fg.controls.logicalName.enable();
     this.fg.controls.physicalName.enable();
@@ -141,7 +145,6 @@ export class WordFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   modifyForm(formData: Word) {
-    this.formType = FormType.MODIFY;
 
     this.fg.controls.logicalName.disable();
     this.fg.controls.physicalName.disable();
@@ -170,7 +173,12 @@ export class WordFormComponent extends FormBase implements OnInit, AfterViewInit
 
   save() {
     if (this.fg.invalid) {
-      this.checkForm()
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

@@ -1,10 +1,9 @@
-import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseList } from 'src/app/core/model/response-list';
 
 import { WebResourceService } from './web-resource.service';
@@ -105,7 +104,7 @@ import { NzInputSelectComponent } from 'src/app/third-party/ng-zorro/nz-input-se
   `,
   styles: []
 })
-export class WebResourceFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class WebResourceFormComponent implements OnInit, AfterViewInit {
 
   resourceTypeList: ResouceTypeEnum[] = [];
 
@@ -113,7 +112,11 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
   private appAlarmService = inject(AppAlarmService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     resourceId   : new FormControl<string | null>(null, {
       validators: Validators.required,
       asyncValidators: [existingWebResourceValidator(this.service)],
@@ -125,10 +128,9 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
     description   : new FormControl<string | null>(null)
   });
 
-  override initLoadId = input<string>('');
+  initLoadId = input<string>('');
 
   constructor() {
-    super();
 
     effect(() => {
       if (this.initLoadId()) {
@@ -150,16 +152,12 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
   }
 
   newForm(): void {
-    this.formType = FormType.NEW;
-
     this.fg.reset();
     this.fg.controls.resourceId.enable();
     this.focusInput();
   }
 
   modifyForm(formData: WebResource): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.controls.resourceId.disable();
 
     this.fg.patchValue(formData);
@@ -182,7 +180,12 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
 
   save(): void {
     if (this.fg.invalid) {
-      this.checkForm();
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

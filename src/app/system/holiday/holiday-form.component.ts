@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, Renderer2, input, effect, output } from '@angular/core';
 import { CommonModule, formatDate } from '@angular/common';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ResponseObject } from 'src/app/core/model/response-object';
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 
 import { HolidayService } from './holiday.service';
@@ -81,22 +80,25 @@ import { NzFormItemCustomComponent } from "src/app/third-party/ng-zorro/nz-form-
   `,
   styles: []
 })
-export class HolidayFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class HolidayFormComponent implements OnInit, AfterViewInit {
 
   private service = inject(HolidayService);
   private appAlarmService = inject(AppAlarmService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     date          : new FormControl<Date | null>(null, { validators: Validators.required }),
     holidayName   : new FormControl<string | null>(null, { validators: Validators.required }),
     comment       : new FormControl<string | null>(null)
   });
 
-  override initLoadId = input<Date>();
+  initLoadId = input<Date>();
 
   constructor() {
-    super();
 
     effect(() => {
       if (this.initLoadId()) {
@@ -123,7 +125,6 @@ export class HolidayFormComponent extends FormBase implements OnInit, AfterViewI
   }
 
   newForm(date: Date): void {
-    this.formType = FormType.NEW;
     this.fg.reset();
 
     this.fg.controls.date.setValue(date);
@@ -132,8 +133,6 @@ export class HolidayFormComponent extends FormBase implements OnInit, AfterViewI
   }
 
   modifyForm(formData: Holiday): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.patchValue(formData);
 
     this.focusInput();
@@ -158,7 +157,12 @@ export class HolidayFormComponent extends FormBase implements OnInit, AfterViewI
 
   save(): void {
     if (this.fg.invalid) {
-      this.checkForm();
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

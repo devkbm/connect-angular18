@@ -1,10 +1,9 @@
-import { Component, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, inject, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { formatDate } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -158,19 +157,22 @@ import { NzInputSelectStaffComponent } from 'src/app/third-party/ng-zorro/nz-inp
     }
   `]
 })
-export class DutyApplicationFormComponent extends FormBase  implements OnInit {
+export class DutyApplicationFormComponent implements OnInit {
 
   /**
    * 근태신청분류 - HR1001
    */
   dutyCodeList: HrmCode[] = [];
 
-  private fb = inject(FormBuilder);
   private service = inject(DutyApplicationService);
   private hrmCodeService = inject(HrmCodeService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     dutyId            : new FormControl<string | null>(null, { validators: Validators.required }),
     staffId           : new FormControl<string | null>(null, { validators: Validators.required }),
     dutyCode          : new FormControl<string | null>(null),
@@ -187,8 +189,6 @@ export class DutyApplicationFormComponent extends FormBase  implements OnInit {
   }
 
   newForm() {
-    this.formType = FormType.NEW;
-
     this.fg.reset();
     this.fg.controls.staffId.enable();
     this.fg.patchValue({
@@ -207,8 +207,6 @@ export class DutyApplicationFormComponent extends FormBase  implements OnInit {
   }
 
   modifyForm(formData: DutyApplication) {
-    this.formType = FormType.MODIFY;
-
     this.fg.patchValue(formData);
     this.fg.get('staffId')?.disable();
   }

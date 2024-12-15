@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit, inject, input, effect } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, input, effect, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -123,7 +122,7 @@ import { NzInputSelectComponent } from 'src/app/third-party/ng-zorro/nz-input-se
   `,
   styles: []
 })
-export class StaffDutyResponsibilityFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class StaffDutyResponsibilityFormComponent implements OnInit, AfterViewInit {
 
   /**
    * 직책코드 - HR0007
@@ -134,7 +133,11 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
   hrmCodeService = inject(HrmCodeService);
   appAlarmService = inject(AppAlarmService);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
       staffNo                 : new FormControl<string | null>(null, { validators: Validators.required }),
       staffName               : new FormControl<string | null>(null),
       seq                     : new FormControl<string | null>({value: null, disabled: true}, { validators: [Validators.required] }),
@@ -145,12 +148,10 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
       isPayApply              : new FormControl<boolean | null>(null)
     });
 
-  override initLoadId = input<{staffId: string, seq: string}>();
+  initLoadId = input<{staffId: string, seq: string}>();
   staff = input<{companyCode: string, staffNo: string, staffName: string}>();
 
   constructor() {
-    super();
-
     effect(() => {
       if (this.initLoadId()) {
         this.get(this.initLoadId()?.staffId!, this.initLoadId()?.seq!);
@@ -176,8 +177,6 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
 
 
   newForm(): void {
-    this.formType = FormType.NEW;
-
     this.fg.controls.staffNo.disable();
     this.fg.controls.staffName.disable();
 
@@ -188,8 +187,6 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
   }
 
   modifyForm(formData: StaffDutyResponsibility): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.controls.staffNo.disable();
     this.fg.controls.staffName.disable();
     this.fg.controls.seq.disable();
@@ -214,7 +211,12 @@ export class StaffDutyResponsibilityFormComponent extends FormBase implements On
 
   save(): void {
     if (this.fg.invalid) {
-      this.checkForm();
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

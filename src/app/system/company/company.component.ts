@@ -74,11 +74,13 @@ import { ShapeComponent } from "src/app/core/app/shape.component";
       <h3 class="grid-title">회사 목록 {{drawer| json}} </h3>
     </div>
     <div style="flex: 1">
+    @defer {
       <app-company-grid #grid
         (rowClicked)="resourceGridRowClicked($event)"
         (editButtonClicked)="editResource($event)"
         (rowDoubleClicked)="editResource($event)">
       </app-company-grid>
+    }
     </div>
   </div>
 </app-shape>

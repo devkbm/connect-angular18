@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit, inject, input, effect } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, input, effect, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 
@@ -16,7 +15,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzFormItemCustomComponent } from 'src/app/third-party/ng-zorro/nz-form-item-custom/nz-form-item-custom.component';
-import { NzCrudButtonGroupComponent } from 'src/app/third-party/ng-zorro/nz-crud-button-group/nz-crud-button-group.component';
 
 @Component({
   selector: 'app-hrm-code-type-form',
@@ -29,7 +27,6 @@ import { NzCrudButtonGroupComponent } from 'src/app/third-party/ng-zorro/nz-crud
     NzInputModule,
     NzInputNumberModule,
     NzDividerModule,
-    NzCrudButtonGroupComponent,
     NzFormItemCustomComponent
   ],
   template: `
@@ -93,13 +90,17 @@ import { NzCrudButtonGroupComponent } from 'src/app/third-party/ng-zorro/nz-crud
   `,
   styles: []
 })
-export class HrmCodeTypeFormComponent extends FormBase implements OnInit, AfterViewInit {
+export class HrmCodeTypeFormComponent implements OnInit, AfterViewInit {
 
   private fb = inject(FormBuilder);
   private service = inject(HrmCodeTypeService);
   private appAlarmService = inject(AppAlarmService);
 
-  override fg = this.fb.group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = this.fb.group({
     typeId          : new FormControl<string | null>(null, {
                         validators: Validators.required,
                         asyncValidators: [existingHrmTypeValidator(this.service)],
@@ -117,11 +118,9 @@ export class HrmCodeTypeFormComponent extends FormBase implements OnInit, AfterV
     */
   });
 
-  override initLoadId = input<string>();
+  initLoadId = input<string>();
 
   constructor() {
-    super();
-
     effect(() => {
       if (this.initLoadId()) {
         this.get(this.initLoadId()!);
@@ -138,8 +137,6 @@ export class HrmCodeTypeFormComponent extends FormBase implements OnInit, AfterV
   }
 
   newForm(): void {
-    this.formType = FormType.NEW;
-
     this.fg.reset();
     this.fg.controls.typeId.enable();
 
@@ -147,8 +144,6 @@ export class HrmCodeTypeFormComponent extends FormBase implements OnInit, AfterV
   }
 
   modifyForm(formData: HrmType): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.patchValue(formData);
     this.fg.controls.typeId.disable();
   }
@@ -179,7 +174,12 @@ export class HrmCodeTypeFormComponent extends FormBase implements OnInit, AfterV
 
   save(): void {
     if (this.fg.invalid) {
-      this.checkForm();
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 

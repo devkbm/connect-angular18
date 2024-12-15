@@ -1,14 +1,17 @@
-import { CommonModule } from '@angular/common';
-import { AgGridModule } from 'ag-grid-angular';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, inject, output } from '@angular/core';
-import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
+import { CommonModule } from '@angular/common';
+
+import { AgGridModule } from 'ag-grid-angular';
+import { ColDef, GetRowIdFunc, GetRowIdParams } from 'ag-grid-community';
+import { RowSelectionOptions } from 'ag-grid-community';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
+
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
 
 import { StaffSchoolCareerService } from './staff-school-career.service';
 import { StaffSchoolCareer } from './staff-school-career.model';
-import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
-import { RowSelectionOptions } from 'ag-grid-community';
+
 
 @Component({
   selector: 'app-staff-school-career-grid',
@@ -17,11 +20,11 @@ import { RowSelectionOptions } from 'ag-grid-community';
     CommonModule, AgGridModule
   ],
   template: `
-   <ag-grid-angular
-      [ngStyle]="style"
+    <ag-grid-angular
       class="ag-theme-balham-dark"
-      [rowSelection]="rowSelection"
       [rowData]="_list"
+      [style.height]="'100%'"
+      [rowSelection]="rowSelection"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
       [getRowId]="getRowId"
@@ -32,7 +35,21 @@ import { RowSelectionOptions } from 'ag-grid-community';
   `,
   styles: []
 })
-export class StaffSchoolCareerGridComponent extends AggridFunction implements OnInit, OnChanges {
+export class StaffSchoolCareerGridComponent implements OnInit, OnChanges {
+
+  //#region Ag-grid Api
+  gridApi: any;
+  gridColumnApi: any;
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
+  getSelectedRows() {
+    return this.gridApi.getSelectedRows();
+  }
+  //#endregion
 
   protected _list: StaffSchoolCareer[] = [];
 
@@ -51,44 +68,42 @@ export class StaffSchoolCareerGridComponent extends AggridFunction implements On
   private appAlarmService = inject(AppAlarmService);
   private service = inject(StaffSchoolCareerService);
 
+  defaultColDef: ColDef = { sortable: true, resizable: true };
+
+  columnDefs: ColDef[] = [
+    {
+      headerName: '',
+      width: 34,
+      cellStyle: {'text-align': 'center', 'padding': '0px'},
+      cellRenderer: ButtonRendererComponent,
+      cellRendererParams: {
+        onClick: this.onEditButtonClick.bind(this),
+        label: '',
+        iconType: 'form'
+      }
+    },
+    {
+      headerName: 'No',
+      valueGetter: 'node.rowIndex + 1',
+      width: 70,
+      cellStyle: {'text-align': 'center'}
+    },
+    { headerName: '학력',           field: 'schoolCareerTypeName',  width: 100 },
+    { headerName: '학교',           field: 'schoolCodeName',        width: 150 },
+    { headerName: '입학일',         field: 'fromDate',          width: 90 },
+    { headerName: '졸업일',         field: 'toDate',            width: 90 },
+    { headerName: '전공',           field: 'majorName',         width: 100 },
+    { headerName: '부전공',         field: 'pluralMajorName',   width: 100 },
+    { headerName: '지역',           field: 'location',          width: 100 },
+    { headerName: '수업연한',       field: 'lessonYear',        width: 100 },
+    { headerName: '비고',           field: 'comment',           width: 200 }
+  ];
+
+  getRowId: GetRowIdFunc = (params: GetRowIdParams) => {
+    return params.data.staffId + params.data.seq;
+  };
+
   ngOnInit() {
-    this.columnDefs = [
-      {
-        headerName: '',
-        width: 34,
-        cellStyle: {'text-align': 'center', 'padding': '0px'},
-        cellRenderer: ButtonRendererComponent,
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: '',
-          iconType: 'form'
-        }
-      },
-      {
-        headerName: 'No',
-        valueGetter: 'node.rowIndex + 1',
-        width: 70,
-        cellStyle: {'text-align': 'center'}
-      },
-      { headerName: '학력',           field: 'schoolCareerTypeName',  width: 100 },
-      { headerName: '학교',           field: 'schoolCodeName',        width: 150 },
-      { headerName: '입학일',         field: 'fromDate',          width: 90 },
-      { headerName: '졸업일',         field: 'toDate',            width: 90 },
-      { headerName: '전공',           field: 'majorName',         width: 100 },
-      { headerName: '부전공',         field: 'pluralMajorName',   width: 100 },
-      { headerName: '지역',           field: 'location',          width: 100 },
-      { headerName: '수업연한',       field: 'lessonYear',        width: 100 },
-      { headerName: '비고',           field: 'comment',           width: 200 }
-    ];
-
-    this.defaultColDef = {
-      sortable: true,
-      resizable: true
-    };
-
-    this.getRowId = function(params: any) {
-      return params.data.staffId + params.data.seq;
-    };
   }
 
   ngOnChanges(changes: SimpleChanges): void {

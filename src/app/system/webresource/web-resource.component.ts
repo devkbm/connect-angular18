@@ -88,11 +88,13 @@ import { ShapeComponent } from "../../core/app/shape.component";
     </div>
 
     <div style="flex: 1">
+    @defer {
       <app-web-resource-grid #grid
         (rowClicked)="resourceGridRowClicked($event)"
         (editButtonClicked)="editResource($event)"
         (rowDoubleClicked)="editResource($event)">
       </app-web-resource-grid>
+    }
     </div>
   </div>
 </app-shape>

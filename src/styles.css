@@ -14,7 +14,7 @@
 
 :root {
   --app-header-height: 64px;
-  --app-footer-height: 24px;
+  --app-footer-height: 0px;
   --app-content-margin-height: 0px;
 
   --color: black;

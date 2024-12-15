@@ -2,15 +2,15 @@ import { Component, OnInit, computed, inject, output, signal } from '@angular/co
 import { CommonModule } from '@angular/common';
 
 import { AgGridModule } from 'ag-grid-angular';
+import { ColDef, GetRowIdFunc, GetRowIdParams } from 'ag-grid-community';
+import { RowSelectionOptions } from 'ag-grid-community';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 
-import { DateInfo, Holiday } from './holiday.model';
-
-import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
+
 import { HolidayService } from './holiday.service';
-import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
-import { RowSelectionOptions } from 'ag-grid-community';
+import { DateInfo, Holiday } from './holiday.model';
 
 @Component({
   standalone: true,
@@ -20,10 +20,10 @@ import { RowSelectionOptions } from 'ag-grid-community';
   ],
   template: `
     <ag-grid-angular
-      [ngStyle]="style"
       class="ag-theme-balham-dark"
-      [rowSelection]="rowSelection"
       [rowData]="gridList()"
+      [style.height]="'100%'"
+      [rowSelection]="rowSelection"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
       [getRowId]="getRowId"
@@ -33,7 +33,21 @@ import { RowSelectionOptions } from 'ag-grid-community';
   </ag-grid-angular>
   `
 })
-export class HolidayGridComponent extends AggridFunction implements OnInit {
+export class HolidayGridComponent implements OnInit {
+
+  //#region Ag-grid Api
+  gridApi: any;
+  gridColumnApi: any;
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
+  getSelectedRows() {
+    return this.gridApi.getSelectedRows();
+  }
+  //#endregion
 
   rowClicked = output<any>();
   rowDoubleClicked = output<any>();
@@ -60,40 +74,37 @@ export class HolidayGridComponent extends AggridFunction implements OnInit {
   private appAlarmService = inject(AppAlarmService);
   private holidayService = inject(HolidayService);
 
+  defaultColDef: ColDef = { sortable: true, resizable: true };
+
+  columnDefs: ColDef[] = [
+    {
+      headerName: '',
+      width: 34,
+      cellStyle: {'text-align': 'center', padding: '0px'},
+      cellRenderer: ButtonRendererComponent,
+      cellRendererParams: {
+        onClick: this.onEditButtonClick.bind(this),
+        label: '',
+        iconType: 'form'
+      }
+    },
+    {
+      headerName: 'No',
+      valueGetter: 'node.rowIndex + 1',
+      width: 70,
+      cellStyle: {'text-align': 'center'}
+    },
+    { headerName: '일자',     field: 'date',                width: 110,   cellStyle: {'text-align': 'center'} },
+    { headerName: '요일',     field: 'dayOfWeek',           width: 50,    cellStyle: {'text-align': 'center'} },
+    { headerName: '휴일명',   field: 'holiday.holidayName', width: 150 },
+    { headerName: '비고',     field: 'holiday.comment',     width: 200 }
+  ];
+
+  getRowId: GetRowIdFunc = (params: GetRowIdParams) => {
+    return params.data.date;
+  };
+
   ngOnInit(): void {
-    this.columnDefs = [
-      {
-        headerName: '',
-        width: 34,
-        cellStyle: {'text-align': 'center', padding: '0px'},
-        cellRenderer: ButtonRendererComponent,
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: '',
-          iconType: 'form'
-        }
-      },
-      {
-        headerName: 'No',
-        valueGetter: 'node.rowIndex + 1',
-        width: 70,
-        cellStyle: {'text-align': 'center'}
-      },
-      { headerName: '일자',     field: 'date',                width: 110,   cellStyle: {'text-align': 'center'} },
-      { headerName: '요일',     field: 'dayOfWeek',           width: 50,    cellStyle: {'text-align': 'center'} },
-      { headerName: '휴일명',   field: 'holiday.holidayName', width: 150 },
-      { headerName: '비고',     field: 'holiday.comment',     width: 200 }
-    ];
-
-    this.defaultColDef = {
-      sortable: true,
-      resizable: true
-    };
-
-    this.getRowId = (params: any) => {
-      return params.data.date;
-    };
-
     //this.getGridList();
   }
 

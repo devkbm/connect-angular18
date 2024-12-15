@@ -1,14 +1,15 @@
-import { CommonModule } from '@angular/common';
-import { AgGridModule } from 'ag-grid-angular';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, inject, output } from '@angular/core';
-import { AggridFunction } from 'src/app/third-party/ag-grid/aggrid-function';
+import { CommonModule } from '@angular/common';
+
+import { AgGridModule } from 'ag-grid-angular';
+import { ColDef, GetRowIdFunc, GetRowIdParams } from 'ag-grid-community';
+import { RowSelectionOptions } from 'ag-grid-community';
+import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { StaffFamily } from './staff-family.model';
 import { StaffFamilyService } from './staff-family.service';
-import { ButtonRendererComponent } from 'src/app/third-party/ag-grid/renderer/button-renderer.component';
-import { RowSelectionOptions } from 'ag-grid-community';
 
 @Component({
   selector: 'app-staff-family-grid',
@@ -17,11 +18,11 @@ import { RowSelectionOptions } from 'ag-grid-community';
     CommonModule, AgGridModule
   ],
   template: `
-   <ag-grid-angular
-      [ngStyle]="style"
+    <ag-grid-angular
       class="ag-theme-balham-dark"
-      [rowSelection]="rowSelection"
       [rowData]="_list"
+      [style.height]="'100%'"
+      [rowSelection]="rowSelection"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
       [getRowId]="getRowId"
@@ -32,7 +33,21 @@ import { RowSelectionOptions } from 'ag-grid-community';
   `,
   styles: []
 })
-export class StaffFamilyGridComponent extends AggridFunction implements OnInit, OnChanges {
+export class StaffFamilyGridComponent implements OnInit, OnChanges {
+
+  //#region Ag-grid Api
+  gridApi: any;
+  gridColumnApi: any;
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
+  getSelectedRows() {
+    return this.gridApi.getSelectedRows();
+  }
+  //#endregion
 
   protected _list: StaffFamily[] = [];
 
@@ -51,42 +66,39 @@ export class StaffFamilyGridComponent extends AggridFunction implements OnInit, 
   private appAlarmService = inject(AppAlarmService);
   private service = inject(StaffFamilyService);
 
+  defaultColDef: ColDef = { sortable: true, resizable: true };
+
+  columnDefs: ColDef[] = [
+    {
+      headerName: '',
+      width: 34,
+      cellStyle: {'text-align': 'center', 'padding': '0px'},
+      cellRenderer: ButtonRendererComponent,
+      cellRendererParams: {
+        onClick: this.onEditButtonClick.bind(this),
+        label: '',
+        iconType: 'form'
+      }
+    },
+    {
+      headerName: 'No',
+      valueGetter: 'node.rowIndex + 1',
+      width: 70,
+      cellStyle: {'text-align': 'center'}
+    },
+    { headerName: '가족관계',       field: 'familyRelationName',  width: 90 },
+    { headerName: '가족명',         field: 'familyName',          width: 90 },
+    { headerName: '가족주민번호',   field: 'familyRRN',           width: 150 },
+    { headerName: '직업',           field: 'occupation',          width: 100 },
+    { headerName: '학력',           field: 'schoolCareerType',    width: 100 },
+    { headerName: '비고',           field: 'comment',             width: 200 }
+  ];
+
+  getRowId: GetRowIdFunc = (params: GetRowIdParams) => {
+    return params.data.staffId + params.data.seq;
+  };
+
   ngOnInit() {
-    this.columnDefs = [
-      {
-        headerName: '',
-        width: 34,
-        cellStyle: {'text-align': 'center', 'padding': '0px'},
-        cellRenderer: ButtonRendererComponent,
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: '',
-          iconType: 'form'
-        }
-      },
-      {
-        headerName: 'No',
-        valueGetter: 'node.rowIndex + 1',
-        width: 70,
-        cellStyle: {'text-align': 'center'}
-      },
-      { headerName: '가족관계',       field: 'familyRelationName',  width: 90 },
-      { headerName: '가족명',         field: 'familyName',          width: 90 },
-      { headerName: '가족주민번호',   field: 'familyRRN',           width: 150 },
-      { headerName: '직업',           field: 'occupation',          width: 100 },
-      { headerName: '학력',           field: 'schoolCareerType',    width: 100 },
-      { headerName: '비고',           field: 'comment',             width: 200 }
-    ];
-
-    this.defaultColDef = {
-      sortable: true,
-      resizable: true
-    };
-
-    this.getRowId = function(params: any) {
-      return params.data.staffId + params.data.seq;
-    };
-
     //this.setWidthAndHeight('100%', '600px');
   }
 

@@ -94,31 +94,37 @@ import { ShapeComponent } from "../../core/app/shape.component";
   <nz-tabset [nzSelectedIndex]="tabIndex">
     <nz-tab nzTitle="용어사전">
       <div [style.height]="'calc(100vh - var(--page-header-height) - var(--page-search-height) - 155px)'">
+        @defer {
         <app-term-grid
           (rowClicked)="termGridSelected($event)"
           (editButtonClicked)="editTerm($event)"
           (rowDoubleClicked)="editTerm($event)">
         </app-term-grid>
+        }
       </div>
     </nz-tab>
 
     <nz-tab nzTitle="단어사전">
       <div [style.height]="'calc(100vh - var(--page-header-height) - var(--page-search-height) - 155px)'">
+        @defer {
         <app-word-grid
           (rowClicked)="wordGridSelected($event)"
           (editButtonClicked)="editWord($event)"
           (rowDoubleClicked)="editWord($event)">
         </app-word-grid>
+        }
       </div>
     </nz-tab>
 
     <nz-tab nzTitle="도메인">
       <div [style.height]="'calc(100vh - var(--page-header-height) - var(--page-search-height) - 155px)'">
+        @defer {
         <app-data-domain-grid
           (rowClicked)="domainGridSelected($event)"
           (editButtonClicked)="this.drawer.domain.visible = true"
           (rowDoubleClicked)="this.drawer.domain.visible = true">
         </app-data-domain-grid>
+        }
       </div>
     </nz-tab>
   </nz-tabset>

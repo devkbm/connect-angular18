@@ -1,10 +1,9 @@
-import { Component, AfterViewInit, inject, Renderer2, input, effect } from '@angular/core';
+import { Component, AfterViewInit, inject, Renderer2, input, effect, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
-import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
 
 import { BizCodeService } from './biz-code.service';
@@ -105,13 +104,17 @@ import { NzFormItemCustomComponent } from "src/app/third-party/ng-zorro/nz-form-
   `,
   styles: []
 })
-export class BizCodeFormComponent extends FormBase implements AfterViewInit {
+export class BizCodeFormComponent implements AfterViewInit {
 
   private service = inject(BizCodeService);
   private appAlarmService = inject(AppAlarmService);
   private renderer = inject(Renderer2);
 
-  override fg = inject(FormBuilder).group({
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
+
+  fg = inject(FormBuilder).group({
     typeId      : new FormControl<string | null>(null, { validators: [Validators.required] }),
     code        : new FormControl<string | null>(null, { validators: [Validators.required] }),
     codeName    : new FormControl<string | null>(null),
@@ -120,10 +123,9 @@ export class BizCodeFormComponent extends FormBase implements AfterViewInit {
     comment     : new FormControl<string | null>(null)
   });
 
-  override initLoadId = input<{typeId: string, code: string}>();
+  initLoadId = input<{typeId: string, code: string}>();
 
   constructor() {
-    super();
 
     effect(() => {
       if (this.initLoadId()) {
@@ -144,8 +146,6 @@ export class BizCodeFormComponent extends FormBase implements AfterViewInit {
   }
 
   newForm(typeId: string): void {
-    this.formType = FormType.NEW;
-
     this.fg.controls.typeId.setValue(typeId);
     this.fg.controls.code.enable();
     this.fg.controls.useYn.setValue(true);
@@ -154,8 +154,6 @@ export class BizCodeFormComponent extends FormBase implements AfterViewInit {
   }
 
   modifyForm(formData: BizCode): void {
-    this.formType = FormType.MODIFY;
-
     this.fg.controls.code.disable();
     this.fg.patchValue(formData);
   }
@@ -177,7 +175,12 @@ export class BizCodeFormComponent extends FormBase implements AfterViewInit {
 
   save(): void {
     if (this.fg.invalid) {
-      this.checkForm();
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
       return;
     }
 
