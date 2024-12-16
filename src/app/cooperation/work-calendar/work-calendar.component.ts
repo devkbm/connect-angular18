@@ -86,7 +86,8 @@ import { ModeChangedArgs } from 'src/app/third-party/daypilot/calendar-daypilot.
   `,
   styles: `
     .grid-wrapper {
-      height: calc(100% - 32px);
+      //height: calc(100% - 32px);
+      height: 100%;
       display: grid;
       grid-template-rows: 220px 1fr;
       grid-template-columns: 200px 1fr;

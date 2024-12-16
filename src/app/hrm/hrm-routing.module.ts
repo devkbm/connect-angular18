@@ -7,9 +7,9 @@ export const routes: Routes = [
   {
     path: '', component: AppLayoutComponent/*, canActivateChild: [AuthGuardService]*/,
     children: [
-      {path: 'hrmtype',           loadComponent: () => import('./hrm-code/hrm-code.component').then(mod => mod.HrmCodeComponent)},
-      {path: 'dutyapplication',   loadComponent: () => import('./duty-application/duty-application.component').then(mod => mod.DutyApplicationComponent)},
-      {path: 'staff',             loadComponent: () => import('./staff/staff-management.component').then(mod => mod.StaffManagementComponent)}
+      {path: 'hrmtype',           loadComponent: () => import('./hrm-code/hrm-code.component').then(m => m.HrmCodeComponent)},
+      {path: 'dutyapplication',   loadComponent: () => import('./duty-application/duty-application.component').then(m => m.DutyApplicationComponent)},
+      {path: 'staff',             loadComponent: () => import('./staff/staff-management.component').then(m => m.StaffManagementComponent)}
     ]
   }
 ];

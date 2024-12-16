@@ -51,7 +51,7 @@ export interface NewDateSelectedArgs {
       overflow-y: hidden;
       overflow-x: hidden;
       overflow: auto;
-      height: calc(100% - 50px);
+      height: 100%;
     }
 `]
 })

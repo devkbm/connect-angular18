@@ -262,7 +262,7 @@ import { ShapeComponent } from "../../core/app/shape.component";
 }
 
 .app-grid {
-  height: 100%;
+  height: calc(100% - 10px);
   display: grid;
   /*grid-auto-flow: column;*/
   grid-template-columns: 200px 400px 1fr;
@@ -285,7 +285,7 @@ import { ShapeComponent } from "../../core/app/shape.component";
 }
 
 .tab-grid {
-  height: calc(100vh - 330px);
+  height: calc(100vh - 334px);
 }
   `
 })

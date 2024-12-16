@@ -52,10 +52,6 @@ import { ArticleFileUploadComponent } from './article-file-upload.component';
         }
       </ng-template>
 
-      <input type="hidden" formControlName="boardId">
-      <input type="hidden" formControlName="articleId">
-      <input type="hidden" formControlName="articleParentId">
-
       <nz-form-item-custom for="title" label="메뉴코드" required>
         <nz-form-control nzHasFeedback [nzErrorTip]="errorTpl">
           <input nz-input id="title" formControlName="title" required
@@ -166,7 +162,7 @@ export class ArticleFormComponent implements OnInit, AfterViewInit {
   upload = viewChild.required<NzUploadComponent>('upload');
   ckEditor = viewChild.required<CKEditorComponent>('ckEditor');
 
-  uploader = viewChild.required<ArticleFileUploadComponent>(ArticleFileUploadComponent);
+  uploader = viewChild.required(ArticleFileUploadComponent);
 
   private boardService= inject(ArticleService);
   private activatedRoute = inject(ActivatedRoute);
@@ -209,8 +205,8 @@ export class ArticleFormComponent implements OnInit, AfterViewInit {
       this.initLoadId = this.activatedRoute.snapshot.params['initLoadId'];
     }
 
-    if (this.initLoadId) {
-      this.get(this.initLoadId);
+    if (this.initLoadId()) {
+      this.get(this.initLoadId());
     } else {
       this.newForm(this.boardId);
     }
