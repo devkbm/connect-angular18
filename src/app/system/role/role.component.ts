@@ -19,6 +19,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPageHeaderCustomComponent } from 'src/app/third-party/ng-zorro/nz-page-header-custom/nz-page-header-custom.component';
 import { ButtonTemplate, NzButtonsComponent } from 'src/app/third-party/ng-zorro/nz-buttons/nz-buttons.component';
 import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-area/nz-search-area.component';
+import { CalendarFullcalendarComponent } from "../../third-party/fullcalendar/calendar-fullcalendar/calendar-fullcalendar.component";
 
 
 
@@ -40,7 +41,8 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
     NzSearchAreaComponent,
     RoleGridComponent,
     RoleFormDrawerComponent,
-    ShapeComponent
+    ShapeComponent,
+    CalendarFullcalendarComponent
 ],
   template: `
 <ng-template #header>
@@ -81,11 +83,14 @@ import { NzSearchAreaComponent } from 'src/app/third-party/ng-zorro/nz-search-ar
 
     <div style="flex: 1">
       @defer {
+      <app-calendar-fullcalendar></app-calendar-fullcalendar>
+      <!--
       <app-role-grid #authGrid
         (rowClicked)="selectedItem($event)"
         (editButtonClicked)="editDrawOpen($event)"
         (rowDoubleClicked)="editDrawOpen($event)">
       </app-role-grid>
+      -->
       }
     </div>
   </div>
